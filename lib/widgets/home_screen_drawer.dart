@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/providers/auth_provider.dart';
+import 'package:password_manager/screens/login_screen.dart';
 
-class HomeScreenDrawer extends StatelessWidget {
+class HomeScreenDrawer extends ConsumerWidget {
   const HomeScreenDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final itemTextStyle = Theme.of(context)
         .textTheme
@@ -61,6 +64,26 @@ class HomeScreenDrawer extends StatelessWidget {
               style: itemTextStyle,
             ),
             onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.logout,
+              size: 26,
+              color: colorScheme.onBackground,
+            ),
+            title: Text(
+              'Logout',
+              style: itemTextStyle,
+            ),
+            onTap: () {
+              ref.read(authProvider.notifier).signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => const LoginScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),
