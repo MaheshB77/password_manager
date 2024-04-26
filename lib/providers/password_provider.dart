@@ -17,6 +17,7 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
               title: pwd['title'],
               username: pwd['username'],
               password: pwd['password'],
+              email: pwd['email'],
             ),
           )
           .toList();

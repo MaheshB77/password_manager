@@ -69,11 +69,11 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
 
   void _clearForm() {
     setState(() {
+      _formKey.currentState!.reset();
       _title = '';
       _username = '';
       _email = '';
       _password = '';
-      _formKey.currentState!.reset();
     });
   }
 
