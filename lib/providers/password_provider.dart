@@ -6,7 +6,7 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
   final supabase = Supabase.instance.client;
   PasswordNotifier() : super([]);
 
-  void getPasswords() async {
+  Future<void> getPasswords() async {
     try {
       print('Getting the passwords');
 

@@ -14,14 +14,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late Future<void> _passwordFuture;
+
   @override
   void initState() {
     super.initState();
-    _getPasswords(ref);
-  }
-
-  void _getPasswords(WidgetRef ref) async {
-    ref.read(passwordProvider.notifier).getPasswords();
+    _passwordFuture = ref.read(passwordProvider.notifier).getPasswords();
   }
 
   void _onAdd() {
@@ -37,25 +35,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const Center(
-      child: Text('No passwords stored yet!'),
-    );
-
     final pwds = ref.watch(passwordProvider);
-
-    if (pwds.isNotEmpty) {
-      content = PasswordList(passwords: pwds);
-    }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Passwords'),
       ),
       drawer: const HomeScreenDrawer(),
-      body: content,
+      body: FutureBuilder(
+        future: _passwordFuture,
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error : ${snapshot.error}');
+          } else {
+            return PasswordList(passwords: pwds);
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
         onPressed: _onAdd,
+        child: const Icon(Icons.add),
       ),
     );
   }
