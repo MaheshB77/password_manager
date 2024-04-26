@@ -14,6 +14,7 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
       List<Password> pwds = response
           .map(
             (pwd) => Password(
+              id: pwd['id'],
               title: pwd['title'],
               username: pwd['username'],
               password: pwd['password'],
@@ -36,12 +37,37 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
           'username': password.username,
           'password': password.password,
           'email': password.email,
+          'user_id': supabase.auth.currentUser!.id,
         }
       ]);
     } catch (error) {
       print('Error while adding the password :: $error');
     }
   }
+
+  Future<void> update(Password password) async {
+    try {
+      print('Updating the password');
+      await supabase.from('password').update({
+        'title': password.title,
+        'username': password.username,
+        'password': password.password,
+        'email': password.email,
+      }).eq('id', password.id!);
+    } catch (error) {
+      print('Error while updating the password :: $error');
+    }
+  }
+
+  Future<void> delete(String id) async {
+    try {
+      print('Deleting the password');
+      await supabase.from('password').delete().eq('id', id);
+    } catch (error) {
+      print('Error while deleting the password :: $error');
+    }
+  }
+
 }
 
 final passwordProvider =

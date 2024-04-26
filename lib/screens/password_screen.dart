@@ -20,6 +20,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   String _email = '';
   String _password = '';
   bool _sending = false;
+  bool _new = false;
 
   @override
   void initState() {
@@ -28,6 +29,9 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     _username = widget.password.username;
     _email = widget.password.email ?? '';
     _password = widget.password.password;
+    if (widget.password.id == null) {
+      _new = true;
+    }
   }
 
   String? _fieldValidator(String? value, int min, int max, String field) {
@@ -52,14 +56,18 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       _toggleSending();
-      await ref.read(passwordProvider.notifier).save(
-            Password(
-              title: _title,
-              username: _username,
-              password: _password,
-              email: _email,
-            ),
-          );
+      final pwd = Password(
+        title: _title,
+        username: _username,
+        password: _password,
+        email: _email,
+      );
+      if (_new) {
+        await ref.read(passwordProvider.notifier).save(pwd);
+      } else {
+        pwd.id = widget.password.id;
+        await ref.read(passwordProvider.notifier).update(pwd);
+      }
       _toggleSending();
       if (context.mounted) {
         Navigator.pop(context);
@@ -95,7 +103,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New password'),
+        title: Text(_new ? 'New password' : 'Update password'),
       ),
       body: Form(
         key: _formKey,
@@ -172,7 +180,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                     const SizedBox(width: 14),
                     ElevatedButton(
                       onPressed: _sending ? null : _onAdd,
-                      child: _sending ? spinner : const Text('Add'),
+                      child: _sending ? spinner : Text(_new ? 'Add' : 'Update'),
                     ),
                   ],
                 )

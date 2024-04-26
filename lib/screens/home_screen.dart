@@ -22,8 +22,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _passwordFuture = ref.read(passwordProvider.notifier).getPasswords();
   }
 
-  void _onAdd() {
-    Navigator.push(
+  void _onAdd() async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (ctx) => PasswordScreen(
