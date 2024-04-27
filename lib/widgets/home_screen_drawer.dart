@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:password_manager/providers/auth_provider.dart';
 import 'package:password_manager/screens/login_screen.dart';
+import 'package:password_manager/services/auth_service.dart';
 
 class HomeScreenDrawer extends ConsumerWidget {
-  const HomeScreenDrawer({super.key});
+  final AuthService auth = AuthService();
+  HomeScreenDrawer({super.key});
+
+  void _logout(BuildContext context) async {
+    await auth.signOut();
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => LoginScreen(),
+        ),
+        (route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,13 +90,7 @@ class HomeScreenDrawer extends ConsumerWidget {
               style: itemTextStyle,
             ),
             onTap: () {
-              ref.read(authProvider.notifier).signOut();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) => const LoginScreen(),
-                ),
-              );
+              _logout(context);
             },
           ),
         ],

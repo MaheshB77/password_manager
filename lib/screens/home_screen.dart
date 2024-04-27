@@ -35,13 +35,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('Loading Home Screen!');
     final pwds = ref.watch(passwordProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Passwords'),
       ),
-      drawer: const HomeScreenDrawer(),
+      drawer: HomeScreenDrawer(),
       body: FutureBuilder(
         future: _passwordFuture,
         builder: (ctx, snapshot) {

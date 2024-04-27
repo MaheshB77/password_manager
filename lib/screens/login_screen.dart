@@ -1,48 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:password_manager/providers/auth_provider.dart';
 import 'package:password_manager/screens/home_screen.dart';
+import 'package:password_manager/services/auth_service.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends ConsumerWidget {
+  final AuthService auth = AuthService();
+  LoginScreen({super.key});
 
-  @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends ConsumerState<LoginScreen> {
-  void _loginWithGoogle() async {
-    await ref.read(authProvider.notifier).signInWithGoogle();
+  void _loginWithGoogle(BuildContext context) async {
+    await auth.signInWithGoogle();
     if (context.mounted) {
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (ctx) => const HomeScreen(),
         ),
+        (route) => false,
       );
     }
-  }
-
-  void _logout() {
-    ref.read(authProvider.notifier).signOut();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final user = ref.watch(authProvider);
-    Widget content = ElevatedButton.icon(
-      onPressed: _loginWithGoogle,
-      icon: const Icon(Icons.login),
-      label: const Text('Login with Google'),
-    );
-
-    if (user != null) {
-      content = ElevatedButton.icon(
-        onPressed: _logout,
-        icon: const Icon(Icons.logout),
-        label: const Text('Logout'),
-      );
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    print('Loading Logging Screen!!');
 
     return Scaffold(
       body: Center(
@@ -55,7 +35,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [content],
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  _loginWithGoogle(context);
+                },
+                icon: const Icon(Icons.login),
+                label: const Text('Login with Google'),
+              ),
+            ],
           ),
         ),
       ),
