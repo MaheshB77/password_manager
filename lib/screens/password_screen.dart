@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/password_provider.dart';
+import 'package:password_manager/screens/home_screen.dart';
 
 class PasswordScreen extends ConsumerStatefulWidget {
   final Password password;
@@ -75,6 +76,46 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     }
   }
 
+  void _onDelete(String id) async {
+    await ref.read(passwordProvider.notifier).delete(id);
+    if (context.mounted) {
+      // Navigator.pop(context);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+        (route) => false,
+      );
+    }
+  }
+
+  void _deleteConfirmation(String id) async {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text('Deleting'),
+          content: const Text('Do you want to delete this password ?'),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _onDelete(id);
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _clearForm() {
     setState(() {
       _formKey.currentState!.reset();
@@ -104,6 +145,22 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_new ? 'New password' : 'Update password'),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (ctx) => [
+              PopupMenuItem(
+                child: const ListTile(
+                  leading: Icon(Icons.delete),
+                  title: Text('Delete'),
+                  dense: true,
+                ),
+                onTap: () => {
+                  _deleteConfirmation(widget.password.id!),
+                },
+              ),
+            ],
+          ),
+        ],
       ),
       body: Form(
         key: _formKey,

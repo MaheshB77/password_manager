@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Password Manager',
       theme: lightTheme,
       home: mainScreen,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

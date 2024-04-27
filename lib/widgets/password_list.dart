@@ -4,9 +4,15 @@ import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/screens/password_screen.dart';
 
-class PasswordList extends ConsumerWidget {
+class PasswordList extends ConsumerStatefulWidget {
   final List<Password> passwords;
   const PasswordList({super.key, required this.passwords});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _PasswordListState();
+}
+
+class _PasswordListState extends ConsumerState<PasswordList> {
 
   void _showPassword(
     BuildContext context,
@@ -21,40 +27,38 @@ class PasswordList extends ConsumerWidget {
     );
   }
 
-  void _delete(String id, WidgetRef ref) async {
+  void _delete(String id) async {
     await ref.read(passwordProvider.notifier).delete(id);
-    await ref.read(passwordProvider.notifier).getPasswords();
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final pwds = widget.passwords;
     return ListView.builder(
-      itemCount: passwords.length,
+      itemCount: pwds.length,
       itemBuilder: (ctx, index) => SizedBox(
         height: 70,
         child: Dismissible(
-          key: ValueKey(passwords[index].id),
+          key: ValueKey(pwds[index].id),
           onDismissed: (direction) {
-            _delete(passwords[index].id!, ref);
+            _delete(pwds[index].id!);
           },
           child: ListTile(
             leading: CircleAvatar(
-              child: Text(passwords[index].title[0]),
+              child: Text(pwds[index].title[0]),
             ),
             title: Text(
-              passwords[index].title,
+              pwds[index].title,
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              passwords[index].username.isNotEmpty
-                  ? passwords[index].username
-                  : 'NA',
+              pwds[index].username.isNotEmpty ? pwds[index].username : 'NA',
             ),
             onTap: () {
-              _showPassword(context, passwords[index], ref);
+              _showPassword(context, pwds[index], ref);
             },
           ),
         ),

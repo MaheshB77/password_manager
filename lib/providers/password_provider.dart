@@ -63,6 +63,7 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
     try {
       print('Deleting the password');
       await supabase.from('password').delete().eq('id', id);
+      state = state.where((pwd) => pwd.id != id).toList();
     } catch (error) {
       print('Error while deleting the password :: $error');
     }
