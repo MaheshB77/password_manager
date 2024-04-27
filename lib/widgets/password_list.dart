@@ -19,7 +19,6 @@ class PasswordList extends ConsumerWidget {
         builder: (ctx) => PasswordScreen(password: password),
       ),
     );
-    await ref.read(passwordProvider.notifier).getPasswords();
   }
 
   void _delete(String id, WidgetRef ref) async {

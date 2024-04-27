@@ -31,6 +31,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
     );
+    await ref.read(passwordProvider.notifier).getPasswords();
   }
 
   @override
