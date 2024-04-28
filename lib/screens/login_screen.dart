@@ -8,14 +8,23 @@ class LoginScreen extends ConsumerWidget {
   LoginScreen({super.key});
 
   void _loginWithGoogle(BuildContext context) async {
-    await auth.signInWithGoogle();
-    if (context.mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (ctx) => const HomeScreen(),
+    try {
+      await auth.signInWithGoogle();
+      if (context.mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => const HomeScreen(),
+          ),
+          (route) => false,
+        );
+      }
+    } catch (error) {
+      print('Error while logging in $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Something went wrong!'),
         ),
-        (route) => false,
       );
     }
   }

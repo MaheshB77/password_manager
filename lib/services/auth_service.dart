@@ -10,27 +10,22 @@ class AuthService {
   );
 
   Future<void> signInWithGoogle() async {
-    try {
-      final googleUser = await googleSignIn.signIn();
-      final googleAuth = await googleUser!.authentication;
-      final accessToken = googleAuth.accessToken;
-      final idToken = googleAuth.idToken;
+    final googleUser = await googleSignIn.signIn();
+    final googleAuth = await googleUser!.authentication;
+    final accessToken = googleAuth.accessToken;
+    final idToken = googleAuth.idToken;
 
-      if (accessToken == null) {
-        throw 'No Access Token found.';
-      }
-      if (idToken == null) {
-        throw 'No ID Token found.';
-      }
-      print("Logging in!!!!!!!");
-      await supabaseAuth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: idToken,
-        accessToken: accessToken,
-      );
-    } catch (error) {
-      print('Error while login :: $error');
+    if (accessToken == null) {
+      throw 'No Access Token found.';
     }
+    if (idToken == null) {
+      throw 'No ID Token found.';
+    }
+    await supabaseAuth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+      accessToken: accessToken,
+    );
   }
 
   Future<void> signOut() async {
