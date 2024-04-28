@@ -26,7 +26,7 @@ class HomeScreenDrawer extends ConsumerWidget {
     final itemTextStyle = Theme.of(context)
         .textTheme
         .titleSmall!
-        .copyWith(color: colorScheme.onBackground, fontSize: 24);
+        .copyWith(color: colorScheme.onBackground, fontSize: 18);
 
     return Drawer(
       child: Column(
@@ -58,7 +58,7 @@ class HomeScreenDrawer extends ConsumerWidget {
           ListTile(
             leading: Icon(
               Icons.password,
-              size: 26,
+              size: 22,
               color: colorScheme.onBackground,
             ),
             title: Text(
@@ -70,7 +70,7 @@ class HomeScreenDrawer extends ConsumerWidget {
           ListTile(
             leading: Icon(
               Icons.settings,
-              size: 26,
+              size: 22,
               color: colorScheme.onBackground,
             ),
             title: Text(
@@ -82,7 +82,7 @@ class HomeScreenDrawer extends ConsumerWidget {
           ListTile(
             leading: Icon(
               Icons.logout,
-              size: 26,
+              size: 22,
               color: colorScheme.onBackground,
             ),
             title: Text(

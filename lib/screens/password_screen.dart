@@ -145,7 +145,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_new ? 'New password' : 'Update password'),
-        actions: [
+        actions: _new ? [] : [
           PopupMenuButton(
             itemBuilder: (ctx) => [
               PopupMenuItem(
