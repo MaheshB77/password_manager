@@ -52,6 +52,7 @@ class _PasswordListState extends ConsumerState<PasswordList> {
         builder: (ctx) => PasswordScreen(password: password),
       ),
     );
+    await ref.read(passwordProvider.notifier).getPasswords();
   }
 
   void _filter(String search) {
