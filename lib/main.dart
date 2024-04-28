@@ -5,6 +5,7 @@ import 'package:password_manager/config/supabase_config.dart';
 import 'package:password_manager/screens/home_screen.dart';
 import 'package:password_manager/screens/login_screen.dart';
 import 'package:password_manager/services/auth_service.dart';
+import 'package:password_manager/theme/dark_theme.dart';
 import 'package:password_manager/theme/light_theme.dart';
 
 void main() async {
@@ -29,8 +30,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Password Manager',
       theme: lightTheme,
+      darkTheme: darkTheme,
       home: mainScreen,
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.system,
     );
   }
 }
