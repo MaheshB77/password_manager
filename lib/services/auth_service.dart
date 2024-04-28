@@ -4,15 +4,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
   final supabaseAuth = Supabase.instance.client.auth;
+  final GoogleSignIn googleSignIn = GoogleSignIn(
+    clientId: dotenv.env['WEB_CLIENT_ID']!,
+    serverClientId: dotenv.env['IOS_CLIENT_ID']!,
+  );
 
   Future<void> signInWithGoogle() async {
-    var webClientId = dotenv.env['WEB_CLIENT_ID']!;
-    var iosClientId = dotenv.env['IOS_CLIENT_ID']!;
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: iosClientId,
-        serverClientId: webClientId,
-      );
       final googleUser = await googleSignIn.signIn();
       final googleAuth = await googleUser!.authentication;
       final accessToken = googleAuth.accessToken;
@@ -38,7 +36,7 @@ class AuthService {
   Future<void> signOut() async {
     print("Logging out!!!!!!!");
     try {
-      await supabaseAuth.signOut();
+      await googleSignIn.signOut();
     } catch (error) {
       print('Error while logging out :: $error');
     }
