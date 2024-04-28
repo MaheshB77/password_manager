@@ -22,6 +22,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   String _password = '';
   bool _sending = false;
   bool _new = false;
+  bool _passwordVisible = false;
 
   @override
   void initState() {
@@ -140,27 +141,29 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     );
   }
 
+  Widget get popMenuButton {
+    return PopupMenuButton(
+      itemBuilder: (ctx) => [
+        PopupMenuItem(
+          child: const ListTile(
+            leading: Icon(Icons.delete),
+            title: Text('Delete'),
+            dense: true,
+          ),
+          onTap: () => {
+            _deleteConfirmation(widget.password.id!),
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_new ? 'New password' : 'Update password'),
-        actions: _new ? [] : [
-          PopupMenuButton(
-            itemBuilder: (ctx) => [
-              PopupMenuItem(
-                child: const ListTile(
-                  leading: Icon(Icons.delete),
-                  title: Text('Delete'),
-                  dense: true,
-                ),
-                onTap: () => {
-                  _deleteConfirmation(widget.password.id!),
-                },
-              ),
-            ],
-          ),
-        ],
+        actions: _new ? [] : [popMenuButton],
       ),
       body: Form(
         key: _formKey,
@@ -215,11 +218,27 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                 TextFormField(
                   maxLength: 50,
                   initialValue: _password,
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                  obscureText: !_passwordVisible,
+                  decoration: InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.all(12),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        semanticLabel: _passwordVisible
+                            ? 'Hide password'
+                            : 'Show password',
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible =
+                              !_passwordVisible; // Toggle visibility
+                        });
+                      },
+                    ),
                   ),
                   validator: (value) =>
                       _fieldValidator(value, 5, 50, 'Password'),
