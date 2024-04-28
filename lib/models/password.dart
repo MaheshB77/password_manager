@@ -8,6 +8,7 @@ class Password {
   List<Field>? fields;
   DateTime? createdAt;
   DateTime? updatedAt;
+  bool selected;
 
   Password({
     required this.title,
@@ -19,6 +20,7 @@ class Password {
     this.fields,
     this.createdAt,
     this.updatedAt,
+    this.selected = false,
   });
 }
 

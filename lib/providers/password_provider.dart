@@ -69,6 +69,21 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
     }
   }
 
+  Future<void> deleteMultiple(List<String> ids) async {
+    try {
+      print('Deleting the passwords $ids');
+      await supabase.from('password').delete().inFilter('id', ids);
+      state = state.where((pwd) => !ids.contains(pwd.id)).toList();
+    } catch (error) {
+      print('Error while deleting the passwords :: $error');
+    }
+  }
+
+  void select(Password pwd, bool selected) {
+    state.removeWhere((element) => element.id == pwd.id);
+    pwd.selected = selected;
+    state = [...state, pwd];
+  }
 }
 
 final passwordProvider =
