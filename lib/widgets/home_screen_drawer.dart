@@ -31,6 +31,14 @@ class HomeScreenDrawer extends ConsumerWidget {
     );
   }
 
+  String get userFullName {
+    User? user = auth.currentUser();
+    if (user != null && user.userMetadata != null) {
+      return user.userMetadata!['full_name'];
+    }
+    return '';
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -63,7 +71,7 @@ class HomeScreenDrawer extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Mahesh Bansode',
+                  userFullName,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
