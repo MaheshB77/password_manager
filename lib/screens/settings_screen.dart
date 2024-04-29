@@ -12,6 +12,12 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   AppTheme? _theme = AppTheme.system;
 
+  @override
+  void initState() {
+    super.initState();
+    _theme = ref.read(themeProvider);
+  }
+
   void _setTheme(AppTheme? theme) {
     ref.watch(themeProvider.notifier).setTheme(theme!);
     setState(() {
@@ -29,6 +35,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         children: [
           ExpansionTile(
             title: const Text('Theme'),
+            shape: const Border(),
             children: [
               RadioListTile<AppTheme>(
                 title: const Text('Light'),
