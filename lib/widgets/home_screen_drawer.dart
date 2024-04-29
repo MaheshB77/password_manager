@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/screens/login_screen.dart';
+import 'package:password_manager/screens/settings_screen.dart';
 import 'package:password_manager/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -37,6 +38,15 @@ class HomeScreenDrawer extends ConsumerWidget {
       return user.userMetadata!['full_name'];
     }
     return '';
+  }
+
+  void _openSettings(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => const SettingsScreen(),
+      ),
+    );
   }
 
   @override
@@ -102,7 +112,7 @@ class HomeScreenDrawer extends ConsumerWidget {
               'Settings',
               style: itemTextStyle,
             ),
-            onTap: () {},
+            onTap: () => {_openSettings(context)},
           ),
           ListTile(
             leading: Icon(
