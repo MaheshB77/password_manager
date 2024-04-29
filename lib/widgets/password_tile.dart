@@ -19,9 +19,6 @@ class PasswordTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
-      // decoration: BoxDecoration(
-      //   color: Theme.of(context).colorScheme.primaryContainer,
-      // ),
       child: ListTile(
         leading: CircleAvatar(
           child: Text(password.title[0].toUpperCase()),
@@ -36,15 +33,11 @@ class PasswordTile extends ConsumerWidget {
         subtitle: Text(
           password.username.isNotEmpty ? password.username : 'NA',
         ),
-        trailing: const Column(
+        trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Last updated on',
-            ),
-            Text(
-              '10th May 2024',
-            ),
+            const Text('Last updated on'),
+            Text(password.updatedAt!.toLocal().toString().substring(0, 19)),
           ],
         ),
         onTap: () => {onTap(password.id!, index)},

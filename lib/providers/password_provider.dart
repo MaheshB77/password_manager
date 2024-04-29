@@ -9,18 +9,16 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
   Future<void> getPasswords() async {
     try {
       print('Getting the passwords');
-
       final response = await supabase.from('password').select('*');
       List<Password> pwds = response
-          .map(
-            (pwd) => Password(
-              id: pwd['id'],
-              title: pwd['title'],
-              username: pwd['username'],
-              password: pwd['password'],
-              email: pwd['email'],
-            ),
-          )
+          .map((pwd) => Password(
+                id: pwd['id'],
+                title: pwd['title'],
+                username: pwd['username'],
+                password: pwd['password'],
+                email: pwd['email'],
+                updatedAt: DateTime.parse(pwd['updated_at']),
+              ))
           .toList();
       state = [...pwds];
     } catch (error) {
