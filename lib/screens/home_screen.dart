@@ -50,6 +50,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         .map((pwd) => pwd.id!)
         .toList();
     await ref.read(passwordProvider.notifier).deleteMultiple(ids);
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
+  }
+
+  void _deleteConfirmation() async {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text('Deleting'),
+          content: const Text('Do you want to delete selected passwords ?'),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: _deleteSelected,
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -66,7 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 PopupMenuButton(
                   itemBuilder: (ctx) => [
                     PopupMenuItem(
-                      onTap: _deleteSelected,
+                      onTap: _deleteConfirmation,
                       child: const ListTile(
                         leading: Icon(Icons.delete),
                         title: Text('Delete'),
