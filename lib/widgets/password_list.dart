@@ -6,6 +6,7 @@ import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/providers/password_select_provider.dart';
 import 'package:password_manager/screens/password_screen.dart';
+import 'package:password_manager/widgets/password_tile.dart';
 
 class PasswordList extends ConsumerStatefulWidget {
   final List<Password> passwords;
@@ -66,7 +67,8 @@ class _PasswordListState extends ConsumerState<PasswordList> {
   void _onTap(String id, int index) {
     if (_selecting) {
       ref.read(passwordSelectProvider.notifier).setSelected(id);
-      final anySelected = ref.watch(passwordSelectProvider).any((pwd) => pwd.selected);
+      final anySelected =
+          ref.watch(passwordSelectProvider).any((pwd) => pwd.selected);
       if (!anySelected) {
         _setSelecting(false);
       }
@@ -118,29 +120,11 @@ class _PasswordListState extends ConsumerState<PasswordList> {
               itemCount: pwds.length,
               itemBuilder: (ctx, index) => SizedBox(
                 height: 70,
-                child: ListTile(
-                  leading: CircleAvatar(
-                    child: Text(pwds[index].title[0].toUpperCase()),
-                  ),
-                  title: Text(
-                    pwds[index].title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                    pwds[index].username.isNotEmpty
-                        ? pwds[index].username
-                        : 'NA',
-                  ),
-                  onTap: () {
-                    _onTap(pwds[index].id!, index);
-                  },
-                  onLongPress: () => {_onLongPress(pwds[index].id!)},
-                  selected: pwds[index].selected,
-                  selectedTileColor:
-                      Theme.of(context).colorScheme.outlineVariant,
+                child: PasswordTile(
+                  password: pwds[index],
+                  onTap: _onTap,
+                  index: index,
+                  onLongPress: _onLongPress,
                 ),
               ),
             ),

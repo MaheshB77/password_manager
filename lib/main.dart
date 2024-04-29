@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = AuthService();
     Widget mainScreen = auth.isSignedIn() ? const HomeScreen() : LoginScreen();
+    print('User :: ${auth.currentUser()}');
 
     return MaterialApp(
       title: 'Password Manager',

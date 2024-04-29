@@ -145,10 +145,12 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     return PopupMenuButton(
       itemBuilder: (ctx) => [
         PopupMenuItem(
+          height: 16,
           child: const ListTile(
             leading: Icon(Icons.delete),
             title: Text('Delete'),
             dense: true,
+            visualDensity: VisualDensity.compact,
           ),
           onTap: () => {
             _deleteConfirmation(widget.password.id!),

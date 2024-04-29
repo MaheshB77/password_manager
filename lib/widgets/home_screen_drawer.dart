@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/screens/login_screen.dart';
 import 'package:password_manager/services/auth_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreenDrawer extends ConsumerWidget {
   final AuthService auth = AuthService();
@@ -18,6 +19,16 @@ class HomeScreenDrawer extends ConsumerWidget {
         (route) => false,
       );
     }
+  }
+
+  ImageProvider get profilePhoto {
+    User? user = auth.currentUser();
+    if (user != null && user.userMetadata != null) {
+      return NetworkImage(user.userMetadata!['picture']);
+    }
+    return const AssetImage(
+      'assets/images/default_avatar.png',
+    );
   }
 
   @override
@@ -42,16 +53,22 @@ class HomeScreenDrawer extends ConsumerWidget {
                 end: Alignment.bottomRight,
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
+                Center(
+                  child: CircleAvatar(
+                    backgroundImage: profilePhoto,
+                    radius: 40,
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Text(
-                  'Password Manager',
+                  'Mahesh Bansode',
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
                       .copyWith(color: colorScheme.primary),
-                ),
+                )
               ],
             ),
           ),
