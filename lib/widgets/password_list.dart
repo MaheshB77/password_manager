@@ -23,6 +23,7 @@ class PasswordList extends ConsumerStatefulWidget {
 
 class _PasswordListState extends ConsumerState<PasswordList> {
   final FocusNode _focusNode = FocusNode();
+  final _searchController = TextEditingController();
   bool _searching = false;
   bool _selecting = false;
 
@@ -40,6 +41,7 @@ class _PasswordListState extends ConsumerState<PasswordList> {
   void dispose() {
     super.dispose();
     _focusNode.dispose();
+    _searchController.dispose();
   }
 
   void _showPassword(
@@ -65,6 +67,7 @@ class _PasswordListState extends ConsumerState<PasswordList> {
   }
 
   void _onTap(String id, int index) {
+    final filteredPwds = ref.watch(passwordFilterProvider);
     if (_selecting) {
       ref.read(passwordSelectProvider.notifier).setSelected(id);
       final anySelected =
@@ -73,7 +76,7 @@ class _PasswordListState extends ConsumerState<PasswordList> {
         _setSelecting(false);
       }
     } else {
-      _showPassword(context, widget.passwords[index], ref);
+      _showPassword(context, filteredPwds[index], ref);
     }
   }
 
@@ -94,14 +97,16 @@ class _PasswordListState extends ConsumerState<PasswordList> {
     print('Loading build of pwds list!!!');
     final filteredPwds = ref.watch(passwordFilterProvider);
     final selectedPwds = ref.watch(passwordSelectProvider);
-    final pwds = _searching ? filteredPwds : selectedPwds;
+    final pwds = _searching || _searchController.text.isNotEmpty
+        ? filteredPwds
+        : selectedPwds;
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           child: TextField(
             focusNode: _focusNode,
-            // enabled: !_selecting,
+            controller: _searchController,
             decoration: const InputDecoration(
               labelText: 'Search',
               prefixIcon: Icon(Icons.search),

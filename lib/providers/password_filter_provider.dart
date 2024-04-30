@@ -18,7 +18,7 @@ class PasswordFilterNotifier extends StateNotifier<List<Password>> {
 final passwordFilterProvider =
     StateNotifierProvider<PasswordFilterNotifier, List<Password>>(
   (ref) {
-    final pwds = ref.watch(passwordProvider);
+    final pwds = ref.read(passwordProvider);
     return PasswordFilterNotifier(pwds);
   },
 );
