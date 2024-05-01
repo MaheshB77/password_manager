@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
+import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/screens/password_screen.dart';
@@ -23,6 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _passwordFuture = ref.read(passwordProvider.notifier).getPasswords();
+    ref.read(categoryProvider.notifier).getCategories();
   }
 
   void _onAdd() async {
@@ -30,7 +32,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       context,
       MaterialPageRoute(
         builder: (ctx) => PasswordScreen(
-          password: Password(title: '', username: '', password: ''),
+          password: Password(
+            title: '',
+            username: '',
+            password: '',
+            categoryId: '',
+          ),
         ),
       ),
     );

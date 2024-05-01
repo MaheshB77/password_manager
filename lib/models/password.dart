@@ -2,6 +2,7 @@ class Password {
   final String title;
   final String username;
   final String password;
+  final String categoryId;
   String? id;
   String? email;
   String? note;
@@ -14,6 +15,7 @@ class Password {
     required this.title,
     required this.username,
     required this.password,
+    required this.categoryId,
     this.id,
     this.email,
     this.note,

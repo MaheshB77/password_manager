@@ -64,6 +64,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
         username: _username,
         password: _password,
         email: _email,
+        categoryId: '',
       );
       if (_new) {
         await ref.read(passwordProvider.notifier).save(pwd);

@@ -18,6 +18,7 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
                 password: pwd['password'],
                 email: pwd['email'],
                 updatedAt: DateTime.parse(pwd['updated_at']),
+                categoryId: pwd['category_id'],
               ))
           .toList();
       state = [...pwds];
