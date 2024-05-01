@@ -13,12 +13,21 @@ class PasswordFilterNotifier extends StateNotifier<List<Password>> {
         )
         .toList();
   }
+
+  void setSelected(String id) {
+    for (var pwd in state) {
+      if (pwd.id == id) {
+        pwd.selected = !pwd.selected;
+      }
+    }
+    state = [...state];
+  }
 }
 
 final passwordFilterProvider =
     StateNotifierProvider<PasswordFilterNotifier, List<Password>>(
   (ref) {
-    final pwds = ref.read(passwordProvider);
+    final pwds = ref.watch(passwordProvider);
     return PasswordFilterNotifier(pwds);
   },
 );

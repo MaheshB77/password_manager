@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/screens/home_screen.dart';
+import 'package:password_manager/widgets/spinner.dart';
 
 class PasswordScreen extends ConsumerStatefulWidget {
   final Password password;
@@ -133,14 +134,6 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     });
   }
 
-  Widget get spinner {
-    return const SizedBox(
-      height: 16,
-      width: 16,
-      child: CircularProgressIndicator(),
-    );
-  }
-
   Widget get popMenuButton {
     return PopupMenuButton(
       itemBuilder: (ctx) => [
@@ -258,7 +251,9 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                     const SizedBox(width: 14),
                     ElevatedButton(
                       onPressed: _sending ? null : _onAdd,
-                      child: _sending ? spinner : Text(_new ? 'Add' : 'Update'),
+                      child: _sending
+                          ? const Spinner()
+                          : Text(_new ? 'Add' : 'Update'),
                     ),
                   ],
                 )

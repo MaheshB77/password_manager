@@ -1,46 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
-import 'package:password_manager/providers/password_select_provider.dart';
 import 'package:password_manager/screens/password_screen.dart';
 import 'package:password_manager/widgets/password_tile.dart';
 
 class PasswordList extends ConsumerStatefulWidget {
-  final List<Password> passwords;
-  final void Function(bool selecting) onSelecting;
-  const PasswordList({
-    super.key,
-    required this.passwords,
-    required this.onSelecting,
-  });
+  const PasswordList({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PasswordListState();
 }
 
 class _PasswordListState extends ConsumerState<PasswordList> {
-  final FocusNode _focusNode = FocusNode();
   final _searchController = TextEditingController();
-  bool _searching = false;
-  bool _selecting = false;
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
-      setState(() {
-        _searching = _focusNode.hasFocus;
-      });
-    });
+    _searchController.clear();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _focusNode.dispose();
     _searchController.dispose();
   }
 
@@ -56,6 +40,9 @@ class _PasswordListState extends ConsumerState<PasswordList> {
       ),
     );
     await ref.read(passwordProvider.notifier).getPasswords();
+    ref
+        .read(passwordFilterProvider.notifier)
+        .filterPassword(_searchController.text);
   }
 
   void _filter(String search) {
@@ -68,44 +55,31 @@ class _PasswordListState extends ConsumerState<PasswordList> {
 
   void _onTap(String id, int index) {
     final filteredPwds = ref.watch(passwordFilterProvider);
-    if (_selecting) {
-      ref.read(passwordSelectProvider.notifier).setSelected(id);
-      final anySelected =
-          ref.watch(passwordSelectProvider).any((pwd) => pwd.selected);
-      if (!anySelected) {
-        _setSelecting(false);
-      }
+    if (anySelected) {
+      ref.read(passwordFilterProvider.notifier).setSelected(id);
     } else {
       _showPassword(context, filteredPwds[index], ref);
     }
   }
 
   void _onLongPress(String id) {
-    ref.read(passwordSelectProvider.notifier).setSelected(id);
-    _setSelecting(true);
+    ref.read(passwordFilterProvider.notifier).setSelected(id);
   }
 
-  void _setSelecting(bool selecting) {
-    setState(() {
-      _selecting = selecting;
-    });
-    widget.onSelecting(selecting);
+  bool get anySelected {
+    final filteredPwds = ref.watch(passwordFilterProvider);
+    return filteredPwds.any((pwd) => pwd.selected);
   }
 
   @override
   Widget build(BuildContext context) {
     print('Loading build of pwds list!!!');
-    final filteredPwds = ref.watch(passwordFilterProvider);
-    final selectedPwds = ref.watch(passwordSelectProvider);
-    final pwds = _searching || _searchController.text.isNotEmpty
-        ? filteredPwds
-        : selectedPwds;
+    final pwds = ref.watch(passwordFilterProvider);
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           child: TextField(
-            focusNode: _focusNode,
             controller: _searchController,
             decoration: const InputDecoration(
               labelText: 'Search',
