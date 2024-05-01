@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
+import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/screens/password_screen.dart';
@@ -75,6 +76,7 @@ class _PasswordListState extends ConsumerState<PasswordList> {
   Widget build(BuildContext context) {
     print('Loading build of pwds list!!!');
     final pwds = ref.watch(passwordFilterProvider);
+    final categories = ref.watch(categoryProvider);
     return Column(
       children: [
         Padding(
@@ -101,6 +103,9 @@ class _PasswordListState extends ConsumerState<PasswordList> {
                 height: 70,
                 child: PasswordTile(
                   password: pwds[index],
+                  category: categories.firstWhere(
+                    (c) => c.id == pwds[index].categoryId,
+                  ),
                   onTap: _onTap,
                   index: index,
                   onLongPress: _onLongPress,

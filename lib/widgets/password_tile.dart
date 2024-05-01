@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
 
 class PasswordTile extends ConsumerWidget {
   final Password password;
+  final Category category;
   final int index;
   final void Function(String id, int index) onTap;
   final void Function(String id) onLongPress;
   const PasswordTile({
     super.key,
     required this.password,
+    required this.category,
     required this.onTap,
     required this.index,
     required this.onLongPress,
@@ -31,7 +34,8 @@ class PasswordTile extends ConsumerWidget {
               .copyWith(fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
-          password.username.isNotEmpty ? password.username : 'NA',
+          'Category : ${category.name}',
+          style: Theme.of(context).textTheme.labelSmall,
         ),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
