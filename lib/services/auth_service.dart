@@ -31,6 +31,7 @@ class AuthService {
   Future<void> signOut() async {
     print("Logging out!!!!!!!");
     try {
+      await supabaseAuth.signOut();
       await googleSignIn.signOut();
     } catch (error) {
       print('Error while logging out :: $error');
@@ -38,15 +39,15 @@ class AuthService {
   }
 
   bool isSignedIn() {
-    final session = Supabase.instance.client.auth.currentSession;
+    final session = supabaseAuth.currentSession;
     return (session != null);
   }
 
   Session? currentSession() {
-    return Supabase.instance.client.auth.currentSession;
+    return supabaseAuth.currentSession;
   }
 
   User? currentUser() {
-    return Supabase.instance.client.auth.currentUser;
+    return supabaseAuth.currentUser;
   }
 }
