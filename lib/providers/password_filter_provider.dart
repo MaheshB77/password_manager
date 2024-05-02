@@ -22,6 +22,13 @@ class PasswordFilterNotifier extends StateNotifier<List<Password>> {
     }
     state = [...state];
   }
+
+  void clearSelected() {
+    for (var pwd in state) {
+      pwd.selected = false;
+    }
+    state = [...state];
+  }
 }
 
 final passwordFilterProvider =

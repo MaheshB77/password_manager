@@ -60,6 +60,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
+  void _clearSelected() {
+    ref.read(passwordFilterProvider.notifier).clearSelected();
+  }
+
   bool get anySelected {
     final filteredPwds = ref.watch(passwordFilterProvider);
     return filteredPwds.any((pwd) => pwd.selected);
@@ -119,6 +123,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: const Text('Passwords'),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: anySelected ? [popupMenuButton] : [],
+        leading: anySelected ? IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: _clearSelected,
+        ) : null,
       ),
       drawer: HomeScreenDrawer(),
       body: FutureBuilder(
