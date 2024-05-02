@@ -1,10 +1,12 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
+import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/screens/home_screen.dart';
+import 'package:password_manager/utils/category_util.dart';
 import 'package:password_manager/widgets/spinner.dart';
 
 class PasswordScreen extends ConsumerStatefulWidget {
@@ -21,17 +23,24 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   String _username = '';
   String _email = '';
   String _password = '';
+  late Category _category;
   bool _sending = false;
   bool _new = false;
   bool _passwordVisible = false;
+  late List<Category> _categories;
 
   @override
   void initState() {
     super.initState();
+    _categories = ref.read(categoryProvider);
     _title = widget.password.title;
     _username = widget.password.username;
     _email = widget.password.email ?? '';
     _password = widget.password.password;
+    _category = widget.password.categoryId.isEmpty
+        ? CategoryUtil.getByName(_categories, 'Other') // Default
+        : CategoryUtil.getById(_categories, widget.password.categoryId);
+
     if (widget.password.id == null) {
       _new = true;
     }
@@ -55,6 +64,10 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     return null;
   }
 
+  void _selectCategory(Category? category) {
+    _category = category!;
+  }
+
   void _onAdd() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -64,7 +77,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
         username: _username,
         password: _password,
         email: _email,
-        categoryId: '',
+        categoryId: _category.id,
       );
       if (_new) {
         await ref.read(passwordProvider.notifier).save(pwd);
@@ -242,6 +255,23 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                     _password = value!;
                   },
                 ),
+                const SizedBox(height: 14),
+                SizedBox(
+                  height: 50,
+                  child: DropdownMenu<Category>(
+                    label: const Text('Category'),
+                    initialSelection: _category,
+                    expandedInsets: const EdgeInsets.all(0),
+                    dropdownMenuEntries: _categories.map((ct) {
+                      return DropdownMenuEntry(
+                        value: ct,
+                        label: ct.name,
+                      );
+                    }).toList(),
+                    onSelected: _selectCategory,
+                  ),
+                ),
+                const SizedBox(height: 14),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

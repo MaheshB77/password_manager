@@ -37,6 +37,7 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
           'password': password.password,
           'email': password.email,
           'user_id': supabase.auth.currentUser!.id,
+          'category_id': password.categoryId
         }
       ]);
     } catch (error) {
@@ -52,6 +53,7 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
         'username': password.username,
         'password': password.password,
         'email': password.email,
+        'category_id': password.categoryId
       }).eq('id', password.id!);
     } catch (error) {
       print('Error while updating the password :: $error');

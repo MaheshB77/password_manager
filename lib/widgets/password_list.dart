@@ -5,6 +5,7 @@ import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/screens/password_screen.dart';
+import 'package:password_manager/utils/category_util.dart';
 import 'package:password_manager/widgets/password_tile.dart';
 
 class PasswordList extends ConsumerStatefulWidget {
@@ -103,8 +104,9 @@ class _PasswordListState extends ConsumerState<PasswordList> {
                 height: 70,
                 child: PasswordTile(
                   password: pwds[index],
-                  category: categories.firstWhere(
-                    (c) => c.id == pwds[index].categoryId,
+                  category: CategoryUtil.getById(
+                    categories,
+                    pwds[index].categoryId,
                   ),
                   onTap: _onTap,
                   index: index,
