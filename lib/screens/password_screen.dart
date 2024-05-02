@@ -181,6 +181,26 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(
+                  height: 50,
+                  child: DropdownMenu<Category>(
+                    label: const Text('Category'),
+                    initialSelection: _category,
+                    expandedInsets: const EdgeInsets.all(0),
+                    inputDecorationTheme: const InputDecorationTheme(
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.all(12),
+                    ),
+                    dropdownMenuEntries: _categories.map((ct) {
+                      return DropdownMenuEntry(
+                        value: ct,
+                        label: ct.name,
+                      );
+                    }).toList(),
+                    onSelected: _selectCategory,
+                  ),
+                ),
+                const SizedBox(height: 18),
                 TextFormField(
                   maxLength: 50,
                   initialValue: _title,
@@ -254,22 +274,6 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                   onSaved: (value) {
                     _password = value!;
                   },
-                ),
-                const SizedBox(height: 14),
-                SizedBox(
-                  height: 50,
-                  child: DropdownMenu<Category>(
-                    label: const Text('Category'),
-                    initialSelection: _category,
-                    expandedInsets: const EdgeInsets.all(0),
-                    dropdownMenuEntries: _categories.map((ct) {
-                      return DropdownMenuEntry(
-                        value: ct,
-                        label: ct.name,
-                      );
-                    }).toList(),
-                    onSelected: _selectCategory,
-                  ),
                 ),
                 const SizedBox(height: 14),
                 Row(
