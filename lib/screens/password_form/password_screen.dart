@@ -5,7 +5,9 @@ import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
-import 'package:password_manager/screens/home_screen.dart';
+import 'package:password_manager/screens/password_form/widgets/password_actions.dart';
+import 'package:password_manager/screens/password_form/widgets/pm_password_field.dart';
+import 'package:password_manager/screens/password_form/widgets/pm_text_field.dart';
 import 'package:password_manager/utils/category_util.dart';
 import 'package:password_manager/widgets/spinner.dart';
 
@@ -26,7 +28,6 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   late Category _category;
   bool _sending = false;
   bool _new = false;
-  bool _passwordVisible = false;
   late List<Category> _categories;
 
   @override
@@ -86,50 +87,9 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
         await ref.read(passwordProvider.notifier).update(pwd);
       }
       _toggleSending();
-      if (context.mounted) {
-        Navigator.pop(context);
-      }
+      if (!mounted) return;
+      Navigator.pop(context);
     }
-  }
-
-  void _onDelete(String id) async {
-    await ref.read(passwordProvider.notifier).delete(id);
-    if (context.mounted) {
-      // Navigator.pop(context);
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-        (route) => false,
-      );
-    }
-  }
-
-  void _deleteConfirmation(String id) async {
-    showDialog(
-      context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          title: const Text('Deleting'),
-          content: const Text('Do you want to delete this password ?'),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _onDelete(id);
-              },
-              child: const Text('Yes'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void _clearForm() {
@@ -143,28 +103,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   }
 
   void _toggleSending() {
-    setState(() {
-      _sending = !_sending;
-    });
-  }
-
-  Widget get popMenuButton {
-    return PopupMenuButton(
-      itemBuilder: (ctx) => [
-        PopupMenuItem(
-          height: 16,
-          child: const ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('Delete'),
-            dense: true,
-            visualDensity: VisualDensity.compact,
-          ),
-          onTap: () => {
-            _deleteConfirmation(widget.password.id!),
-          },
-        ),
-      ],
-    );
+    setState(() => _sending = !_sending);
   }
 
   @override
@@ -172,7 +111,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_new ? 'New password' : 'Update password'),
-        actions: _new ? [] : [popMenuButton],
+        actions: _new ? [] : [PasswordAction(password: widget.password)],
       ),
       body: Form(
         key: _formKey,
@@ -192,88 +131,39 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                       contentPadding: EdgeInsets.all(12),
                     ),
                     dropdownMenuEntries: _categories.map((ct) {
-                      return DropdownMenuEntry(
-                        value: ct,
-                        label: ct.name,
-                      );
+                      return DropdownMenuEntry(value: ct, label: ct.name);
                     }).toList(),
                     onSelected: _selectCategory,
                   ),
                 ),
                 const SizedBox(height: 18),
-                TextFormField(
-                  maxLength: 50,
+                PMTextField(
                   initialValue: _title,
-                  decoration: const InputDecoration(
-                    labelText: 'Title',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.all(12),
-                  ),
+                  labelText: 'Title',
                   validator: (value) => _fieldValidator(value, 1, 50, 'Title'),
-                  onSaved: (value) {
-                    _title = value!;
-                  },
+                  onSaved: (value) => {_title = value!},
                 ),
                 const SizedBox(height: 14),
-                TextFormField(
-                  maxLength: 50,
+                PMTextField(
                   initialValue: _username,
-                  decoration: const InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.all(12),
-                  ),
+                  labelText: 'Username',
                   validator: (value) =>
                       _fieldValidator(value, 2, 50, 'Username'),
-                  onSaved: (value) {
-                    _username = value!;
-                  },
+                  onSaved: (value) => {_username = value!},
                 ),
                 const SizedBox(height: 14),
-                TextFormField(
-                  maxLength: 50,
+                PMTextField(
                   initialValue: _email,
-                  decoration: const InputDecoration(
-                    labelText: 'Email (optional)',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.all(12),
-                  ),
+                  labelText: 'Email (optional)',
                   validator: (value) => _emailValidator(value),
-                  onSaved: (value) {
-                    _email = value!;
-                  },
+                  onSaved: (value) => _email = value!,
                 ),
                 const SizedBox(height: 14),
-                TextFormField(
-                  maxLength: 50,
+                PMPasswordField(
                   initialValue: _password,
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: const OutlineInputBorder(),
-                    contentPadding: const EdgeInsets.all(12),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        semanticLabel: _passwordVisible
-                            ? 'Hide password'
-                            : 'Show password',
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible =
-                              !_passwordVisible; // Toggle visibility
-                        });
-                      },
-                    ),
-                  ),
                   validator: (value) =>
                       _fieldValidator(value, 5, 50, 'Password'),
-                  onSaved: (value) {
-                    _password = value!;
-                  },
+                  onSaved: (value) => _password = value!,
                 ),
                 const SizedBox(height: 14),
                 Row(

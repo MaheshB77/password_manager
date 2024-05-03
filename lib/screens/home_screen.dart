@@ -4,7 +4,7 @@ import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
-import 'package:password_manager/screens/password_screen.dart';
+import 'package:password_manager/screens/password_form/password_screen.dart';
 import 'package:password_manager/widgets/home_screen_drawer.dart';
 import 'package:password_manager/widgets/password_list.dart';
 import 'package:password_manager/widgets/spinner.dart';
