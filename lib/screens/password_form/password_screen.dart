@@ -6,6 +6,7 @@ import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/screens/password_form/widgets/password_actions.dart';
+import 'package:password_manager/screens/password_form/widgets/pm_dropdown_menu.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_password_field.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_text_field.dart';
 import 'package:password_manager/utils/category_util.dart';
@@ -120,21 +121,10 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: 50,
-                  child: DropdownMenu<Category>(
-                    label: const Text('Category'),
-                    initialSelection: _category,
-                    expandedInsets: const EdgeInsets.all(0),
-                    inputDecorationTheme: const InputDecorationTheme(
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.all(12),
-                    ),
-                    dropdownMenuEntries: _categories.map((ct) {
-                      return DropdownMenuEntry(value: ct, label: ct.name);
-                    }).toList(),
-                    onSelected: _selectCategory,
-                  ),
+                PMDropdownMenu(
+                  categories: _categories,
+                  initialCategory: _category,
+                  onCategorySelection: _selectCategory,
                 ),
                 const SizedBox(height: 18),
                 PMTextField(
