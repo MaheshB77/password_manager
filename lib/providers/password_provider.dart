@@ -29,22 +29,18 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
   }
 
   Future<void> save(Password password) async {
-    try {
-      print('Adding the password');
-      await supabase.from('password').insert([
-        {
-          'title': password.title,
-          'username': password.username,
-          'password': password.password,
-          'email': password.email,
-          'user_id': supabase.auth.currentUser!.id,
-          'category_id': password.categoryId,
-          'icon_id': password.iconId,
-        }
-      ]);
-    } catch (error) {
-      print('Error while adding the password :: $error');
-    }
+    print('Adding the password');
+    await supabase.from('password').insert([
+      {
+        'title': password.title,
+        'username': password.username,
+        'password': password.password,
+        'email': password.email,
+        'user_id': supabase.auth.currentUser!.id,
+        'category_id': password.categoryId,
+        'icon_id': password.iconId,
+      }
+    ]);
   }
 
   Future<void> update(Password password) async {

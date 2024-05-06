@@ -14,7 +14,9 @@ import 'package:password_manager/screens/password_form/widgets/pm_password_field
 import 'package:password_manager/screens/password_form/widgets/pm_text_field.dart';
 import 'package:password_manager/utils/category_util.dart';
 import 'package:password_manager/utils/icon_util.dart';
+import 'package:password_manager/utils/snackbar_util.dart';
 import 'package:password_manager/widgets/spinner.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PasswordScreen extends ConsumerStatefulWidget {
   final Password password;
@@ -87,15 +89,26 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
         categoryId: _category.id,
         iconId: _icon?.id,
       );
-      if (_new) {
-        await ref.read(passwordProvider.notifier).save(pwd);
-      } else {
-        pwd.id = widget.password.id;
-        await ref.read(passwordProvider.notifier).update(pwd);
+      try {
+        if (_new) {
+          await ref.read(passwordProvider.notifier).save(pwd);
+        } else {
+          pwd.id = widget.password.id;
+          await ref.read(passwordProvider.notifier).update(pwd);
+        }
+        if (!mounted) return;
+        Navigator.pop(context);
+      } catch (e) {
+        if (!mounted) return;
+        String errorMsg = 'Something went wrong!';
+        if (e is PostgrestException && e.code == '23505') {
+          errorMsg = 'Password with same title already exists!';
+        } else {
+          errorMsg = 'Something went wrong! Please try again';
+        }
+        SnackBarUtil.showError(context, errorMsg);
       }
       _toggleSending();
-      if (!mounted) return;
-      Navigator.pop(context);
     }
   }
 
