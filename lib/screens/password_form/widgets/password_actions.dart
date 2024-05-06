@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/password_provider.dart';
-import 'package:password_manager/screens/home_screen.dart';
+import 'package:password_manager/screens/home_screen/home_screen.dart';
 
 class PasswordAction extends ConsumerStatefulWidget {
   final Password password;

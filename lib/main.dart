@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/config/env_config.dart';
 import 'package:password_manager/config/supabase_config.dart';
 import 'package:password_manager/providers/theme_provider.dart';
-import 'package:password_manager/screens/home_screen.dart';
+import 'package:password_manager/screens/home_screen/home_screen.dart';
 import 'package:password_manager/screens/login_screen.dart';
 import 'package:password_manager/screens/settings_screen.dart';
 import 'package:password_manager/services/auth_service.dart';

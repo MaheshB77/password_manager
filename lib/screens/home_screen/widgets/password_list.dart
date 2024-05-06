@@ -6,7 +6,7 @@ import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
 import 'package:password_manager/screens/password_form/password_screen.dart';
 import 'package:password_manager/utils/category_util.dart';
-import 'package:password_manager/widgets/password_tile.dart';
+import 'package:password_manager/screens/home_screen/widgets/password_tile.dart';
 
 class PasswordList extends ConsumerStatefulWidget {
   const PasswordList({super.key});
@@ -35,7 +35,6 @@ class _PasswordListState extends ConsumerState<PasswordList> {
     Password password,
     WidgetRef ref,
   ) async {
-    print('Password :: ${password.iconId}');
     await Navigator.push(
       context,
       MaterialPageRoute(
