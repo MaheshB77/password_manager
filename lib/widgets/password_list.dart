@@ -35,6 +35,7 @@ class _PasswordListState extends ConsumerState<PasswordList> {
     Password password,
     WidgetRef ref,
   ) async {
+    print('Password :: ${password.iconId}');
     await Navigator.push(
       context,
       MaterialPageRoute(

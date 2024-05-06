@@ -1,15 +1,19 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/constants/icons.dart';
 import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
+import 'package:password_manager/models/pm_icon.dart';
 import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
+import 'package:password_manager/screens/password_form/widgets/icon_selector.dart';
 import 'package:password_manager/screens/password_form/widgets/password_actions.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_dropdown_menu.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_password_field.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_text_field.dart';
 import 'package:password_manager/utils/category_util.dart';
+import 'package:password_manager/utils/icon_util.dart';
 import 'package:password_manager/widgets/spinner.dart';
 
 class PasswordScreen extends ConsumerStatefulWidget {
@@ -26,10 +30,11 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   String _username = '';
   String _email = '';
   String _password = '';
-  late Category _category;
   bool _sending = false;
   bool _new = false;
+  late Category _category;
   late List<Category> _categories;
+  PMIcon? _icon;
 
   @override
   void initState() {
@@ -42,6 +47,10 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     _category = widget.password.categoryId.isEmpty
         ? CategoryUtil.getByName(_categories, 'Other') // Default
         : CategoryUtil.getById(_categories, widget.password.categoryId);
+
+    if (widget.password.iconId != null && widget.password.iconId!.isNotEmpty) {
+      _icon = IconUtil.getById(pmIcons, widget.password.iconId!);
+    }
 
     if (widget.password.id == null) {
       _new = true;
@@ -66,10 +75,6 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     return null;
   }
 
-  void _selectCategory(Category? category) {
-    _category = category!;
-  }
-
   void _onAdd() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -80,6 +85,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
         password: _password,
         email: _email,
         categoryId: _category.id,
+        iconId: _icon?.id,
       );
       if (_new) {
         await ref.read(passwordProvider.notifier).save(pwd);
@@ -107,8 +113,41 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
     setState(() => _sending = !_sending);
   }
 
+  void _showIconSelector() {
+    showDialog(
+      context: context,
+      builder: (ctx) => IconSelector(
+        onSelectedIcon: _onSelectedIcon,
+      ),
+    );
+  }
+
+  void _onSelectedIcon(PMIcon selectedIcon) {
+    setState(() => _icon = selectedIcon);
+  }
+
+  Widget get selectedIcon {
+    return Material(
+      elevation: 5,
+      borderRadius: const BorderRadius.all(
+        Radius.circular(50),
+      ),
+      child: SizedBox(
+        width: 75,
+        height: 75,
+        child: IconButton(
+          onPressed: _showIconSelector,
+          icon: _icon == null
+              ? const Icon(Icons.add_circle_outline_rounded, size: 40)
+              : Image.asset(_icon!.url, width: 40),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('Rendering password screen');
     return Scaffold(
       appBar: AppBar(
         title: Text(_new ? 'New password' : 'Update password'),
@@ -121,10 +160,18 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                selectedIcon,
+                _icon == null
+                    ? Container(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: const Text('Add icon'),
+                      )
+                    : Container(),
+                const SizedBox(height: 18),
                 PMDropdownMenu(
                   categories: _categories,
                   initialCategory: _category,
-                  onCategorySelection: _selectCategory,
+                  onCategorySelection: (ctgry) => _category = ctgry!,
                 ),
                 const SizedBox(height: 18),
                 PMTextField(

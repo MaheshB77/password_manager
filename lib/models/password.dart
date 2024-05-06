@@ -6,6 +6,7 @@ class Password {
   String? id;
   String? email;
   String? note;
+  String? iconId;
   List<Field>? fields;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -22,6 +23,7 @@ class Password {
     this.fields,
     this.createdAt,
     this.updatedAt,
+    this.iconId,
     this.selected = false,
   });
 }
