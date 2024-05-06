@@ -37,6 +37,46 @@ final List<PMIcon> pmIcons = [
     name: 'Android',
   ),
   PMIcon(
+    id: '0b5b65e6-c4e0-4196-83f7-8df2fb9f484c',
+    url: 'assets/icons/apple.png',
+    name: 'Apple',
+  ),
+  PMIcon(
+    id: '6f37a9b5-c19d-4bd0-a6b8-8630db02706f',
+    url: 'assets/icons/aws.png',
+    name: 'AWS',
+  ),
+  PMIcon(
+    id: '97132485-b10b-4100-ba83-483047ab3114',
+    url: 'assets/icons/bing.png',
+    name: 'Bing',
+  ),
+  PMIcon(
+    id: 'aa32b388-a6a4-4f02-827e-5787184d3ad9',
+    url: 'assets/icons/bitbucket.png',
+    name: 'Bitbucket',
+  ),
+  PMIcon(
+    id: 'd175cfae-16e1-4b74-a147-f639c5aac44a',
+    url: 'assets/icons/bitcoin.png',
+    name: 'Bitcoin',
+  ),
+  PMIcon(
+    id: 'fb945c05-a9e6-4412-a7b5-ba2afe056202',
+    url: 'assets/icons/blackberry.png',
+    name: 'Blackberry',
+  ),
+  PMIcon(
+    id: '80b80047-f665-4f7e-9a86-e07828b015dd',
+    url: 'assets/icons/blogger.png',
+    name: 'Blogger',
+  ),
+  PMIcon(
+    id: 'd9111e61-bf6a-4172-a620-2858cf92cdb0',
+    url: 'assets/icons/crunchyroll.png',
+    name: 'Crunchyroll',
+  ),
+  PMIcon(
     id: '9b205201-f058-4457-a1cb-654d270f856ad',
     url: 'assets/icons/default.png',
     name: 'Default',
