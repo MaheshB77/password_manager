@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
+import 'package:password_manager/screens/home_screen/widgets/password_avatar.dart';
 
 class PasswordTile extends ConsumerWidget {
   final Password password;
@@ -23,9 +24,7 @@ class PasswordTile extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       child: ListTile(
-        leading: CircleAvatar(
-          child: Text(password.title[0].toUpperCase()),
-        ),
+        leading: PasswordAvatar(password: password),
         title: Text(
           password.title,
           style: Theme.of(context)
