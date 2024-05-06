@@ -21,32 +21,51 @@ class PasswordTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final formattedDate =
+        password.updatedAt!.toLocal().toString().substring(0, 19);
     return Container(
-      margin: const EdgeInsets.only(bottom: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
+      ),
       child: ListTile(
-        leading: PasswordAvatar(password: password),
-        title: Text(
-          password.title,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          'Category : ${category.name}',
-          style: Theme.of(context).textTheme.labelSmall,
-        ),
-        trailing: Column(
+        leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Last updated on'),
-            Text(password.updatedAt!.toLocal().toString().substring(0, 19)),
+            PasswordAvatar(password: password),
           ],
         ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              password.title,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Category : ${category.name}',
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ],
+        ),
+        trailing: SizedBox(
+          width: 115,
+          child: Text(
+            'Last updated on $formattedDate',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        titleAlignment: ListTileTitleAlignment.center,
         onTap: () => {onTap(password.id!, index)},
         onLongPress: () => {onLongPress(password.id!)},
         selected: password.selected,
         selectedTileColor: Theme.of(context).colorScheme.outlineVariant,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
     );
   }

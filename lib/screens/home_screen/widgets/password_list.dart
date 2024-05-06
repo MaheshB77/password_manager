@@ -81,18 +81,25 @@ class _PasswordListState extends ConsumerState<PasswordList> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          child: TextField(
-            controller: _searchController,
-            decoration: const InputDecoration(
-              labelText: 'Search',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: SizedBox(
+            height: 40,
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: 'Search',
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.filter_alt_outlined),
+                  onPressed: () {},
+                ),
+                border: const OutlineInputBorder(gapPadding: 5),
+                contentPadding: const EdgeInsets.all(8),
+              ),
+              onChanged: (value) {
+                _filter(value);
+              },
             ),
-            onChanged: (value) {
-              _filter(value);
-            },
           ),
         ),
         Expanded(
@@ -100,18 +107,15 @@ class _PasswordListState extends ConsumerState<PasswordList> {
             onRefresh: _getPasswords,
             child: ListView.builder(
               itemCount: pwds.length,
-              itemBuilder: (ctx, index) => SizedBox(
-                height: 70,
-                child: PasswordTile(
-                  password: pwds[index],
-                  category: CategoryUtil.getById(
-                    categories,
-                    pwds[index].categoryId,
-                  ),
-                  onTap: _onTap,
-                  index: index,
-                  onLongPress: _onLongPress,
+              itemBuilder: (ctx, index) => PasswordTile(
+                password: pwds[index],
+                category: CategoryUtil.getById(
+                  categories,
+                  pwds[index].categoryId,
                 ),
+                onTap: _onTap,
+                index: index,
+                onLongPress: _onLongPress,
               ),
             ),
           ),
