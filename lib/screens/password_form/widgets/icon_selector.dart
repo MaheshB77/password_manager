@@ -50,32 +50,35 @@ class _IconSelectorState extends State<IconSelector> {
           Radius.circular(8),
         ),
       ),
-      child: Column(
-        children: [
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 5,
-              padding: const EdgeInsets.all(12),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 18,
-              children: icons,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(
-                  Icons.check_circle_outline_outlined,
-                  size: 50,
-                ),
+      child: SizedBox(
+        height: 500,
+        child: Column(
+          children: [
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 5,
+                padding: const EdgeInsets.all(12),
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 18,
+                children: icons,
               ),
-            ],
-          )
-        ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.check_circle_outline_outlined,
+                    size: 50,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
