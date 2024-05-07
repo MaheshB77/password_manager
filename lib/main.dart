@@ -6,7 +6,7 @@ import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/screens/home_screen/home_screen.dart';
 import 'package:password_manager/screens/login_screen.dart';
 import 'package:password_manager/screens/settings_screen.dart';
-import 'package:password_manager/services/auth_service.dart';
+import 'package:password_manager/services/supabase_auth_service.dart';
 import 'package:password_manager/theme/dark_theme.dart';
 import 'package:password_manager/theme/light_theme.dart';
 
@@ -26,7 +26,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = AuthService();
+    final auth = SupabaseAuthService();
     Widget mainScreen = auth.isSignedIn() ? const HomeScreen() : LoginScreen();
     final appTheme = ref.watch(themeProvider);
     ThemeMode themeMode = ThemeMode.system;

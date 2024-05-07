@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/screens/login_screen.dart';
 import 'package:password_manager/screens/settings_screen.dart';
-import 'package:password_manager/services/auth_service.dart';
+import 'package:password_manager/services/supabase_auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreenDrawer extends ConsumerWidget {
-  final AuthService auth = AuthService();
+  final SupabaseAuthService auth = SupabaseAuthService();
   HomeScreenDrawer({super.key});
 
   void _logout(BuildContext context) async {
