@@ -16,7 +16,7 @@ class PasswordFilterNotifier extends StateNotifier<List<Password>> {
   }
 
   void withCategories(List<Category> categories) {
-    if (passwords.isEmpty) {
+    if (categories.isEmpty) {
       state = passwords;
       return;
     }

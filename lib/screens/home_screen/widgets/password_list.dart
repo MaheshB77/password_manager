@@ -20,7 +20,7 @@ class PasswordList extends ConsumerStatefulWidget {
 
 class _PasswordListState extends ConsumerState<PasswordList> {
   final _searchController = TextEditingController();
-  List<Category> _selectedCategories = [];
+  final List<Category> _selectedCategories = [];
 
   @override
   void initState() {
@@ -129,9 +129,7 @@ class _PasswordListState extends ConsumerState<PasswordList> {
                 border: const OutlineInputBorder(gapPadding: 5),
                 contentPadding: const EdgeInsets.all(8),
               ),
-              onChanged: (value) {
-                _search(value);
-              },
+              onChanged: (value) => _search(value),
             ),
           ),
         ),
