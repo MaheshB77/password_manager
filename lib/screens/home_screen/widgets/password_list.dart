@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category_provider.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password_provider.dart';
+import 'package:password_manager/screens/home_screen/widgets/category_chips.dart';
+import 'package:password_manager/screens/home_screen/widgets/password_filter.dart';
 import 'package:password_manager/screens/password_form/password_screen.dart';
 import 'package:password_manager/utils/category_util.dart';
 import 'package:password_manager/screens/home_screen/widgets/password_tile.dart';
@@ -17,6 +20,7 @@ class PasswordList extends ConsumerStatefulWidget {
 
 class _PasswordListState extends ConsumerState<PasswordList> {
   final _searchController = TextEditingController();
+  List<Category> _selectedCategories = [];
 
   @override
   void initState() {
@@ -42,13 +46,14 @@ class _PasswordListState extends ConsumerState<PasswordList> {
       ),
     );
     await ref.read(passwordProvider.notifier).getPasswords();
+    ref.read(passwordFilterProvider.notifier).search(_searchController.text);
     ref
         .read(passwordFilterProvider.notifier)
-        .filterPassword(_searchController.text);
+        .withCategories(_selectedCategories);
   }
 
-  void _filter(String search) {
-    ref.read(passwordFilterProvider.notifier).filterPassword(search);
+  void _search(String search) {
+    ref.read(passwordFilterProvider.notifier).search(search);
   }
 
   Future<void> _getPasswords() async {
@@ -73,15 +78,43 @@ class _PasswordListState extends ConsumerState<PasswordList> {
     return filteredPwds.any((pwd) => pwd.selected);
   }
 
+  void _updateSelectedCategories(Category category, bool selected) {
+    setState(() {
+      if (selected && !_selectedCategories.contains(category)) {
+        _selectedCategories.add(category);
+      } else if (!selected) {
+        _selectedCategories.remove(category);
+      }
+    });
+    ref
+        .read(passwordFilterProvider.notifier)
+        .withCategories(_selectedCategories);
+  }
+
+  void _showFilters() {
+    final categories = ref.watch(categoryProvider);
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return PasswordFilter(
+          selectedCategories: _selectedCategories,
+          categories: categories,
+          updateSelectedCategories: _updateSelectedCategories,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Loading build of pwds list!!!');
     final pwds = ref.watch(passwordFilterProvider);
     final categories = ref.watch(categoryProvider);
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: SizedBox(
             height: 40,
             child: TextField(
@@ -90,18 +123,23 @@ class _PasswordListState extends ConsumerState<PasswordList> {
                 labelText: 'Search',
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: IconButton(
+                  onPressed: _showFilters,
                   icon: const Icon(Icons.filter_alt_outlined),
-                  onPressed: () {},
                 ),
                 border: const OutlineInputBorder(gapPadding: 5),
                 contentPadding: const EdgeInsets.all(8),
               ),
               onChanged: (value) {
-                _filter(value);
+                _search(value);
               },
             ),
           ),
         ),
+        CategoryChips(
+          categories: _selectedCategories,
+          updateSelectedCategories: _updateSelectedCategories,
+        ),
+        const Divider(indent: 10, endIndent: 10),
         Expanded(
           child: RefreshIndicator(
             onRefresh: _getPasswords,

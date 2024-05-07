@@ -10,15 +10,10 @@ class PasswordAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return password.iconId == null
-        ? Image.asset(
-            IconUtil.defaultIcon.url,
-            width: 45,
-            height: 45,
-          )
+        ? Image.asset(IconUtil.defaultIcon.url, width: 45)
         : Image.asset(
             IconUtil.getById(pmIcons, password.iconId!).url,
             width: 45,
-            height: 45,
           );
   }
 }
