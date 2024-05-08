@@ -26,6 +26,40 @@ class Password {
     this.iconId,
     this.selected = false,
   });
+
+  factory Password.fromMap(Map<String, dynamic> json) {
+    return Password(
+      id: json['id'],
+      title: json['title'],
+      username: json['username'],
+      password: json['password'],
+      categoryId: json['categoryId'],
+      email: json['email'],
+      note: json['note'],
+      iconId: json['iconId'],
+      fields: json['fields'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      selected: json['selected'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'username': username,
+      'password': password,
+      'categoryId': categoryId,
+      'email': email,
+      'note': note,
+      'iconId': iconId,
+      'fields': fields,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'selected': selected,
+    };
+  }
 }
 
 class Field {
