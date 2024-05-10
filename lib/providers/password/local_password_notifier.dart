@@ -34,7 +34,7 @@ class PasswordNotifierLocal extends StateNotifier<List<Password>> {
   Future<void> delete(String id) async {
     try {
       print('Deleting the password');
-      await ps.delete(id);
+      await ps.delete([id]);
       state = state.where((pwd) => pwd.id != id).toList();
     } catch (error) {
       print('Error while deleting the password :: $error');
@@ -44,7 +44,7 @@ class PasswordNotifierLocal extends StateNotifier<List<Password>> {
   Future<void> deleteMultiple(List<String> ids) async {
     try {
       print('Deleting the passwords $ids');
-      // await supabase.from('password').delete().inFilter('id', ids);
+      await ps.delete(ids);
       state = state.where((pwd) => !ids.contains(pwd.id)).toList();
     } catch (error) {
       print('Error while deleting the passwords :: $error');

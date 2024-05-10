@@ -42,12 +42,14 @@ class PasswordService {
     );
   }
 
-  Future<int> delete(String id) async {
+  Future<int> delete(List<String> ids) async {
     Database db = await DatabaseService.instance.db;
+    var placeholders = ids.map((e) => '?').join(',');
+    var condition = 'id IN ($placeholders)';
     return await db.delete(
       'passwords',
-      where: 'id = ?',
-      whereArgs: [id],
+      where: condition,
+      whereArgs: ids,
     );
   }
 }
