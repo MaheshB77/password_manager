@@ -38,9 +38,8 @@ class Password {
       note: json['note'],
       iconId: json['iconId'],
       fields: json['fields'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      selected: json['selected'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 
@@ -54,10 +53,8 @@ class Password {
       'email': email,
       'note': note,
       'iconId': iconId,
-      'fields': fields,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-      'selected': selected,
+      'createdAt': createdAt != null ? createdAt!.toIso8601String() : '',
+      'updatedAt': updatedAt != null ? updatedAt!.toIso8601String() : '',
     };
   }
 }

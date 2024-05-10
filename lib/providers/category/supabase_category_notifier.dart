@@ -2,9 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/category.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class CategoryNotifier extends StateNotifier<List<Category>> {
+class SupabaseCategoryNotifier extends StateNotifier<List<Category>> {
   final supabase = Supabase.instance.client;
-  CategoryNotifier() : super([]);
+  SupabaseCategoryNotifier() : super([]);
 
   Future<void> getCategories() async {
     print('Getting all categories');
@@ -17,8 +17,3 @@ class CategoryNotifier extends StateNotifier<List<Category>> {
     ).toList();
   }
 }
-
-final categoryProvider =
-    StateNotifierProvider<CategoryNotifier, List<Category>>((ref) {
-  return CategoryNotifier();
-});
