@@ -4,7 +4,7 @@ import 'package:password_manager/config/env_config.dart';
 import 'package:password_manager/config/supabase_config.dart';
 import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/screens/home_screen/home_screen.dart';
-import 'package:password_manager/screens/settings_screen.dart';
+import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 import 'package:password_manager/theme/dark_theme.dart';
 import 'package:password_manager/theme/light_theme.dart';
 

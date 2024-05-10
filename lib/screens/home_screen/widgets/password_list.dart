@@ -137,7 +137,9 @@ class _PasswordListState extends ConsumerState<PasswordList> {
           categories: _selectedCategories,
           updateSelectedCategories: _updateSelectedCategories,
         ),
-        const Divider(indent: 10, endIndent: 10),
+        _selectedCategories.isNotEmpty
+            ? const Divider(indent: 10, endIndent: 10)
+            : Container(),
         Expanded(
           child: RefreshIndicator(
             onRefresh: _getPasswords,

@@ -1,5 +1,5 @@
 import 'package:password_manager/models/category.dart';
-import 'package:password_manager/services/database_service.dart';
+import 'package:password_manager/db/database_service.dart';
 import 'package:sqflite/sqflite.dart';
 
 class CategoryService {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:password_manager/screens/login_screen.dart';
-import 'package:password_manager/screens/settings_screen.dart';
+import 'package:password_manager/screens/login_screen/login_screen.dart';
+import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 import 'package:password_manager/services/supabase_auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
