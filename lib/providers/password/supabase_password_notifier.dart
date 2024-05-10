@@ -1,3 +1,4 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -85,8 +86,3 @@ class PasswordNotifier extends StateNotifier<List<Password>> {
     state = [...state, pwd];
   }
 }
-
-final passwordProvider =
-    StateNotifierProvider<PasswordNotifier, List<Password>>((ref) {
-  return PasswordNotifier();
-});

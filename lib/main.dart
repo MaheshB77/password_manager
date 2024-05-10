@@ -26,8 +26,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = SupabaseAuthService();
-    Widget mainScreen = auth.isSignedIn() ? const HomeScreen() : LoginScreen();
+    // final auth = SupabaseAuthService();
+    // Widget mainScreen = auth.isSignedIn() ? const HomeScreen() : LoginScreen();
     final appTheme = ref.watch(themeProvider);
     ThemeMode themeMode = ThemeMode.system;
     if (appTheme == AppTheme.dark) {
@@ -40,7 +40,7 @@ class MyApp extends ConsumerWidget {
       title: 'Password Manager',
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: mainScreen,
+      home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
     );
