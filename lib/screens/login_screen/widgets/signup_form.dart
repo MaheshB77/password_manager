@@ -15,7 +15,6 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String _password = '';
-  String _confirmPassword = '';
 
   void _createUser() async {
     final us = UserService();
@@ -24,7 +23,7 @@ class _SignUpFormState extends State<SignUpForm> {
       try {
         print('Creating the user with password : $_password !');
         // TODO: Spinner to be added
-        // await us.create(User(masterPassword: _password));
+        await us.create(User(masterPassword: _password));
         if (!mounted) return;
         Navigator.pushAndRemoveUntil(
           context,
@@ -91,9 +90,7 @@ class _SignUpFormState extends State<SignUpForm> {
               PasswordField(
                 hintText: 'Confirm Password',
                 validator: _confirmValidator,
-                onSaved: (value) {
-                  _confirmPassword = value!;
-                },
+                onSaved: (value) {},
               ),
               const SizedBox(height: 20),
 

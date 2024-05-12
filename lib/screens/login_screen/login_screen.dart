@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:password_manager/screens/home_screen/home_screen.dart';
+import 'package:password_manager/screens/login_screen/widgets/signin_form.dart';
 import 'package:password_manager/screens/login_screen/widgets/signup_form.dart';
 import 'package:password_manager/services/user_service.dart';
-import 'package:password_manager/widgets/spinner.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,12 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
           future: _isUserCreated,
           builder: (ctx, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Spinner();
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Text('Error : ${snapshot.error}');
+              return Center(child: Text('Error : ${snapshot.error}'));
             } else {
               if (snapshot.data!) {
-                return const HomeScreen();
+                return const SignInForm();
               }
               return const SignUpForm();
             }
