@@ -18,16 +18,22 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 4,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
   Future _onCreate(Database db, int version) async {
+    print('Creating the database!');
     await db.execute(createPasswordTable);
     await db.execute(createCategoriesTable);
-
+    await db.execute(createUserTable);
     await _insertDefaultCategories(db);
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    print('Upgrading the database!');
   }
 
   Future<void> _insertDefaultCategories(Database db) async {

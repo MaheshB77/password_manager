@@ -3,5 +3,6 @@
         "dotenv",
         "pwds",
         "supabase"
-    ]
+    ],
+    "avdmanager.executable": "c:\\Users\\mbans\\.android\\avd\\Pixel_4a_API_30.ini"
 }
