@@ -1,44 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:password_manager/screens/login_screen/login_screen.dart';
 import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 import 'package:password_manager/services/supabase_auth_service.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreenDrawer extends ConsumerWidget {
   final SupabaseAuthService auth = SupabaseAuthService();
   HomeScreenDrawer({super.key});
-
-  void _logout(BuildContext context) async {
-    await auth.signOut();
-    if (context.mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (ctx) => LoginScreen(),
-        ),
-        (route) => false,
-      );
-    }
-  }
-
-  ImageProvider get profilePhoto {
-    User? user = auth.currentUser();
-    if (user != null && user.userMetadata != null) {
-      return NetworkImage(user.userMetadata!['picture']);
-    }
-    return const AssetImage(
-      'assets/images/default_avatar.png',
-    );
-  }
-
-  String get userFullName {
-    User? user = auth.currentUser();
-    if (user != null && user.userMetadata != null) {
-      return user.userMetadata!['full_name'];
-    }
-    return '';
-  }
 
   void _openSettings(BuildContext context) {
     Navigator.push(
@@ -58,77 +25,36 @@ class HomeScreenDrawer extends ConsumerWidget {
         .copyWith(color: colorScheme.onBackground, fontSize: 18);
 
     return Drawer(
-      child: Column(
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  colorScheme.primaryContainer,
-                  colorScheme.primaryContainer.withOpacity(0.8)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      child: SafeArea(
+        child: Column(
+          children: [
+            ListTile(
+              leading: Icon(
+                Icons.password,
+                size: 22,
+                color: colorScheme.onBackground,
               ),
+              title: Text(
+                'Passwords',
+                style: itemTextStyle,
+              ),
+              onTap: () {},
             ),
-            child: Column(
-              children: [
-                Center(
-                  child: CircleAvatar(
-                    backgroundImage: profilePhoto,
-                    radius: 40,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  userFullName,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: colorScheme.primary),
-                )
-              ],
+            ListTile(
+              leading: Icon(
+                Icons.settings,
+                size: 22,
+                color: colorScheme.onBackground,
+              ),
+              title: Text(
+                'Settings',
+                style: itemTextStyle,
+              ),
+              onTap: () => {_openSettings(context)},
             ),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.password,
-              size: 22,
-              color: colorScheme.onBackground,
-            ),
-            title: Text(
-              'Passwords',
-              style: itemTextStyle,
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.settings,
-              size: 22,
-              color: colorScheme.onBackground,
-            ),
-            title: Text(
-              'Settings',
-              style: itemTextStyle,
-            ),
-            onTap: () => {_openSettings(context)},
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.logout,
-              size: 22,
-              color: colorScheme.onBackground,
-            ),
-            title: Text(
-              'Logout',
-              style: itemTextStyle,
-            ),
-            onTap: () {
-              _logout(context);
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
