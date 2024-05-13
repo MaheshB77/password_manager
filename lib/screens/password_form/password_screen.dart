@@ -16,7 +16,6 @@ import 'package:password_manager/utils/category_util.dart';
 import 'package:password_manager/utils/icon_util.dart';
 import 'package:password_manager/utils/snackbar_util.dart';
 import 'package:password_manager/widgets/spinner.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PasswordScreen extends ConsumerStatefulWidget {
   final Password password;
@@ -101,11 +100,6 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
       } catch (e) {
         if (!mounted) return;
         String errorMsg = 'Something went wrong!';
-        if (e is PostgrestException && e.code == '23505') {
-          errorMsg = 'Password with same title already exists!';
-        } else {
-          errorMsg = 'Something went wrong! Please try again';
-        }
         SnackBarUtil.showError(context, errorMsg);
       }
       _toggleSending();

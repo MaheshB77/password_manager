@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/screens/settings_screen/settings_screen.dart';
-import 'package:password_manager/services/supabase_auth_service.dart';
 
 class HomeScreenDrawer extends ConsumerWidget {
-  final SupabaseAuthService auth = SupabaseAuthService();
   HomeScreenDrawer({super.key});
 
   void _openSettings(BuildContext context) {
