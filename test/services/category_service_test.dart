@@ -1,14 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:password_manager/db/initial_data.dart';
 import 'package:password_manager/db/queries.dart';
-import 'package:password_manager/services/category_service.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void sqfliteTestInit() {
-  // Initialize ffi implementation
   sqfliteFfiInit();
-  // Set global factory
   databaseFactory = databaseFactoryFfi;
 }
 
@@ -21,7 +17,7 @@ Future main() async {
       await db.insert('categories', cat);
     }
     var result = await db.query('categories');
-    expect(result.length, 7);
+    expect(result.length, defaultCategories.length);
     await db.close();
   });
 }
