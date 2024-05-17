@@ -8,9 +8,9 @@ class DatabaseService {
   DatabaseService._privateConstructor();
   static final DatabaseService instance = DatabaseService._privateConstructor();
 
-  static Database? _database;
+  static Database? database;
 
-  Future<Database> get db async => _database ??= await _initDatabase();
+  Future<Database> get db async => database ??= await _initDatabase();
 
   Future<Database> _initDatabase() async {
     var docDirectory = await getApplicationDocumentsDirectory();

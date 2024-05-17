@@ -20,4 +20,5 @@ Future main() async {
     expect(result.length, defaultCategories.length);
     await db.close();
   });
+
 }
