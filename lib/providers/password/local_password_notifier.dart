@@ -3,7 +3,7 @@ import 'package:password_manager/models/password.dart';
 import 'package:password_manager/services/password_service.dart';
 
 class PasswordNotifierLocal extends StateNotifier<List<Password>> {
-  final ps = PasswordService();
+  var ps = PasswordService();
 
   PasswordNotifierLocal() : super([]);
 
