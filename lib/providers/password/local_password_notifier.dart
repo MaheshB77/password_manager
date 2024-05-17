@@ -50,10 +50,4 @@ class PasswordNotifierLocal extends StateNotifier<List<Password>> {
       print('Error while deleting the passwords :: $error');
     }
   }
-
-  void select(Password pwd, bool selected) {
-    state.removeWhere((element) => element.id == pwd.id);
-    pwd.selected = selected;
-    state = [...state, pwd];
-  }
 }

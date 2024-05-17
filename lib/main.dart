@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/config/env_config.dart';
 import 'package:password_manager/providers/theme_provider.dart';
@@ -31,17 +30,6 @@ class MyApp extends ConsumerWidget {
     } else if (appTheme == AppTheme.light) {
       themeMode = ThemeMode.light;
     }
-
-    // TODO: Fix bottom navigation color
-    // var bottomNavColor = (appTheme == AppTheme.light)
-    //     ? lightTheme.colorScheme.inversePrimary
-    //     : darkTheme.colorScheme.inversePrimary;
-
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   SystemUiOverlayStyle(
-    //     systemNavigationBarColor: bottomNavColor,
-    //   ),
-    // );
 
     return MaterialApp(
       title: 'Password Manager',

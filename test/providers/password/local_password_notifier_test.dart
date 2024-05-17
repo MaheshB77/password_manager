@@ -26,6 +26,13 @@ void main() {
       password: 'testPassword2',
       categoryId: 'testCategoryId2',
     ),
+    Password(
+      id: 'testId3',
+      title: 'testTitle3',
+      username: 'testUsername3',
+      password: 'testPassword3',
+      categoryId: 'testCategoryId3',
+    ),
   ];
   late MockPasswordService ps;
   late PasswordNotifierLocal notifier;
@@ -38,15 +45,36 @@ void main() {
 
   group('Test local password notifier', () {
     test('Get passwords', () async {
+      // When
       when(ps.getPasswords()).thenAnswer((_) async => pwds);
       await notifier.getPasswords();
+
+      // Then
       expect(notifier.state, pwds);
     });
 
-    test('Delete the password', () async {
+    test('Delete the single password', () async {
+      // Given
       notifier.state = pwds;
+
+      // When
       when(ps.delete(['testId2'])).thenAnswer((_) async => 1);
       await notifier.delete('testId2');
+
+      // Then
+      expect(notifier.state.length, 2);
+    });
+
+    test('Delete multiple passwords', () async {
+      // Given
+      notifier.state = pwds;
+
+      // When
+      when(ps.delete(['testId3', 'testId2'])).thenAnswer((_) async => 1);
+      await notifier.deleteMultiple(['testId3', 'testId2']);
+
+      // Then
+      verify(ps.delete(['testId3', 'testId2'])).called(1);
       expect(notifier.state.length, 1);
     });
   });

@@ -59,8 +59,8 @@ class PasswordTile extends ConsumerWidget {
           ),
         ),
         titleAlignment: ListTileTitleAlignment.center,
-        onTap: () => {onTap(password.id!, index)},
-        onLongPress: () => {onLongPress(password.id!)},
+        onTap: () => onTap(password.id!, index),
+        onLongPress: () => onLongPress(password.id!),
         selected: password.selected,
         selectedTileColor: Theme.of(context).colorScheme.outlineVariant,
         shape: RoundedRectangleBorder(
