@@ -2,38 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/password/local_password_notifier.dart';
 import 'package:password_manager/services/password_service.dart';
 
+import '../../data/dummy_data.dart';
 import 'local_password_notifier_test.mocks.dart';
 
 @GenerateMocks([PasswordService])
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final pwds = [
-    Password(
-      id: 'testId',
-      title: 'testTitle',
-      username: 'testUsername',
-      password: 'testPassword',
-      categoryId: 'testCategoryId',
-    ),
-    Password(
-      id: 'testId2',
-      title: 'testTitle2',
-      username: 'testUsername2',
-      password: 'testPassword2',
-      categoryId: 'testCategoryId2',
-    ),
-    Password(
-      id: 'testId3',
-      title: 'testTitle3',
-      username: 'testUsername3',
-      password: 'testPassword3',
-      categoryId: 'testCategoryId3',
-    ),
-  ];
+  final pwds = dummyPwds;
   late MockPasswordService ps;
   late PasswordNotifierLocal notifier;
 

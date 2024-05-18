@@ -21,7 +21,9 @@ class PasswordFilterNotifier extends StateNotifier<List<Password>> {
       return;
     }
     state = passwords
-        .where((pwd) => categories.any((c) => c.id == pwd.categoryId))
+        .where(
+          (pwd) => categories.any((c) => c.id == pwd.categoryId),
+        )
         .toList();
   }
 
