@@ -12,10 +12,10 @@ import 'package:password_manager/screens/password_form/widgets/password_actions.
 import 'package:password_manager/screens/password_form/widgets/pm_dropdown_menu.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_password_field.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_text_field.dart';
-import 'package:password_manager/utils/category_util.dart';
-import 'package:password_manager/utils/icon_util.dart';
-import 'package:password_manager/utils/snackbar_util.dart';
-import 'package:password_manager/widgets/spinner.dart';
+import 'package:password_manager/shared/utils/category_util.dart';
+import 'package:password_manager/shared/utils/icon_util.dart';
+import 'package:password_manager/shared/utils/snackbar_util.dart';
+import 'package:password_manager/shared/widgets/spinner.dart';
 
 class PasswordScreen extends ConsumerStatefulWidget {
   final Password password;

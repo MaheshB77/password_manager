@@ -4,8 +4,8 @@ import 'package:password_manager/config/env_config.dart';
 import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/screens/login_screen/login_screen.dart';
 import 'package:password_manager/screens/settings_screen/settings_screen.dart';
-import 'package:password_manager/theme/dark_theme.dart';
-import 'package:password_manager/theme/light_theme.dart';
+import 'package:password_manager/shared/theme/dark_theme.dart';
+import 'package:password_manager/shared/theme/light_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

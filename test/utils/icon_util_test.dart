@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:password_manager/constants/icons.dart';
-import 'package:password_manager/utils/icon_util.dart';
+import 'package:password_manager/shared/utils/icon_util.dart';
 
 void main() {
   final icons = pmIcons;

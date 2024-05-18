@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:password_manager/models/category.dart';
-import 'package:password_manager/utils/category_util.dart';
+import 'package:password_manager/shared/utils/category_util.dart';
 
 void main() {
   group('Category utils tests', () {

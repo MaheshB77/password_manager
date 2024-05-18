@@ -8,7 +8,7 @@ import 'package:password_manager/providers/password/password_provider.dart';
 import 'package:password_manager/screens/home_screen/widgets/category_chips.dart';
 import 'package:password_manager/screens/home_screen/widgets/password_filter.dart';
 import 'package:password_manager/screens/password_form/password_screen.dart';
-import 'package:password_manager/utils/category_util.dart';
+import 'package:password_manager/shared/utils/category_util.dart';
 import 'package:password_manager/screens/home_screen/widgets/password_tile.dart';
 
 class PasswordList extends ConsumerStatefulWidget {

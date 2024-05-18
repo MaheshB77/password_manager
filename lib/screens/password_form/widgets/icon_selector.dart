@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:password_manager/constants/icons.dart';
 import 'package:password_manager/models/pm_icon.dart';
-import 'package:password_manager/utils/icon_util.dart';
+import 'package:password_manager/shared/utils/icon_util.dart';
 
 class IconSelector extends StatefulWidget {
   final void Function(PMIcon selectedIcon) onSelectedIcon;
