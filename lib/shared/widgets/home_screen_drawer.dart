@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/screens/import_export_screen/import_export_screen.dart';
 import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 
 class HomeScreenDrawer extends ConsumerWidget {
-  HomeScreenDrawer({super.key});
+  const HomeScreenDrawer({super.key});
 
   void _openSettings(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (ctx) => const SettingsScreen(),
+      ),
+    );
+  }
+
+  void _openImportExport(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => const ImportExportScreen(),
       ),
     );
   }
@@ -41,6 +51,18 @@ class HomeScreenDrawer extends ConsumerWidget {
             ),
             ListTile(
               leading: Icon(
+                Icons.import_export_outlined,
+                size: 22,
+                color: colorScheme.onBackground,
+              ),
+              title: Text(
+                'Import / Export',
+                style: itemTextStyle,
+              ),
+              onTap: () => _openImportExport(context),
+            ),
+            ListTile(
+              leading: Icon(
                 Icons.settings,
                 size: 22,
                 color: colorScheme.onBackground,
@@ -49,7 +71,7 @@ class HomeScreenDrawer extends ConsumerWidget {
                 'Settings',
                 style: itemTextStyle,
               ),
-              onTap: () => {_openSettings(context)},
+              onTap: () => _openSettings(context),
             ),
           ],
         ),

@@ -1,6 +1,8 @@
+import 'dart:io';
+import 'package:path/path.dart' as path;
+
 import 'package:password_manager/db/initial_data.dart';
 import 'package:password_manager/db/queries.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -13,8 +15,9 @@ class DatabaseService {
   Future<Database> get db async => database ??= await _initDatabase();
 
   Future<Database> _initDatabase() async {
-    var docDirectory = await getApplicationDocumentsDirectory();
-    String path = join(docDirectory.path, 'password_manager.db');
+    var dbPath = await getDatabasesPath();
+    print('Database initialized at $dbPath');
+    String path = join(dbPath, 'password_manager.db');
 
     return await openDatabase(
       path,
@@ -40,5 +43,12 @@ class DatabaseService {
     for (var cat in defaultCategories) {
       await db.insert('categories', cat);
     }
+  }
+
+  Future<File> getDatabaseBackup() async {
+    final dbPath = await getDatabasesPath();
+    final fullPath = path.join(dbPath, 'password_manager.db');
+    File backupFile = File(fullPath);
+    return backupFile;
   }
 }
