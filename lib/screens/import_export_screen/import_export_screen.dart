@@ -3,6 +3,7 @@ import 'package:password_manager/db/database_service.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:password_manager/screens/home_screen/home_screen.dart';
 import 'package:password_manager/shared/utils/snackbar_util.dart';
 import 'package:path/path.dart' as p;
 
@@ -18,6 +19,8 @@ class ImportExportScreen extends StatelessWidget {
       fileName: 'backup.db',
       bytes: backupBytes,
     );
+    if (!context.mounted) return;
+    SnackBarUtil.showInfo(context, 'Successfully exported');
   }
 
   void _import(BuildContext context) async {
@@ -38,7 +41,11 @@ class ImportExportScreen extends StatelessWidget {
       }
       await DatabaseService.instance.importDatabase(File(filePath));
       if (!context.mounted) return;
-      SnackBarUtil.showInfo(context, 'Successfully imported');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+        (route) => false,
+      );
     }
   }
 
