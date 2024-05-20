@@ -14,13 +14,17 @@ class ImportExportScreen extends StatelessWidget {
     File backupFile = await DatabaseService.instance.getDatabaseBackup();
     var backupBytes = await backupFile.readAsBytes();
 
-    await FilePicker.platform.saveFile(
+    final savedPath = await FilePicker.platform.saveFile(
       dialogTitle: 'Please select the folder',
       fileName: 'backup.db',
       bytes: backupBytes,
     );
     if (!context.mounted) return;
-    SnackBarUtil.showInfo(context, 'Successfully exported');
+    if (savedPath != null) {
+      SnackBarUtil.showInfo(context, 'Successfully exported');
+    } else {
+      SnackBarUtil.showInfo(context, 'Export cancelled');
+    }
   }
 
   void _import(BuildContext context) async {
