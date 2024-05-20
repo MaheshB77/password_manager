@@ -7,14 +7,16 @@ class PasswordNotifierLocal extends StateNotifier<List<Password>> {
 
   PasswordNotifierLocal() : super([]);
 
-  Future<void> getPasswords() async {
+  Future<List<Password>> getPasswords() async {
     try {
       print('Getting the passwords');
       final sqfResult = await ps.getPasswords();
       state = sqfResult;
+      return sqfResult;
     } catch (error) {
       print('Error while getting the passwords :: $error');
     }
+    return [];
   }
 
   Future<void> save(Password password) async {

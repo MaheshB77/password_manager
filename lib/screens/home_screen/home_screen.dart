@@ -4,6 +4,7 @@ import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category/category_provider.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password/password_provider.dart';
+import 'package:password_manager/screens/home_screen/widgets/no_passwords.dart';
 import 'package:password_manager/screens/password_form/password_screen.dart';
 import 'package:password_manager/shared/widgets/home_screen_drawer.dart';
 import 'package:password_manager/screens/home_screen/widgets/password_list.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late Future<void> _passwordFuture;
+  late Future<List<Password>> _passwordFuture;
   bool _deleting = false;
 
   @override
@@ -52,12 +53,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         .where((pwd) => pwd.selected)
         .map((pwd) => pwd.id!)
         .toList();
+
     dSetState(() => _deleting = true);
     await ref.read(passwordProvider.notifier).deleteMultiple(ids);
+    _passwordFuture = ref.read(passwordProvider.notifier).getPasswords();
     dSetState(() => _deleting = false);
-    if (context.mounted) {
-      Navigator.pop(context);
-    }
+
+    if (!mounted) return;
+    Navigator.pop(context);
   }
 
   void _clearSelected() {
@@ -123,12 +126,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: const Text('Passwords'),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: anySelected ? [popupMenuButton] : [],
-        leading: anySelected ? IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: _clearSelected,
-        ) : null,
+        leading: anySelected
+            ? IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: _clearSelected,
+              )
+            : null,
       ),
-      drawer: HomeScreenDrawer(),
+      drawer: const HomeScreenDrawer(),
       body: FutureBuilder(
         future: _passwordFuture,
         builder: (ctx, snapshot) {
@@ -136,6 +141,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error : ${snapshot.error}');
+          } else if (snapshot.data != null && snapshot.data!.isEmpty) {
+            return const NoPasswords();
           } else {
             return const PasswordList();
           }

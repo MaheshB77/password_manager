@@ -71,6 +71,7 @@ flutter:
   assets:
     - .env
     - assets/images/default_avatar.png
+    - assets/images/no_passwords.png
     - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
