@@ -14,4 +14,17 @@ class SnackBarUtil {
       ),
     );
   }
+
+  static void showInfo(BuildContext context, String info) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(info),
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'Okay',
+          onPressed: () => ScaffoldMessenger.of(context).clearSnackBars(),
+        ),
+      ),
+    );
+  }
 }

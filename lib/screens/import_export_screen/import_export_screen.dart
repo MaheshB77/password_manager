@@ -3,6 +3,8 @@ import 'package:password_manager/db/database_service.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:password_manager/shared/utils/snackbar_util.dart';
+import 'package:path/path.dart' as p;
 
 class ImportExportScreen extends StatelessWidget {
   const ImportExportScreen({super.key});
@@ -15,6 +17,51 @@ class ImportExportScreen extends StatelessWidget {
       dialogTitle: 'Please select the folder',
       fileName: 'backup.db',
       bytes: backupBytes,
+    );
+  }
+
+  void _import(BuildContext context) async {
+    var pickedResult = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+    );
+    if (!context.mounted) return;
+    if (pickedResult != null) {
+      var pickedFile = pickedResult.files.single;
+      String filePath = pickedFile.path!;
+      String fileType = p.extension(filePath);
+      if (fileType != '.db') {
+        SnackBarUtil.showError(
+          context,
+          'Please select file which ends with .db',
+        );
+        return;
+      }
+      await DatabaseService.instance.importDatabase(File(filePath));
+      if (!context.mounted) return;
+      SnackBarUtil.showInfo(context, 'Successfully imported');
+    }
+  }
+
+  void _showImportConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Note'),
+        content: const Text('Please select the file which ends with .db'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _import(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -44,7 +91,9 @@ class ImportExportScreen extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Icons.arrow_circle_down_sharp),
                 title: const Text('Import'),
-                onTap: () {},
+                onTap: () {
+                  _showImportConfirmation(context);
+                },
               ),
             ),
           ],

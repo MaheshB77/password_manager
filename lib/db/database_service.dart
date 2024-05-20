@@ -18,7 +18,10 @@ class DatabaseService {
     var dbPath = await getDatabasesPath();
     print('Database initialized at $dbPath');
     String path = join(dbPath, 'password_manager.db');
+    return _openDatabase(path);
+  }
 
+  Future<Database> _openDatabase(String path) async {
     return await openDatabase(
       path,
       version: 4,
@@ -48,7 +51,29 @@ class DatabaseService {
   Future<File> getDatabaseBackup() async {
     final dbPath = await getDatabasesPath();
     final fullPath = path.join(dbPath, 'password_manager.db');
-    File backupFile = File(fullPath);
-    return backupFile;
+    return File(fullPath);
+  }
+
+  importDatabase(File backupFile) async {
+    print('Importing the database');
+    final dbPath = await getDatabasesPath();
+    final sourcePath = backupFile.path;
+    final targetPath = path.join(dbPath, 'password_manager.db');
+
+    final targetFile = File(targetPath);
+    if (await targetFile.exists()) {
+      final currentDb = await instance.db;
+      print('Closing the current database');
+      await currentDb.close();
+
+      print('Deleting the current database file');
+      await targetFile.delete();
+    }
+
+    print('Copying backup database to main database');
+    await File(sourcePath).copy(targetPath);
+
+    print('Opening the imported database');
+    database = await _initDatabase();
   }
 }
