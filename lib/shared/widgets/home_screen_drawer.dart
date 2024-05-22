@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/screens/home_screen/home_screen.dart';
 import 'package:password_manager/screens/import_export_screen/import_export_screen.dart';
 import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 
@@ -24,6 +25,14 @@ class HomeScreenDrawer extends ConsumerWidget {
     );
   }
 
+  void _openHomeScreen(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -35,7 +44,7 @@ class HomeScreenDrawer extends ConsumerWidget {
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       child: SafeArea(
-        child: Column(
+        child: ListView(
           children: [
             ListTile(
               leading: Icon(
@@ -47,7 +56,7 @@ class HomeScreenDrawer extends ConsumerWidget {
                 'Passwords',
                 style: itemTextStyle,
               ),
-              onTap: () {},
+              onTap: () => _openHomeScreen(context),
             ),
             ListTile(
               leading: Icon(
