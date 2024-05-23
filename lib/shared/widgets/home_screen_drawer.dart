@@ -59,6 +59,16 @@ class HomeScreenDrawer extends ConsumerWidget {
               onTap: () => _openHomeScreen(context),
             ),
             ListTile(
+              leading: const ImageIcon(
+                AssetImage('assets/ext_icons/card.png'),
+              ),
+              title: Text(
+                'Cards',
+                style: itemTextStyle,
+              ),
+              onTap: () => {},
+            ),
+            ListTile(
               leading: Icon(
                 Icons.import_export_outlined,
                 size: 22,
