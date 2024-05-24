@@ -7,7 +7,7 @@ class Password {
   String? email;
   String? note;
   String? iconId;
-  List<Field>? fields;
+  List<Field>? fields;  // Dynamic fields
   DateTime? createdAt;
   DateTime? updatedAt;
   bool selected;
