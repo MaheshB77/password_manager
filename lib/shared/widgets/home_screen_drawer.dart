@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/screens/cards_screen/cards_screen.dart';
 import 'package:password_manager/screens/home_screen/home_screen.dart';
 import 'package:password_manager/screens/import_export_screen/import_export_screen.dart';
 import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 
 class HomeScreenDrawer extends ConsumerWidget {
   const HomeScreenDrawer({super.key});
+  
+  void _openHomeScreen(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+      (route) => false,
+    );
+  }
 
-  void _openSettings(BuildContext context) {
+  void _openCardsScreen(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (ctx) => const SettingsScreen(),
+        builder: (ctx) => const CardsScreen(),
       ),
     );
   }
@@ -24,12 +33,13 @@ class HomeScreenDrawer extends ConsumerWidget {
       ),
     );
   }
-
-  void _openHomeScreen(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
+  
+  void _openSettings(BuildContext context) {
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-      (route) => false,
+      MaterialPageRoute(
+        builder: (ctx) => const SettingsScreen(),
+      ),
     );
   }
 
@@ -66,7 +76,7 @@ class HomeScreenDrawer extends ConsumerWidget {
                 'Cards',
                 style: itemTextStyle,
               ),
-              onTap: () => {},
+              onTap: () => _openCardsScreen(context),
             ),
             ListTile(
               leading: Icon(
