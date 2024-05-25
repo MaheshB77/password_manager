@@ -10,6 +10,7 @@ class PasswordTile extends ConsumerWidget {
   final int index;
   final void Function(String id, int index) onTap;
   final void Function(String id) onLongPress;
+
   const PasswordTile({
     super.key,
     required this.password,
@@ -26,12 +27,7 @@ class PasswordTile extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
-        leading: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PasswordAvatar(password: password),
-          ],
-        ),
+        leading: PasswordAvatar(password: password),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
