@@ -129,7 +129,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Passwords'),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: anySelected ? [popupMenuButton] : [],
         leading: anySelected
             ? IconButton(
