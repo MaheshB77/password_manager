@@ -28,21 +28,16 @@ class PasswordTile extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
         leading: PasswordAvatar(password: password),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              password.title,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Category : ${category.name}',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ],
+        title: Text(
+          password.title,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          'Category : ${category.name}',
+          style: Theme.of(context).textTheme.labelSmall,
         ),
         trailing: SizedBox(
           width: 115,
