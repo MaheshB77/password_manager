@@ -25,9 +25,6 @@ class PasswordTile extends ConsumerWidget {
         password.updatedAt!.toLocal().toString().substring(0, 19);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
-      ),
       child: ListTile(
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
