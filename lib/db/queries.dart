@@ -52,3 +52,7 @@ const createCardCategoryTable = '''
           name TEXT
         );
 ''';
+
+const updateCardCategoryTable1 = '''
+        ALTER TABLE card_category ADD COLUMN icon;
+''';

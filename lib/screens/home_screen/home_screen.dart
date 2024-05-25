@@ -28,6 +28,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.read(categoryProvider.notifier).getCategories();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _onAdd() async {
     await Navigator.push(
       context,

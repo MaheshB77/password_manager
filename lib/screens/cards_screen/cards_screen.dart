@@ -10,6 +10,11 @@ class CardsScreen extends StatefulWidget {
 
 class _CardsScreenState extends State<CardsScreen> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +28,6 @@ class _CardsScreenState extends State<CardsScreen> {
         isHolderNameVisible: true,
         cvvCode: 'cvvCode',
         showBackView: true,
-        enableFloatingCard: true,
         cardType: CardType.mastercard,
         onCreditCardWidgetChange:
             (brand) {}, // Callback for anytime credit card brand is changed

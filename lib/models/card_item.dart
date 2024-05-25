@@ -57,5 +57,26 @@ class CardItem {
 class CardCategory {
   String? id;
   String name;
-  CardCategory({required this.name, this.id});
+  String icon;
+  CardCategory({
+    required this.name,
+    required this.icon,
+    this.id,
+  });
+
+  factory CardCategory.from(Map<String, dynamic> json) {
+    return CardCategory(
+      id: json['id'],
+      name: json['name'],
+      icon: json['icon'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'icon': icon,
+    };
+  }
 }
