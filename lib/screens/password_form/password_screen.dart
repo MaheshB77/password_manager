@@ -11,7 +11,7 @@ import 'package:password_manager/screens/password_form/widgets/icon_selector.dar
 import 'package:password_manager/screens/password_form/widgets/password_actions.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_dropdown_menu.dart';
 import 'package:password_manager/screens/password_form/widgets/pm_password_field.dart';
-import 'package:password_manager/screens/password_form/widgets/pm_text_field.dart';
+import 'package:password_manager/shared/widgets/pm_text_field.dart';
 import 'package:password_manager/shared/utils/category_util.dart';
 import 'package:password_manager/shared/utils/icon_util.dart';
 import 'package:password_manager/shared/utils/snackbar_util.dart';
@@ -176,9 +176,10 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                     : Container(),
                 const SizedBox(height: 18),
                 PMDropdownMenu(
-                  categories: _categories,
-                  initialCategory: _category,
-                  onCategorySelection: (ctgry) => _category = ctgry!,
+                  label: 'Category',
+                  entries: _categories,
+                  initialSelection: _category,
+                  onEntrySelection: (ctgry) => _category = ctgry!,
                 ),
                 const SizedBox(height: 18),
                 PMTextField(
