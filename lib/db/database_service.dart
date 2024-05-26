@@ -24,7 +24,7 @@ class DatabaseService {
   Future<Database> _openDatabase(String path) async {
     return await openDatabase(
       path,
-      version: 8,
+      version: 9,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -48,13 +48,17 @@ class DatabaseService {
     }
     if (oldVersion < 7) {
       print('Upgrading the database from version 6 to 7');
-      await _updateCardCategories1(db);
+      await db.execute(updateCardCategoryTable1);
       await _refreshDefaultCardCategories(db);
     }
     if (oldVersion < 8) {
       print('Upgrading the database from version 7 to 8');
-      await _updateCardCategories2(db);
+      await db.execute(updateCardCategoryTable2);
       await _refreshDefaultCardCategories(db);
+    }
+    if (oldVersion < 9) {
+      print('Upgrading the database from version 8 to 9');
+      await db.execute(updateCard1);
     }
   }
 
@@ -68,14 +72,6 @@ class DatabaseService {
     for (var cardCat in defaultCardCategories) {
       await db.insert('card_category', cardCat);
     }
-  }
-
-  Future<void> _updateCardCategories1(Database db) async {
-    await db.execute(updateCardCategoryTable1);
-  }
-
-  Future<void> _updateCardCategories2(Database db) async {
-    await db.execute(updateCardCategoryTable2);
   }
 
   Future<void> _refreshDefaultCardCategories(Database db) async {
