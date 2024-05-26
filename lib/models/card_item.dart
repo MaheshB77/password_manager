@@ -1,4 +1,5 @@
 class CardItem {
+  String title;
   String cardCategoryId;
   String cardNumber;
   String cardHolderName;
@@ -11,6 +12,7 @@ class CardItem {
   DateTime? updatedAt;
 
   CardItem({
+    required this.title,
     required this.cardCategoryId,
     required this.cardNumber,
     required this.cardHolderName,
@@ -25,6 +27,7 @@ class CardItem {
 
   factory CardItem.fromMap(Map<String, dynamic> json) {
     return CardItem(
+      title: json['title'],
       cardCategoryId: json['card_category_id'],
       cardNumber: json['card_number'],
       cardHolderName: json['card_holder_name'],
@@ -40,6 +43,7 @@ class CardItem {
 
   Map<String, dynamic> toMap() {
     return {
+      'title': title,
       'card_category_id': cardCategoryId,
       'card_number': cardNumber,
       'card_holder_name': cardHolderName,
