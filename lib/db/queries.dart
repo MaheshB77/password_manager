@@ -56,3 +56,7 @@ const createCardCategoryTable = '''
 const updateCardCategoryTable1 = '''
         ALTER TABLE card_category ADD COLUMN icon;
 ''';
+
+const updateCardCategoryTable2 = '''
+        ALTER TABLE card_category ADD COLUMN dark_icon TEXT;
+''';

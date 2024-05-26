@@ -24,7 +24,7 @@ class DatabaseService {
   Future<Database> _openDatabase(String path) async {
     return await openDatabase(
       path,
-      version: 7,
+      version: 8,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -51,6 +51,11 @@ class DatabaseService {
       await _updateCardCategories1(db);
       await _refreshDefaultCardCategories(db);
     }
+    if (oldVersion < 8) {
+      print('Upgrading the database from version 7 to 8');
+      await _updateCardCategories2(db);
+      await _refreshDefaultCardCategories(db);
+    }
   }
 
   Future<void> _insertDefaultCategories(Database db) async {
@@ -67,6 +72,10 @@ class DatabaseService {
 
   Future<void> _updateCardCategories1(Database db) async {
     await db.execute(updateCardCategoryTable1);
+  }
+
+  Future<void> _updateCardCategories2(Database db) async {
+    await db.execute(updateCardCategoryTable2);
   }
 
   Future<void> _refreshDefaultCardCategories(Database db) async {

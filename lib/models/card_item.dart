@@ -58,9 +58,11 @@ class CardCategory {
   String? id;
   String name;
   String icon;
+  String darkIcon;
   CardCategory({
     required this.name,
     required this.icon,
+    required this.darkIcon,
     this.id,
   });
 
@@ -69,6 +71,7 @@ class CardCategory {
       id: json['id'],
       name: json['name'],
       icon: json['icon'],
+      darkIcon: json['dark_icon'],
     );
   }
 
@@ -77,6 +80,7 @@ class CardCategory {
       'id': id,
       'name': name,
       'icon': icon,
+      'dark_icon': darkIcon,
     };
   }
 }
