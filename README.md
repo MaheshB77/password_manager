@@ -33,3 +33,8 @@
     -   Execute `adb devices` to see the running emulators
     -   Connect to emulator using `adb -s emulator-5554 shell`
     -   If root access is needed then hit `adb -s emulator-5554 root` and then `adb -s emulator-5554 shell`
+
+## Riverpod
+
+- Generate the utility files using below command
+    - `dart run build_runner watch`

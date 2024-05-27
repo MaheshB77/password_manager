@@ -4,14 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class PMTextField extends ConsumerWidget {
   final String? initialValue;
   final String labelText;
-  final String? Function(String? value) validator;
+  final TextInputType? keyboardType;
+  final String? Function(String? value)? validator;
   final void Function(String? value) onSaved;
+
   const PMTextField({
     super.key,
     required this.initialValue,
     required this.labelText,
-    required this.validator,
     required this.onSaved,
+    this.validator,
+    this.keyboardType,
   });
 
   @override
@@ -19,6 +22,7 @@ class PMTextField extends ConsumerWidget {
     return TextFormField(
       maxLength: 50,
       initialValue: initialValue,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: labelText,
         border: const OutlineInputBorder(),

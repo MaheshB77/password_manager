@@ -1,3 +1,4 @@
+
 class CardItem {
   String title;
   String cardCategoryId;
@@ -54,37 +55,6 @@ class CardItem {
       'cvv': cvv,
       'created_at': createdAt != null ? createdAt!.toIso8601String() : '',
       'updated_at': updatedAt != null ? updatedAt!.toIso8601String() : '',
-    };
-  }
-}
-
-class CardCategory {
-  String? id;
-  String name;
-  String icon;
-  String darkIcon;
-  CardCategory({
-    required this.name,
-    required this.icon,
-    required this.darkIcon,
-    this.id,
-  });
-
-  factory CardCategory.from(Map<String, dynamic> json) {
-    return CardCategory(
-      id: json['id'],
-      name: json['name'],
-      icon: json['icon'],
-      darkIcon: json['dark_icon'],
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'icon': icon,
-      'dark_icon': darkIcon,
     };
   }
 }

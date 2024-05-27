@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:password_manager/models/card_item.dart';
+import 'package:password_manager/models/card_category.dart';
 import 'package:password_manager/models/category.dart';
 
 class PMDropdownMenu<T> extends StatelessWidget {
