@@ -49,7 +49,6 @@ class DatabaseService {
     if (oldVersion < 7) {
       print('Upgrading the database from version 6 to 7');
       await db.execute(updateCardCategoryTable1);
-      await _refreshDefaultCardCategories(db);
     }
     if (oldVersion < 8) {
       print('Upgrading the database from version 7 to 8');
