@@ -5,15 +5,6 @@ import 'package:sqflite/sqflite.dart';
 
 part 'card_category_provider.g.dart';
 
-// @riverpod
-// Future<List<CardCategory>> cardCategories(CardCategoriesRef ref) async {
-//   Database db = await DatabaseService.instance.db;
-//   var rows = await db.query('card_category');
-//   return rows.isNotEmpty
-//       ? rows.map((e) => CardCategory.fromMap(e)).toList()
-//       : [];
-// }
-
 @riverpod
 class CardCategoryList extends _$CardCategoryList {
 
