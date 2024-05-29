@@ -4,8 +4,8 @@ class CardItem {
   String cardCategoryId;
   String cardNumber;
   String cardHolderName;
-  DateTime issueDate;
-  DateTime expiryDate;
+  DateTime? issueDate;
+  DateTime? expiryDate;
   String? id;
   String? pin;
   String? cvv;
@@ -17,8 +17,8 @@ class CardItem {
     required this.cardCategoryId,
     required this.cardNumber,
     required this.cardHolderName,
-    required this.issueDate,
-    required this.expiryDate,
+    this.issueDate,
+    this.expiryDate,
     this.id,
     this.pin,
     this.cvv,
@@ -32,13 +32,13 @@ class CardItem {
       cardCategoryId: json['card_category_id'],
       cardNumber: json['card_number'],
       cardHolderName: json['card_holder_name'],
-      issueDate: json['issue_date'],
-      expiryDate: json['expiry_date'],
       id: json['id'],
       pin: json['pin'],
       cvv: json['cvv'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      issueDate: DateTime.parse(json['issue_date']),
+      expiryDate: DateTime.parse(json['expiry_date']),
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
     );
   }
 
@@ -48,11 +48,11 @@ class CardItem {
       'card_category_id': cardCategoryId,
       'card_number': cardNumber,
       'card_holder_name': cardHolderName,
-      'issue_date': issueDate,
-      'expiry_date': expiryDate,
       'id': id,
       'pin': pin,
       'cvv': cvv,
+      'issue_date': issueDate != null ? issueDate!.toIso8601String() : '',
+      'expiry_date': expiryDate != null ? expiryDate!.toIso8601String() : '',
       'created_at': createdAt != null ? createdAt!.toIso8601String() : '',
       'updated_at': updatedAt != null ? updatedAt!.toIso8601String() : '',
     };

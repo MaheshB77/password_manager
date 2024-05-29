@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/card_category.dart';
+import 'package:password_manager/models/card_item.dart';
 import 'package:password_manager/providers/card/card_category_provider.dart';
+import 'package:password_manager/providers/card/card_provider.dart';
+import 'package:password_manager/shared/utils/card_category_util.dart';
 import 'package:password_manager/shared/widgets/pm_dropdown_menu.dart';
 import 'package:password_manager/shared/widgets/pm_text_field.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
@@ -15,7 +18,7 @@ class CardFormScreen extends ConsumerStatefulWidget {
 
 class _CardFormScreenState extends ConsumerState<CardFormScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _new = false;
+  // bool _new = false;
   bool _adding = false;
   String _title = '';
   String _cardNumber = '';
@@ -23,10 +26,13 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
   String _pin = '';
   String _cvv = '';
   CardCategory? _selectedCategory;
+  DateTime? _issueDate;
+  DateTime? _expiryDate;
 
   @override
   void initState() {
     super.initState();
+    _selectedCategory = CardCategoryUtil.defaultCategory;
   }
 
   String? _fieldValidator(String? value, int min, int max, String field) {
@@ -41,8 +47,39 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
 
   void _onAdd() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _adding = true);
       _formKey.currentState!.save();
+      final cardItem = CardItem(
+        title: _title,
+        cardCategoryId: _selectedCategory!.id!,
+        cardNumber: _cardNumber,
+        cardHolderName: _cardHolderName,
+        issueDate: _issueDate,
+        expiryDate: _expiryDate,
+      );
+      await ref.read(cardListProvider.notifier).save(cardItem);
+      setState(() => _adding = false);
+      if (!mounted) return;
+      Navigator.pop(context);
     }
+  }
+
+  void _selectIssueDate(BuildContext context) async {
+    final selectedDate = await _selectDate(context);
+    setState(() => _issueDate = selectedDate);
+  }
+
+  void _selectExpiryDate(BuildContext context) async {
+    final selectedDate = await _selectDate(context);
+    setState(() => _expiryDate = selectedDate);
+  }
+
+  Future<DateTime?> _selectDate(BuildContext context) async {
+    return await showDatePicker(
+      context: context,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2050),
+    );
   }
 
   @override
@@ -122,13 +159,11 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
                         child: ListTile(
                           leading: const Icon(Icons.date_range),
                           title: const Text('Issued Date'),
-                          onTap: () {
-                            showDatePicker(
-                              context: context,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2050),
-                            );
-                          },
+                          dense: true,
+                          subtitle: _issueDate != null
+                              ? Text(_issueDate.toString().substring(0, 10))
+                              : null,
+                          onTap: () => _selectIssueDate(context),
                         ),
                       ),
                     ),
@@ -142,13 +177,11 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
                         child: ListTile(
                           leading: const Icon(Icons.date_range),
                           title: const Text('Expiry Date'),
-                          onTap: () {
-                            showDatePicker(
-                              context: context,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2050),
-                            );
-                          },
+                          dense: true,
+                          subtitle: _expiryDate != null
+                              ? Text(_expiryDate.toString().substring(0, 10))
+                              : null,
+                          onTap: () => _selectExpiryDate(context),
                         ),
                       ),
                     ),
@@ -158,7 +191,7 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _onAdd,
+                    onPressed: _adding ? null : _onAdd,
                     child: const Text('Add'),
                   ),
                 ),

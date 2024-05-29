@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/providers/card/card_category_provider.dart';
+import 'package:password_manager/providers/card/card_provider.dart';
 import 'package:password_manager/screens/card_form/card_form_screen.dart';
 import 'package:password_manager/screens/cards_screen/widgets/card_search.dart';
-import 'package:password_manager/shared/utils/theme_util.dart';
+import 'package:password_manager/screens/cards_screen/widgets/card_tile.dart';
+import 'package:password_manager/shared/utils/card_category_util.dart';
+import 'package:password_manager/shared/widgets/spinner.dart';
 
-class CardsScreen extends StatefulWidget {
+class CardsScreen extends ConsumerStatefulWidget {
   const CardsScreen({super.key});
 
   @override
-  State<CardsScreen> createState() => _CardsScreenState();
+  ConsumerState<CardsScreen> createState() => _CardsScreenState();
 }
 
-class _CardsScreenState extends State<CardsScreen> {
+class _CardsScreenState extends ConsumerState<CardsScreen> {
   final _searchController = TextEditingController();
 
   void _search(String value) {}
@@ -22,17 +27,12 @@ class _CardsScreenState extends State<CardsScreen> {
         builder: (ctx) => const CardFormScreen(),
       ),
     );
-    // _passwordFuture = ref.read(passwordProvider.notifier).getPasswords();
   }
 
   @override
   Widget build(BuildContext context) {
-    String bankCard = ThemeUtil.isDark(context)
-        ? 'assets/ext_icons/card_night.png'
-        : 'assets/ext_icons/card.png';
-    String gymCard = ThemeUtil.isDark(context)
-        ? 'assets/ext_icons/gym_card_night.png'
-        : 'assets/ext_icons/gym_card.png';
+    final cards = ref.watch(cardListProvider);
+    final cardCategories = ref.watch(cardCategoryListProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -41,42 +41,23 @@ class _CardsScreenState extends State<CardsScreen> {
       body: Column(
         children: [
           CardSearch(searchController: _searchController, search: _search),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: ListTile(
-              leading: Image.asset(bankCard),
-              title: Text(
-                'Deutsche Bank',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                '2347672842342734',
-                style: Theme.of(context).textTheme.bodySmall!,
-              ),
-              onTap: () {},
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: ListTile(
-              leading: Image.asset(gymCard),
-              title: Text(
-                'Rock Fit',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                '2347672842342734',
-                style: Theme.of(context).textTheme.bodySmall!,
-              ),
-              onTap: () {},
-            ),
-          ),
+          (cards.isLoading || cardCategories.isLoading)
+              ? const Spinner()
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: cards.value!.length,
+                    itemBuilder: (ctx, index) => CardTile(
+                      cardItem: cards.value![index],
+                      cardCategory: CardCategoryUtil.getById(
+                        cardCategories.value!,
+                        cards.value![index].cardCategoryId,
+                      ),
+                      index: index,
+                      onTap: (id, idx) {},
+                      onLongPress: (id) {},
+                    ),
+                  ),
+                )
         ],
       ),
       floatingActionButton: FloatingActionButton(
