@@ -17,15 +17,15 @@ import 'package:password_manager/shared/utils/icon_util.dart';
 import 'package:password_manager/shared/utils/snackbar_util.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
 
-class PasswordScreen extends ConsumerStatefulWidget {
+class PasswordFormScreen extends ConsumerStatefulWidget {
   final Password password;
-  const PasswordScreen({super.key, required this.password});
+  const PasswordFormScreen({super.key, required this.password});
 
   @override
-  ConsumerState<PasswordScreen> createState() => _PasswordScreenState();
+  ConsumerState<PasswordFormScreen> createState() => _PasswordFormScreenState();
 }
 
-class _PasswordScreenState extends ConsumerState<PasswordScreen> {
+class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _username = '';
