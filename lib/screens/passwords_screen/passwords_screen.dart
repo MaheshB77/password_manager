@@ -4,10 +4,10 @@ import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category/category_provider.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password/password_provider.dart';
-import 'package:password_manager/screens/home_screen/widgets/no_passwords.dart';
+import 'package:password_manager/screens/passwords_screen/widgets/no_passwords.dart';
 import 'package:password_manager/screens/password_form/password_form_screen.dart';
 import 'package:password_manager/shared/widgets/side_drawer.dart';
-import 'package:password_manager/screens/home_screen/widgets/password_list.dart';
+import 'package:password_manager/screens/passwords_screen/widgets/password_list.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {

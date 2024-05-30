@@ -3,7 +3,7 @@ import 'package:password_manager/db/database_service.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:password_manager/screens/home_screen/home_screen.dart';
+import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
 import 'package:password_manager/shared/utils/snackbar_util.dart';
 import 'package:path/path.dart' as p;
 

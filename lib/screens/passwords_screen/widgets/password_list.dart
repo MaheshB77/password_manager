@@ -5,11 +5,11 @@ import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category/category_provider.dart';
 import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password/password_provider.dart';
-import 'package:password_manager/screens/home_screen/widgets/category_chips.dart';
-import 'package:password_manager/screens/home_screen/widgets/password_filter.dart';
+import 'package:password_manager/screens/passwords_screen/widgets/category_chips.dart';
+import 'package:password_manager/screens/passwords_screen/widgets/password_filter.dart';
 import 'package:password_manager/screens/password_form/password_form_screen.dart';
 import 'package:password_manager/shared/utils/category_util.dart';
-import 'package:password_manager/screens/home_screen/widgets/password_tile.dart';
+import 'package:password_manager/screens/passwords_screen/widgets/password_tile.dart';
 
 class PasswordList extends ConsumerStatefulWidget {
   const PasswordList({super.key});

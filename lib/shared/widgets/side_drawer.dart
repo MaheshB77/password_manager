@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/screens/cards_screen/cards_screen.dart';
-import 'package:password_manager/screens/home_screen/home_screen.dart';
+import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
 import 'package:password_manager/screens/import_export_screen/import_export_screen.dart';
 import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 

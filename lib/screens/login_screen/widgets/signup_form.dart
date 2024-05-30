@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:password_manager/models/user.dart';
-import 'package:password_manager/screens/home_screen/home_screen.dart';
+import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
 import 'package:password_manager/screens/login_screen/widgets/button.dart';
 import 'package:password_manager/screens/login_screen/widgets/password_field.dart';
 import 'package:password_manager/services/user_service.dart';

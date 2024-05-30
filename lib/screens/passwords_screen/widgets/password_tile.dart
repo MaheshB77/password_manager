@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
-import 'package:password_manager/screens/home_screen/widgets/password_avatar.dart';
+import 'package:password_manager/screens/passwords_screen/widgets/password_avatar.dart';
 
 class PasswordTile extends ConsumerWidget {
   final Password password;
