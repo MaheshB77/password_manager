@@ -6,12 +6,13 @@ import 'package:uuid/uuid.dart';
 
 part 'card_provider.g.dart';
 
+const uuid = Uuid();
+
 @riverpod
 class CardList extends _$CardList {
-  final uuid = const Uuid();
-
   @override
   Future<List<CardItem>> build() async {
+    print('Getting cards from DB');
     Database db = await DatabaseService.instance.db;
     var rows = await db.query('card');
     return rows.isNotEmpty ? rows.map((e) => CardItem.fromMap(e)).toList() : [];
