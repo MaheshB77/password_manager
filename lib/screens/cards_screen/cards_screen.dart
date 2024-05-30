@@ -41,7 +41,9 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
 
   List<CardItem> getCards(List<CardItem> cards) {
     final filteredCards = ref.read(cardFilterListProvider);
-    return (filteredCards.isEmpty && _searchController.text.isEmpty) ? cards : filteredCards;
+    return (filteredCards.isEmpty && _searchController.text.isEmpty)
+        ? cards
+        : filteredCards;
   }
 
   @override
@@ -68,7 +70,7 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
                 itemBuilder: (ctx, index) => CardTile(
                   cardItem: getCards(cards)[index],
                   cardCategory: CardCategoryUtil.getById(
-                    cardCategories.value!,
+                    cardCategories.value == null ? [] : cardCategories.value!,
                     getCards(cards)[index].cardCategoryId,
                   ),
                   index: index,
