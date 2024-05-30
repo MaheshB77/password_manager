@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/card_item.dart';
 import 'package:password_manager/providers/card/card_provider.dart';
 import 'package:password_manager/screens/card_view/widgets/card_field_tile.dart';
+import 'package:password_manager/screens/cards_screen/cards_screen.dart';
 import 'package:password_manager/shared/utils/date_util.dart';
 import 'package:password_manager/shared/utils/theme_util.dart';
 
@@ -17,10 +18,38 @@ class CardViewScreen extends ConsumerWidget {
     return formattedDate;
   }
 
-  void _onDelete(WidgetRef ref) async {
-    // TODO: Add Alert
+  void _deleteConfirmation(BuildContext context, WidgetRef ref) async {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text('Deleting'),
+          content: const Text('Do you want to delete this card ?'),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => _onDelete(context, ref),
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _onDelete(BuildContext context, WidgetRef ref) async {
+    // TODO (Improvement) : Add Spinner / Disable 'Yes' button 
     await ref.read(cardListProvider.notifier).delete([cardItem.id!]);
-    // TODO: Go Back
+    if (!context.mounted) return;
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (ctx) => const CardsScreen()),
+      (route) => false,
+    );
   }
 
   @override
@@ -37,13 +66,12 @@ class CardViewScreen extends ConsumerWidget {
           ),
           IconButton(
             icon: const Icon(Icons.delete),
-            onPressed: () => _onDelete(ref),
+            onPressed: () => _deleteConfirmation(context, ref),
           ),
         ],
       ),
       backgroundColor: darkTheme ? Colors.black : Colors.grey[200],
       body: Column(
-        
         children: [
           CreditCardWidget(
             cardNumber: cardItem.cardNumber,

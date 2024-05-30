@@ -18,6 +18,8 @@ class CardFilterList extends _$CardFilterList {
                 card.title.toLowerCase().contains(searchStr.toLowerCase()),
           )
           .toList();
+    } else {
+      state = list;
     }
   }
 }

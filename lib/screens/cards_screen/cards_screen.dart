@@ -9,6 +9,7 @@ import 'package:password_manager/screens/card_view/card_view_screen.dart';
 import 'package:password_manager/screens/cards_screen/widgets/card_search.dart';
 import 'package:password_manager/screens/cards_screen/widgets/card_tile.dart';
 import 'package:password_manager/shared/utils/card_category_util.dart';
+import 'package:password_manager/shared/widgets/side_drawer.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
 
 class CardsScreen extends ConsumerStatefulWidget {
@@ -66,6 +67,7 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
       appBar: AppBar(
         title: const Text('Cards'),
       ),
+      drawer: const SideDrawer(),
       body: cardsList.when(
         data: (cards) => Column(
           children: [

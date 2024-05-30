@@ -17,11 +17,12 @@ class SideDrawer extends ConsumerWidget {
   }
 
   void _openCardsScreen(BuildContext context) {
-    Navigator.push(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (ctx) => const CardsScreen(),
       ),
+      (route) => false,
     );
   }
 
