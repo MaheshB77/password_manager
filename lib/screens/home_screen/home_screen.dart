@@ -6,7 +6,7 @@ import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password/password_provider.dart';
 import 'package:password_manager/screens/home_screen/widgets/no_passwords.dart';
 import 'package:password_manager/screens/password_form/password_screen.dart';
-import 'package:password_manager/shared/widgets/home_screen_drawer.dart';
+import 'package:password_manager/shared/widgets/side_drawer.dart';
 import 'package:password_manager/screens/home_screen/widgets/password_list.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
 
@@ -137,7 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               )
             : null,
       ),
-      drawer: const HomeScreenDrawer(),
+      drawer: const SideDrawer(),
       body: FutureBuilder(
         future: _passwordFuture,
         builder: (ctx, snapshot) {

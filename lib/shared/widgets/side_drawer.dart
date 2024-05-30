@@ -5,8 +5,8 @@ import 'package:password_manager/screens/home_screen/home_screen.dart';
 import 'package:password_manager/screens/import_export_screen/import_export_screen.dart';
 import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 
-class HomeScreenDrawer extends ConsumerWidget {
-  const HomeScreenDrawer({super.key});
+class SideDrawer extends ConsumerWidget {
+  const SideDrawer({super.key});
   
   void _openHomeScreen(BuildContext context) {
     Navigator.pushAndRemoveUntil(
