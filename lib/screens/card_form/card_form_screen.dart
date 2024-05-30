@@ -56,6 +56,8 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
         cardHolderName: _cardHolderName,
         issueDate: _issueDate,
         expiryDate: _expiryDate,
+        cvv: _cvv,
+        pin: _pin,
       );
       await ref.read(cardListProvider.notifier).save(cardItem);
       setState(() => _adding = false);
@@ -203,17 +205,3 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
     );
   }
 }
-
-// CreditCardWidget(
-//         cardNumber: '123467890',
-//         bankName: 'Deutsche Bank',
-//         expiryDate: 'expiryDate',
-//         cardHolderName: 'Mahesh Bansode',
-//         isHolderNameVisible: true,
-//         cvvCode: 'cvvCode',
-//         showBackView: true,
-//         cardType: CardType.mastercard,
-//         onCreditCardWidgetChange:
-//             (brand) {}, // Callback for anytime credit card brand is changed
-//       ),
-//     );

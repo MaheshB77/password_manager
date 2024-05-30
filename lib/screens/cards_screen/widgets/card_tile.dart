@@ -7,7 +7,7 @@ class CardTile extends StatelessWidget {
   final CardItem cardItem;
   final CardCategory cardCategory;
   final int index;
-  final void Function(String id, int index) onTap;
+  final void Function() onTap;
   final void Function(String id) onLongPress;
 
   const CardTile({
@@ -39,7 +39,7 @@ class CardTile extends StatelessWidget {
           cardItem.cardNumber,
           style: Theme.of(context).textTheme.bodySmall!,
         ),
-        onTap: () {},
+        onTap: onTap,
       ),
     );
   }

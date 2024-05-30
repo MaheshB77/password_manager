@@ -5,6 +5,7 @@ import 'package:password_manager/providers/card/card_category_provider.dart';
 import 'package:password_manager/providers/card/card_filter_provider.dart';
 import 'package:password_manager/providers/card/card_provider.dart';
 import 'package:password_manager/screens/card_form/card_form_screen.dart';
+import 'package:password_manager/screens/card_view/card_view_screen.dart';
 import 'package:password_manager/screens/cards_screen/widgets/card_search.dart';
 import 'package:password_manager/screens/cards_screen/widgets/card_tile.dart';
 import 'package:password_manager/shared/utils/card_category_util.dart';
@@ -35,6 +36,15 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
       context,
       MaterialPageRoute(
         builder: (ctx) => const CardFormScreen(),
+      ),
+    );
+  }
+
+  void _onTap(CardItem cardItem) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => CardViewScreen(cardItem: cardItem),
       ),
     );
   }
@@ -74,7 +84,7 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
                     getCards(cards)[index].cardCategoryId,
                   ),
                   index: index,
-                  onTap: (id, idx) {},
+                  onTap: () => _onTap(getCards(cards)[index]),
                   onLongPress: (id) {},
                 ),
               ),

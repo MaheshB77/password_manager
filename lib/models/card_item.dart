@@ -27,6 +27,12 @@ class CardItem {
   });
 
   factory CardItem.fromMap(Map<String, dynamic> json) {
+    String issueDateStr = json['issue_date'] as String;
+    final issueDate = issueDateStr.isEmpty ? null : DateTime.parse(issueDateStr);
+
+    String expiryDateStr = json['expiry_date'] as String;
+    final expiryDate = expiryDateStr.isEmpty ? null : DateTime.parse(expiryDateStr);
+
     return CardItem(
       title: json['title'],
       cardCategoryId: json['card_category_id'],
@@ -35,8 +41,8 @@ class CardItem {
       id: json['id'],
       pin: json['pin'],
       cvv: json['cvv'],
-      issueDate: DateTime.parse(json['issue_date']),
-      expiryDate: DateTime.parse(json['expiry_date']),
+      issueDate: issueDate,
+      expiryDate: expiryDate,
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
     );

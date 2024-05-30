@@ -30,4 +30,19 @@ class CardList extends _$CardList {
     ref.invalidateSelf();
     await future;
   }
+
+  Future<void> delete(List<String> ids) async {
+    Database db = await DatabaseService.instance.db;
+    var placeholders = ids.map((e) => '?').join(',');
+    var condition = 'id IN ($placeholders)';
+    await db.delete(
+      'card',
+      where: condition,
+      whereArgs: ids,
+    );
+
+    // Updating the state
+    ref.invalidateSelf();
+    await future;
+  }
 }
