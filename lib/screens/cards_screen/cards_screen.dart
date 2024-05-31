@@ -48,8 +48,17 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
           .read(cardFilterListProvider.notifier)
           .setSelected(cardItem.id!, cards);
     } else {
-      _viewCardScreen(context, cardItem);
+      _viewCardScreen(cardItem);
     }
+  }
+
+  void _viewCardScreen(CardItem cardItem) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => CardViewScreen(cardItem: cardItem),
+      ),
+    );
   }
 
   void _onLongPress(String id, List<CardItem> cards) {
@@ -74,11 +83,7 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
               ElevatedButton(
                 onPressed: _deleting
                     ? null
-                    : () async {
-                        await _deleteSelected(setState);
-                        if (!context.mounted) return;
-                        Navigator.pop(context);
-                      },
+                    : () async => await _deleteSelected(setState),
                 child: _deleting ? const Spinner() : const Text('Yes'),
               ),
             ],
@@ -91,23 +96,19 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
   Future<void> _deleteSelected(void Function(void Function()) dSetState) async {
     final filteredCards = ref.read(cardFilterListProvider);
     dSetState(() => _deleting = true);
+
     List<String> selectedIds = filteredCards
         .where(
           (card) => card.selected,
         )
         .map((e) => e.id!)
         .toList();
+
     await ref.read(cardListProvider.notifier).delete(selectedIds);
     dSetState(() => _deleting = false);
-  }
 
-  void _viewCardScreen(BuildContext context, CardItem cardItem) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => CardViewScreen(cardItem: cardItem),
-      ),
-    );
+    if (!mounted) return;
+    Navigator.pop(context);
   }
 
   bool get anySelected {
