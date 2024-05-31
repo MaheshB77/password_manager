@@ -1,5 +1,6 @@
 import 'package:password_manager/db/database_service.dart';
 import 'package:password_manager/models/card_item.dart';
+import 'package:password_manager/shared/utils/date_util.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
@@ -25,6 +26,32 @@ class CardList extends _$CardList {
     cardItem.updatedAt = DateTime.now();
 
     await db.insert('card', cardItem.toMap());
+
+    // Updating the state
+    ref.invalidateSelf();
+    await future;
+  }
+
+  Future<void> updateCard(CardItem cardItem) async {
+    Database db = await DatabaseService.instance.db;
+    cardItem.updatedAt = DateTime.now();
+
+    await db.update(
+      'card',
+      {
+        'title': cardItem.title,
+        'card_category_id': cardItem.cardCategoryId,
+        'card_number': cardItem.cardNumber,
+        'card_holder_name': cardItem.cardHolderName,
+        'pin': cardItem.pin,
+        'cvv': cardItem.cvv,
+        'issue_date': getDateString(cardItem.issueDate),
+        'expiry_date': getDateString(cardItem.expiryDate),
+        'updated_at': getDateString(cardItem.updatedAt),
+      },
+      where: 'id = ?',
+      whereArgs: [cardItem.id],
+    );
 
     // Updating the state
     ref.invalidateSelf();

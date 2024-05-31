@@ -4,13 +4,16 @@ import 'package:password_manager/models/card_category.dart';
 import 'package:password_manager/models/card_item.dart';
 import 'package:password_manager/providers/card/card_category_provider.dart';
 import 'package:password_manager/providers/card/card_provider.dart';
+import 'package:password_manager/screens/cards_screen/cards_screen.dart';
 import 'package:password_manager/shared/utils/card_category_util.dart';
+import 'package:password_manager/shared/utils/snackbar_util.dart';
 import 'package:password_manager/shared/widgets/pm_dropdown_menu.dart';
 import 'package:password_manager/shared/widgets/pm_text_field.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
 
 class CardFormScreen extends ConsumerStatefulWidget {
-  const CardFormScreen({super.key});
+  final CardItem? cardItem;
+  const CardFormScreen({super.key, this.cardItem});
 
   @override
   ConsumerState<CardFormScreen> createState() => _CardFormScreenState();
@@ -18,7 +21,7 @@ class CardFormScreen extends ConsumerStatefulWidget {
 
 class _CardFormScreenState extends ConsumerState<CardFormScreen> {
   final _formKey = GlobalKey<FormState>();
-  // bool _new = false;
+  bool _newCard = true;
   bool _adding = false;
   String _title = '';
   String _cardNumber = '';
@@ -32,7 +35,25 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
   @override
   void initState() {
     super.initState();
+    final categories =
+        ref.read(cardCategoryListProvider).value; // TODO: Can be improved
     _selectedCategory = CardCategoryUtil.defaultCategory;
+
+    _newCard = widget.cardItem == null;
+
+    if (!_newCard) {
+      _selectedCategory = CardCategoryUtil.getById(
+        categories!,
+        widget.cardItem!.cardCategoryId,
+      );
+      _title = widget.cardItem!.title;
+      _cardHolderName = widget.cardItem!.cardHolderName;
+      _cardNumber = widget.cardItem!.cardNumber;
+      _pin = widget.cardItem!.pin ?? '';
+      _cvv = widget.cardItem!.cvv ?? '';
+      _issueDate = widget.cardItem!.issueDate;
+      _expiryDate = widget.cardItem!.expiryDate;
+    }
   }
 
   String? _fieldValidator(String? value, int min, int max, String field) {
@@ -59,20 +80,38 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
         cvv: _cvv,
         pin: _pin,
       );
-      await ref.read(cardListProvider.notifier).save(cardItem);
-      setState(() => _adding = false);
-      if (!mounted) return;
-      Navigator.pop(context);
+      try {
+        if (_newCard) {
+          await ref.read(cardListProvider.notifier).save(cardItem);
+        } else {
+          cardItem.id = widget.cardItem!.id;
+          await ref.read(cardListProvider.notifier).updateCard(cardItem);
+        }
+        setState(() => _adding = false);
+        if (!mounted) return;
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (ctx) => const CardsScreen()),
+          (route) => false,
+        );
+      } catch (e) {
+        setState(() => _adding = false);
+        if (!mounted) return;
+        String errorMsg = 'Something went wrong!';
+        SnackBarUtil.showError(context, errorMsg);
+      }
     }
   }
 
   void _selectIssueDate(BuildContext context) async {
     final selectedDate = await _selectDate(context);
+    if (selectedDate == null && _expiryDate != null) return;
     setState(() => _issueDate = selectedDate);
   }
 
   void _selectExpiryDate(BuildContext context) async {
     final selectedDate = await _selectDate(context);
+    if (selectedDate == null && _expiryDate != null) return;
     setState(() => _expiryDate = selectedDate);
   }
 
@@ -110,7 +149,7 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
                 categories.hasValue
                     ? PMDropdownMenu(
                         entries: categories.value!,
-                        initialSelection: categories.value![0],
+                        initialSelection: _selectedCategory,
                         label: 'Card Category',
                         onEntrySelection: (cat) {
                           _selectedCategory = cat;
@@ -194,7 +233,7 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _adding ? null : _onAdd,
-                    child: const Text('Add'),
+                    child: Text(_newCard ? 'Add' : 'Update'),
                   ),
                 ),
               ],

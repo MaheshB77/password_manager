@@ -1,7 +1,7 @@
 import 'package:password_manager/models/card_category.dart';
 
 class CardCategoryUtil {
-  static CardCategory getById(List<CardCategory> categories, String id) {
+  static CardCategory getById(List<CardCategory> categories, String? id) {
     return categories.firstWhere(
       (cat) => cat.id == id,
       orElse: () => defaultCategory,

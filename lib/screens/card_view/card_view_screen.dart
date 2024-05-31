@@ -3,6 +3,7 @@ import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/card_item.dart';
 import 'package:password_manager/providers/card/card_provider.dart';
+import 'package:password_manager/screens/card_form/card_form_screen.dart';
 import 'package:password_manager/screens/card_view/widgets/card_field_tile.dart';
 import 'package:password_manager/screens/cards_screen/cards_screen.dart';
 import 'package:password_manager/shared/utils/date_util.dart';
@@ -42,13 +43,24 @@ class CardViewScreen extends ConsumerWidget {
   }
 
   void _onDelete(BuildContext context, WidgetRef ref) async {
-    // TODO (Improvement) : Add Spinner / Disable 'Yes' button 
+    // TODO (Improvement) : Add Spinner / Disable 'Yes' button
     await ref.read(cardListProvider.notifier).delete([cardItem.id!]);
     if (!context.mounted) return;
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (ctx) => const CardsScreen()),
       (route) => false,
+    );
+  }
+
+  void _onEdit(BuildContext context) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => CardFormScreen(
+          cardItem: cardItem,
+        ),
+      ),
     );
   }
 
@@ -62,7 +74,7 @@ class CardViewScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {},
+            onPressed: () => _onEdit(context),
           ),
           IconButton(
             icon: const Icon(Icons.delete),

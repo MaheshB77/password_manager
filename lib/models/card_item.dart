@@ -1,3 +1,4 @@
+import 'package:password_manager/shared/utils/date_util.dart';
 
 class CardItem {
   String title;
@@ -28,10 +29,12 @@ class CardItem {
 
   factory CardItem.fromMap(Map<String, dynamic> json) {
     String issueDateStr = json['issue_date'] as String;
-    final issueDate = issueDateStr.isEmpty ? null : DateTime.parse(issueDateStr);
+    final issueDate =
+        issueDateStr.isEmpty ? null : DateTime.parse(issueDateStr);
 
     String expiryDateStr = json['expiry_date'] as String;
-    final expiryDate = expiryDateStr.isEmpty ? null : DateTime.parse(expiryDateStr);
+    final expiryDate =
+        expiryDateStr.isEmpty ? null : DateTime.parse(expiryDateStr);
 
     return CardItem(
       title: json['title'],
@@ -57,10 +60,10 @@ class CardItem {
       'id': id,
       'pin': pin,
       'cvv': cvv,
-      'issue_date': issueDate != null ? issueDate!.toIso8601String() : '',
-      'expiry_date': expiryDate != null ? expiryDate!.toIso8601String() : '',
-      'created_at': createdAt != null ? createdAt!.toIso8601String() : '',
-      'updated_at': updatedAt != null ? updatedAt!.toIso8601String() : '',
+      'issue_date': getDateString(issueDate),
+      'expiry_date': getDateString(expiryDate),
+      'created_at': getDateString(createdAt),
+      'updated_at': getDateString(updatedAt),
     };
   }
 }
