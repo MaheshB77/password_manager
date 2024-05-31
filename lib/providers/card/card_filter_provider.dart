@@ -1,4 +1,5 @@
 import 'package:password_manager/models/card_item.dart';
+import 'package:password_manager/providers/card/card_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'card_filter_provider.g.dart';
@@ -7,19 +8,28 @@ part 'card_filter_provider.g.dart';
 class CardFilterList extends _$CardFilterList {
   @override
   List<CardItem> build() {
-    return [];
+    return ref.watch(cardListProvider).value ?? [];
   }
 
-  void search(String searchStr, List<CardItem> list) {
+  void search(String searchStr, List<CardItem> cards) {
     if (searchStr.isNotEmpty) {
-      state = list
+      state = cards
           .where(
             (card) =>
                 card.title.toLowerCase().contains(searchStr.toLowerCase()),
           )
           .toList();
     } else {
-      state = list;
+      state = cards;
     }
+  }
+
+  void setSelected(String id, List<CardItem> cards) {
+    for (var card in cards) {
+      if (card.id == id) {
+        card.selected = !card.selected;
+      }
+    }
+    state = [...cards];
   }
 }

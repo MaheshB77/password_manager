@@ -13,6 +13,9 @@ class CardItem {
   DateTime? createdAt;
   DateTime? updatedAt;
 
+  // Transient fields
+  bool selected;
+
   CardItem({
     required this.title,
     required this.cardCategoryId,
@@ -25,6 +28,7 @@ class CardItem {
     this.cvv,
     this.createdAt,
     this.updatedAt,
+    this.selected = false,
   });
 
   factory CardItem.fromMap(Map<String, dynamic> json) {

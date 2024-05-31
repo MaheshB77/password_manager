@@ -10,6 +10,8 @@ class Password {
   List<Field>? fields;  // Dynamic fields
   DateTime? createdAt;
   DateTime? updatedAt;
+
+  // Transient fields
   bool selected;
 
   Password({

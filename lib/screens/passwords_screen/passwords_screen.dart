@@ -89,15 +89,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             actionsAlignment: MainAxisAlignment.center,
             actions: [
               ElevatedButton(
-                onPressed: _deleting ? null : () => {Navigator.pop(context)},
+                onPressed: _deleting ? null : () => Navigator.pop(context),
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
                 onPressed: _deleting
                     ? null
-                    : () async {
-                        await _deleteSelected(setState);
-                      },
+                    : () async => await _deleteSelected(setState),
                 child: _deleting ? const Spinner() : const Text('Yes'),
               ),
             ],

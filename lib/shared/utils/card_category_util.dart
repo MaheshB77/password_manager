@@ -1,14 +1,16 @@
 import 'package:password_manager/models/card_category.dart';
 
 class CardCategoryUtil {
-  static CardCategory getById(List<CardCategory> categories, String? id) {
+  static CardCategory getById(List<CardCategory>? categories, String? id) {
+    if (categories == null || categories.isEmpty) return defaultCategory;
     return categories.firstWhere(
       (cat) => cat.id == id,
       orElse: () => defaultCategory,
     );
   }
 
-  static CardCategory getByName(List<CardCategory> categories, String name) {
+  static CardCategory getByName(List<CardCategory>? categories, String name) {
+    if (categories == null || categories.isEmpty) return defaultCategory;
     return categories.firstWhere(
       (cat) => cat.name.toLowerCase() == name.toLowerCase(),
       orElse: () => defaultCategory,

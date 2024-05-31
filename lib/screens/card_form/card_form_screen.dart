@@ -28,16 +28,19 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
   String _cardHolderName = '';
   String _pin = '';
   String _cvv = '';
-  CardCategory? _selectedCategory;
   DateTime? _issueDate;
   DateTime? _expiryDate;
+  late CardCategory _selectedCategory;
 
   @override
   void initState() {
     super.initState();
     final categories =
         ref.read(cardCategoryListProvider).value; // TODO: Can be improved
-    _selectedCategory = CardCategoryUtil.defaultCategory;
+    _selectedCategory = CardCategoryUtil.getByName(
+      categories,
+      'Credit',
+    ); // Default category
 
     _newCard = widget.cardItem == null;
 
@@ -72,7 +75,7 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
       _formKey.currentState!.save();
       final cardItem = CardItem(
         title: _title,
-        cardCategoryId: _selectedCategory!.id!,
+        cardCategoryId: _selectedCategory.id!,
         cardNumber: _cardNumber,
         cardHolderName: _cardHolderName,
         issueDate: _issueDate,
@@ -146,16 +149,27 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
                   onSaved: (value) => {_title = value!},
                 ),
                 const SizedBox(height: 12),
-                categories.hasValue
-                    ? PMDropdownMenu(
-                        entries: categories.value!,
-                        initialSelection: _selectedCategory,
-                        label: 'Card Category',
-                        onEntrySelection: (cat) {
+                categories.when(
+                  data: (cardCategories) {
+                    return PMDropdownMenu<CardCategory>(
+                      entries: cardCategories,
+                      initialSelection: _selectedCategory,
+                      label: 'Card Category',
+                      onEntrySelection: (cat) {
+                        if (cat != null) {
                           _selectedCategory = cat;
-                        },
-                      )
-                    : const Spinner(),
+                        }
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) => const SizedBox(
+                    height: double.infinity,
+                    child: Center(
+                      child: Text('Something went wrong'),
+                    ),
+                  ),
+                  loading: () => const Spinner(),
+                ),
                 const SizedBox(height: 22),
                 PMTextField(
                   initialValue: _cardNumber,

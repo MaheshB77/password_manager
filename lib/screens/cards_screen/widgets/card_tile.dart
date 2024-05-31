@@ -8,7 +8,7 @@ class CardTile extends StatelessWidget {
   final CardCategory cardCategory;
   final int index;
   final void Function() onTap;
-  final void Function(String id) onLongPress;
+  final void Function() onLongPress;
 
   const CardTile({
     super.key,
@@ -40,6 +40,12 @@ class CardTile extends StatelessWidget {
           style: Theme.of(context).textTheme.bodySmall!,
         ),
         onTap: onTap,
+        onLongPress: () => onLongPress(),
+        selected: cardItem.selected,
+        selectedTileColor: Theme.of(context).colorScheme.outlineVariant,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
     );
   }
