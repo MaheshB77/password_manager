@@ -77,14 +77,9 @@ class _ExportTileState extends ConsumerState<ExportTile> {
     try {
       final dir = await getTemporaryDirectory();
       final file = File('${dir.path}/cards.json');
-
-      final cardCategoriesList = CardCategory.toJsonArray(
-        _cardCategories!.value,
-      );
-
-      final cardList = CardItem.toJsonArray(
-        _cards!.value,
-      );
+      final cardList = CardItem.toJsonArray(_cards!.value);
+      final cardCategoriesList =
+          CardCategory.toJsonArray(_cardCategories!.value);
 
       final encodedJson = jsonEncode(
         ImportExportUtil.cardExportFormat(
@@ -123,9 +118,7 @@ class _ExportTileState extends ConsumerState<ExportTile> {
     try {
       final dir = await getTemporaryDirectory();
       final file = File('${dir.path}/passwords.json');
-
       final passwords = Password.toJsonArray(_passwords);
-
       final passwordCategories = Category.toJsonArray(_passwordCategories);
 
       final encodedJson = jsonEncode(
