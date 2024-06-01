@@ -7,7 +7,7 @@ import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 
 class SideDrawer extends ConsumerWidget {
   const SideDrawer({super.key});
-  
+
   void _openHomeScreen(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
@@ -26,15 +26,15 @@ class SideDrawer extends ConsumerWidget {
     );
   }
 
-  void _openImportExport(BuildContext context) {
-    Navigator.push(
+  Future<void> _openImportExport(BuildContext context) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (ctx) => const ImportExportScreen(),
       ),
     );
   }
-  
+
   void _openSettings(BuildContext context) {
     Navigator.push(
       context,
@@ -89,7 +89,9 @@ class SideDrawer extends ConsumerWidget {
                 'Import / Export',
                 style: itemTextStyle,
               ),
-              onTap: () => _openImportExport(context),
+              onTap: () async {
+                await _openImportExport(context);
+              },
             ),
             ListTile(
               leading: Icon(

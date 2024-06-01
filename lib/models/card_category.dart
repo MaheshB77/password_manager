@@ -28,4 +28,9 @@ class CardCategory {
       'dark_icon': darkIcon,
     };
   }
+
+  static List<Map<String, dynamic>> toJsonArray(List<CardCategory>? list) {
+    if (list == null) return [];
+    return list.map((e) => e.toMap()).toList();
+  }
 }

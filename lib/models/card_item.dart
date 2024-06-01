@@ -70,4 +70,9 @@ class CardItem {
       'updated_at': getDateString(updatedAt),
     };
   }
+
+  static List<Map<String, dynamic>> toJsonArray(List<CardItem>? list) {
+    if (list == null) return [];
+    return list.map((e) => e.toMap()).toList();
+  }
 }

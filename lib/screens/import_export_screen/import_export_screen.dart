@@ -1,29 +1,124 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/db/database_service.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:password_manager/models/card_category.dart';
+import 'package:password_manager/models/card_item.dart';
+import 'package:password_manager/providers/card/card_category_provider.dart';
+import 'package:password_manager/providers/card/card_provider.dart';
+import 'package:password_manager/screens/import_export_screen/utils/import_export_util.dart';
 import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
 import 'package:password_manager/shared/utils/snackbar_util.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
-class ImportExportScreen extends StatelessWidget {
+class ImportExportScreen extends ConsumerStatefulWidget {
   const ImportExportScreen({super.key});
 
-  void _export(BuildContext context) async {
-    File backupFile = await DatabaseService.instance.getDatabaseBackup();
-    var backupBytes = await backupFile.readAsBytes();
+  @override
+  ConsumerState<ImportExportScreen> createState() => _ImportExportScreenState();
+}
 
-    final savedPath = await FilePicker.platform.saveFile(
-      dialogTitle: 'Please select the folder',
-      fileName: 'backup.db',
-      bytes: backupBytes,
+class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
+  AsyncValue<List<CardCategory>>? cardCategories;
+  AsyncValue<List<CardItem>>? cards;
+
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(cardCategoryListProvider, (previous, next) {
+      cardCategories = next;
+    });
+
+    ref.listenManual(cardListProvider, (previous, next) {
+      cards = next;
+    });
+  }
+
+  Future<void> _export() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Export'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: ListTile(
+                    title: const Text('Cards'),
+                    onTap: () async {
+                      await _exportCards();
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: ListTile(
+                    title: const Text('Passwords'),
+                    onTap: () async {
+                      // TODO :
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
-    if (!context.mounted) return;
-    if (savedPath != null) {
-      SnackBarUtil.showInfo(context, 'Successfully exported');
-    } else {
-      SnackBarUtil.showInfo(context, 'Export cancelled');
+    // await _exportCards();
+  }
+
+  Future<void> _exportCards() async {
+    if (cardCategories == null || cards == null) {
+      SnackBarUtil.showInfo(context, 'Something went wrong!');
+      return;
+    }
+
+    try {
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/cardCategories.json');
+
+      final cardCategoriesList = CardCategory.toJsonArray(
+        cardCategories!.value,
+      );
+
+      final cardList = CardItem.toJsonArray(
+        cards!.value,
+      );
+
+      final encodedJson = jsonEncode(
+        ImportExportUtil.cardExportFormat(
+          cardCategoriesList,
+          cardList,
+        ),
+      );
+
+      await file.writeAsString(encodedJson);
+      final bytes = await file.readAsBytes();
+
+      final savedPath = await FilePicker.platform.saveFile(
+        dialogTitle: 'Please select the folder',
+        fileName: 'cardCategories.json',
+        bytes: bytes,
+      );
+
+      if (!mounted) return;
+      if (savedPath != null) {
+        SnackBarUtil.showInfo(context, 'Successfully exported');
+      } else {
+        SnackBarUtil.showInfo(context, 'Export cancelled');
+      }
+    } catch (error) {
+      print('error : $error');
+      SnackBarUtil.showInfo(context, 'Something went wrong!');
     }
   }
 
@@ -78,6 +173,9 @@ class ImportExportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    cardCategories = ref.watch(cardCategoryListProvider);
+    cards = ref.watch(cardListProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Import / Export'),
@@ -92,9 +190,7 @@ class ImportExportScreen extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Icons.arrow_circle_up_sharp),
                 title: const Text('Export'),
-                onTap: () {
-                  _export(context);
-                },
+                onTap: () => _export(),
               ),
             ),
             Card(
