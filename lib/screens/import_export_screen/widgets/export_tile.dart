@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:password_manager/models/card_category.dart';
 import 'package:password_manager/models/card_item.dart';
 import 'package:password_manager/models/category.dart';
@@ -14,7 +16,6 @@ import 'package:password_manager/providers/category/category_provider.dart';
 import 'package:password_manager/providers/password/password_provider.dart';
 import 'package:password_manager/screens/import_export_screen/utils/import_export_util.dart';
 import 'package:password_manager/shared/utils/snackbar_util.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ExportTile extends ConsumerStatefulWidget {
   const ExportTile({super.key});
@@ -28,45 +29,6 @@ class _ExportTileState extends ConsumerState<ExportTile> {
   AsyncValue<List<CardItem>>? _cards;
   List<Password>? _passwords;
   List<Category>? _passwordCategories;
-
-  Future<void> _export() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Export'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: ListTile(
-                    title: const Text('Cards'),
-                    onTap: () async {
-                      await _exportCards();
-                      if (!context.mounted) return;
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-                Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: ListTile(
-                    title: const Text('Passwords'),
-                    onTap: () async {
-                      await _exportPasswords();
-                      if (!context.mounted) return;
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   Future<void> _exportCards() async {
     if (_cardCategories == null || _cards == null) {
@@ -147,6 +109,45 @@ class _ExportTileState extends ConsumerState<ExportTile> {
       print('error : $error');
       SnackBarUtil.showInfo(context, 'Something went wrong!');
     }
+  }
+
+  Future<void> _export() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Export'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: ListTile(
+                    title: const Text('Cards'),
+                    onTap: () async {
+                      await _exportCards();
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: ListTile(
+                    title: const Text('Passwords'),
+                    onTap: () async {
+                      await _exportPasswords();
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
