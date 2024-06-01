@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/card_category.dart';
 import 'package:password_manager/models/card_item.dart';
+import 'package:password_manager/models/category.dart';
+import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/card/card_category_provider.dart';
 import 'package:password_manager/providers/card/card_provider.dart';
+import 'package:password_manager/providers/category/category_provider.dart';
+import 'package:password_manager/providers/password/password_provider.dart';
 import 'package:password_manager/screens/import_export_screen/utils/import_export_util.dart';
 import 'package:password_manager/shared/utils/snackbar_util.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,6 +26,8 @@ class ExportTile extends ConsumerStatefulWidget {
 class _ExportTileState extends ConsumerState<ExportTile> {
   AsyncValue<List<CardCategory>>? _cardCategories;
   AsyncValue<List<CardItem>>? _cards;
+  List<Password>? _passwords;
+  List<Category>? _passwordCategories;
 
   Future<void> _export() async {
     showDialog(
@@ -48,7 +54,9 @@ class _ExportTileState extends ConsumerState<ExportTile> {
                   child: ListTile(
                     title: const Text('Passwords'),
                     onTap: () async {
-                      // TODO :
+                      await _exportPasswords();
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -58,7 +66,6 @@ class _ExportTileState extends ConsumerState<ExportTile> {
         );
       },
     );
-    // await _exportCards();
   }
 
   Future<void> _exportCards() async {
@@ -69,7 +76,7 @@ class _ExportTileState extends ConsumerState<ExportTile> {
 
     try {
       final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/cardCategories.json');
+      final file = File('${dir.path}/cards.json');
 
       final cardCategoriesList = CardCategory.toJsonArray(
         _cardCategories!.value,
@@ -91,7 +98,49 @@ class _ExportTileState extends ConsumerState<ExportTile> {
 
       final savedPath = await FilePicker.platform.saveFile(
         dialogTitle: 'Please select the folder',
-        fileName: 'cardCategories.json',
+        fileName: 'cards.json',
+        bytes: bytes,
+      );
+
+      if (!mounted) return;
+      if (savedPath != null) {
+        SnackBarUtil.showInfo(context, 'Successfully exported');
+      } else {
+        SnackBarUtil.showInfo(context, 'Export cancelled');
+      }
+    } catch (error) {
+      print('error : $error');
+      SnackBarUtil.showInfo(context, 'Something went wrong!');
+    }
+  }
+
+  Future<void> _exportPasswords() async {
+    if (_passwordCategories == null || _passwords == null) {
+      SnackBarUtil.showInfo(context, 'Something went wrong!');
+      return;
+    }
+
+    try {
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/passwords.json');
+
+      final passwords = Password.toJsonArray(_passwords);
+
+      final passwordCategories = Category.toJsonArray(_passwordCategories);
+
+      final encodedJson = jsonEncode(
+        ImportExportUtil.passwordExportFormat(
+          passwordCategories,
+          passwords,
+        ),
+      );
+
+      await file.writeAsString(encodedJson);
+      final bytes = await file.readAsBytes();
+
+      final savedPath = await FilePicker.platform.saveFile(
+        dialogTitle: 'Please select the folder',
+        fileName: 'passwords.json',
         bytes: bytes,
       );
 
@@ -111,6 +160,8 @@ class _ExportTileState extends ConsumerState<ExportTile> {
   Widget build(BuildContext context) {
     _cardCategories = ref.watch(cardCategoryListProvider);
     _cards = ref.watch(cardListProvider);
+    _passwords = ref.watch(passwordProvider);
+    _passwordCategories = ref.watch(categoryProvider);
 
     return Card(
       clipBehavior: Clip.antiAlias,

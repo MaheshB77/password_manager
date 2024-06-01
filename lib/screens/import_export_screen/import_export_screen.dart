@@ -18,16 +18,11 @@ class ImportExportScreen extends ConsumerStatefulWidget {
 
 class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void _import(BuildContext context) async {
+  void _import() async {
     var pickedResult = await FilePicker.platform.pickFiles(
       allowMultiple: false,
     );
-    if (!context.mounted) return;
+    if (!mounted) return;
     if (pickedResult != null) {
       var pickedFile = pickedResult.files.single;
       String filePath = pickedFile.path!;
@@ -40,7 +35,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
         return;
       }
       await DatabaseService.instance.importDatabase(File(filePath));
-      if (!context.mounted) return;
+      if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (ctx) => const HomeScreen()),
@@ -49,7 +44,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
     }
   }
 
-  void _showImportConfirmation(BuildContext context) {
+  void _showImportConfirmation() {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -63,7 +58,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              _import(context);
+              _import();
             },
             child: const Text('OK'),
           ),
@@ -91,7 +86,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
                 leading: const Icon(Icons.arrow_circle_down_sharp),
                 title: const Text('Import'),
                 onTap: () {
-                  _showImportConfirmation(context);
+                  _showImportConfirmation();
                 },
               ),
             ),

@@ -8,4 +8,14 @@ class ImportExportUtil {
       'cardCategories': cardCategoriesList,
     };
   }
+
+  static Map<String, List<Map<String, dynamic>>> passwordExportFormat(
+    List<Map<String, dynamic>> passwordCategories,
+    List<Map<String, dynamic>> passwords,
+  ) {
+    return {
+      'passwords': passwords,
+      'passwordCategories': passwordCategories,
+    };
+  }
 }

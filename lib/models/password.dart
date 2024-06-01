@@ -7,7 +7,7 @@ class Password {
   String? email;
   String? note;
   String? iconId;
-  List<Field>? fields;  // Dynamic fields
+  List<Field>? fields; // Dynamic fields
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -58,6 +58,11 @@ class Password {
       'createdAt': createdAt != null ? createdAt!.toIso8601String() : '',
       'updatedAt': updatedAt != null ? updatedAt!.toIso8601String() : '',
     };
+  }
+
+  static List<Map<String, dynamic>> toJsonArray(List<Password>? list) {
+    if (list == null) return [];
+    return list.map((e) => e.toMap()).toList();
   }
 }
 
