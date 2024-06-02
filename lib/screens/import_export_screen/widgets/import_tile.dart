@@ -23,42 +23,60 @@ class _ImportTileState extends ConsumerState<ImportTile> {
       String fileStr = await file.readAsString();
       final decodedJson = jsonDecode(fileStr) as Map<String, dynamic>;
       final decodedCardsJson = decodedJson['cards'] as List<dynamic>;
-      final cardsJson =
-          decodedCardsJson.map((e) => e as Map<String, dynamic>).toList();
+      final cardsJson = decodedCardsJson
+          .map(
+            (e) => e as Map<String, dynamic>,
+          )
+          .toList();
       return cardsJson.map((e) => CardItem.fromMap(e)).toList();
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  Future<void> _importCards() async {
+  bool _isJsonFile(File file) {
+    String extension = p.extension(file.path);
+    if (extension != '.json' && mounted) {
+      SnackBarUtil.showError(
+        context,
+        'Please select file which ends with .json',
+      );
+    }
+    return extension == '.json';
+  }
+
+  Future<File?> _getSelectedFile() async {
     var pickedResult = await FilePicker.platform.pickFiles(
       allowMultiple: false,
     );
-
-    if (!mounted) return;
-    Navigator.pop(context);
+    if (mounted) Navigator.pop(context);
 
     if (pickedResult != null) {
       var pickedFile = pickedResult.files.single;
-      String filePath = pickedFile.path!;
-      String fileType = p.extension(filePath);
-      if (fileType != '.json') {
-        SnackBarUtil.showError(
-          context,
-          'Please select file which ends with .json',
-        );
-        return;
-      }
-      final file = File(filePath);
-      final cardsToImport = await _getCardsToImport(file);
-
-      // TODO: Only importing cards and not the card categories
-      await ref.read(cardListProvider.notifier).import(cardsToImport);
-
-      if (!mounted) return;
-      SnackBarUtil.showInfo(context, 'Cards imported successfully !');
+      return File(pickedFile.path!);
     }
+
+    if (mounted) SnackBarUtil.showError(context, 'No file selected !');
+    return null;
+  }
+
+  Future<void> _importCards() async {
+    final file = await _getSelectedFile();
+    if (file == null || !_isJsonFile(file)) return;
+
+    // TODO : Handle exception if json file does not contain desired format/values
+    final cardsToImport = await _getCardsToImport(file);
+
+    // TODO: Import card categories also
+    await ref.read(cardListProvider.notifier).import(cardsToImport);
+
+    if (!mounted) return;
+    SnackBarUtil.showInfo(context, 'Cards imported successfully !');
+  }
+
+  Future<void> _importPasswords() async {
+    final file = await _getSelectedFile();
+    if (file == null || !_isJsonFile(file)) return;
   }
 
   Future<void> _import() async {
@@ -74,22 +92,14 @@ class _ImportTileState extends ConsumerState<ImportTile> {
                   clipBehavior: Clip.antiAlias,
                   child: ListTile(
                     title: const Text('Cards'),
-                    onTap: () async {
-                      await _importCards();
-                      // if (!context.mounted) return;
-                      // Navigator.pop(context);
-                    },
+                    onTap: () => _importCards(),
                   ),
                 ),
                 Card(
                   clipBehavior: Clip.antiAlias,
                   child: ListTile(
                     title: const Text('Passwords'),
-                    onTap: () async {
-                      // await _exportPasswords();
-                      // if (!context.mounted) return;
-                      // Navigator.pop(context);
-                    },
+                    onTap: () => _importPasswords(),
                   ),
                 ),
               ],
