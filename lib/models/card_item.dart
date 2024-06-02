@@ -31,6 +31,15 @@ class CardItem {
     this.selected = false,
   });
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CardItem && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
   factory CardItem.fromMap(Map<String, dynamic> json) {
     String issueDateStr = json['issue_date'] as String;
     final issueDate =

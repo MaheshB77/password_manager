@@ -9,7 +9,10 @@ class SnackBarUtil {
         backgroundColor: Theme.of(context).colorScheme.error,
         action: SnackBarAction(
           label: 'Okay',
-          onPressed: () => ScaffoldMessenger.of(context).clearSnackBars(),
+          onPressed: () {
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context).clearSnackBars();
+          },
         ),
       ),
     );
@@ -22,7 +25,10 @@ class SnackBarUtil {
         duration: const Duration(seconds: 5),
         action: SnackBarAction(
           label: 'Okay',
-          onPressed: () => ScaffoldMessenger.of(context).clearSnackBars(),
+          onPressed: () {
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context).clearSnackBars();
+          },
         ),
       ),
     );

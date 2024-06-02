@@ -21,7 +21,7 @@ class CardList extends _$CardList {
 
   Future<void> save(CardItem cardItem) async {
     Database db = await DatabaseService.instance.db;
-    cardItem.id = uuid.v4();
+    cardItem.id = cardItem.id ?? uuid.v4();
     cardItem.createdAt = DateTime.now();
     cardItem.updatedAt = DateTime.now();
 
@@ -71,5 +71,24 @@ class CardList extends _$CardList {
     // Updating the state
     ref.invalidateSelf();
     await future;
+  }
+
+  Future<void> import(List<CardItem> cardsToImport) async {
+    state.when(
+      data: (cards) async {
+        final newCards = cardsToImport
+            .where(
+              (card) => !cards.contains(card),
+            )
+            .toList();
+        for (var card in newCards) {
+          await save(card);
+        }
+      },
+      error: (error, stackTrace) {
+        print('Error while importing : $error');
+      },
+      loading: () {},
+    );
   }
 }
