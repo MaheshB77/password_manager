@@ -5,11 +5,13 @@ class CardSearch extends StatelessWidget {
   final TextEditingController searchController;
   final List<CardItem> cards;
   final void Function(String, List<CardItem>) search;
+  final void Function() showFilters;
   
   const CardSearch({
     super.key,
     required this.searchController,
     required this.search,
+    required this.showFilters,
     required this.cards,
   });
 
@@ -25,7 +27,7 @@ class CardSearch extends StatelessWidget {
             labelText: 'Search',
             prefixIcon: const Icon(Icons.search),
             suffixIcon: IconButton(
-              onPressed: () {}, //_showFilters
+              onPressed: showFilters,
               icon: const Icon(Icons.filter_alt_outlined),
             ),
             border: const OutlineInputBorder(gapPadding: 5),

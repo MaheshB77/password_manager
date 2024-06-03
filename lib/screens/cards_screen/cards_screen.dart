@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/models/card_category.dart';
 import 'package:password_manager/models/card_item.dart';
 import 'package:password_manager/providers/card/card_category_provider.dart';
 import 'package:password_manager/providers/card/card_filter_provider.dart';
 import 'package:password_manager/providers/card/card_provider.dart';
 import 'package:password_manager/screens/card_form/card_form_screen.dart';
 import 'package:password_manager/screens/card_view/card_view_screen.dart';
+import 'package:password_manager/screens/cards_screen/widgets/card_category_chips.dart';
 import 'package:password_manager/screens/cards_screen/widgets/card_search.dart';
 import 'package:password_manager/screens/cards_screen/widgets/card_tile.dart';
+import 'package:password_manager/screens/cards_screen/widgets/cards_filter.dart';
 import 'package:password_manager/shared/utils/card_category_util.dart';
 import 'package:password_manager/shared/widgets/side_drawer.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
@@ -21,6 +24,7 @@ class CardsScreen extends ConsumerStatefulWidget {
 
 class _CardsScreenState extends ConsumerState<CardsScreen> {
   final _searchController = TextEditingController();
+  final List<CardCategory> _selectedCategories = [];
   bool _deleting = false;
 
   @override
@@ -65,6 +69,52 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
     ref.read(cardFilterListProvider.notifier).setSelected(id, cards);
   }
 
+  Future<void> _deleteSelected(void Function(void Function()) dSetState) async {
+    final filteredCards = ref.read(cardFilterListProvider);
+    dSetState(() => _deleting = true);
+
+    List<String> selectedIds = filteredCards
+        .where(
+          (card) => card.selected,
+        )
+        .map((e) => e.id!)
+        .toList();
+
+    await ref.read(cardListProvider.notifier).delete(selectedIds);
+    dSetState(() => _deleting = false);
+
+    if (!mounted) return;
+    Navigator.pop(context);
+  }
+
+  bool get anySelected {
+    final filteredCards = ref.watch(cardFilterListProvider);
+    return filteredCards.any((card) => card.selected);
+  }
+
+  List<CardItem> getCards(List<CardItem> cards) {
+    final filteredCards = ref.read(cardFilterListProvider);
+    return (filteredCards.isEmpty &&
+            _searchController.text.isEmpty &&
+            _selectedCategories.isEmpty)
+        ? cards
+        : filteredCards;
+  }
+
+  void _updateSelectedCategories(CardCategory category, bool selected) {
+    setState(() {
+      if (selected && !_selectedCategories.contains(category)) {
+        _selectedCategories.add(category);
+      } else if (!selected) {
+        _selectedCategories.remove(category);
+      }
+    });
+
+    ref
+        .read(cardFilterListProvider.notifier)
+        .withCategories(_selectedCategories);
+  }
+
   void _deleteConfirmation() async {
     showDialog(
       context: context,
@@ -93,34 +143,24 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
     );
   }
 
-  Future<void> _deleteSelected(void Function(void Function()) dSetState) async {
-    final filteredCards = ref.read(cardFilterListProvider);
-    dSetState(() => _deleting = true);
-
-    List<String> selectedIds = filteredCards
-        .where(
-          (card) => card.selected,
-        )
-        .map((e) => e.id!)
-        .toList();
-
-    await ref.read(cardListProvider.notifier).delete(selectedIds);
-    dSetState(() => _deleting = false);
-
-    if (!mounted) return;
-    Navigator.pop(context);
-  }
-
-  bool get anySelected {
-    final filteredCards = ref.watch(cardFilterListProvider);
-    return filteredCards.any((card) => card.selected);
-  }
-
-  List<CardItem> getCards(List<CardItem> cards) {
-    final filteredCards = ref.read(cardFilterListProvider);
-    return (filteredCards.isEmpty && _searchController.text.isEmpty)
-        ? cards
-        : filteredCards;
+  void _showFilters() {
+    final categoriesFuture = ref.read(cardCategoryListProvider);
+    categoriesFuture.when(
+      data: (categories) {
+        showModalBottomSheet(
+          context: context,
+          builder: (ctx) {
+            return CardsFilter(
+              selectedCategories: _selectedCategories,
+              categories: categories,
+              updateSelectedCategories: _updateSelectedCategories,
+            );
+          },
+        );
+      },
+      error: (error, stackTrace) {},
+      loading: () {},
+    );
   }
 
   @override
@@ -149,9 +189,18 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
               cards: cards,
               searchController: _searchController,
               search: _search,
+              showFilters: _showFilters,
             ),
+            CardCategoryChips(
+              categories: _selectedCategories,
+              updateSelectedCategories: _updateSelectedCategories,
+            ),
+            _selectedCategories.isNotEmpty
+                ? const Divider(indent: 10, endIndent: 10)
+                : Container(),
             Expanded(
               child: ListView.builder(
+                // TODO : Remove getCards() and make this easy to read
                 itemCount: getCards(cards).length,
                 itemBuilder: (ctx, index) => CardTile(
                   cardItem: getCards(cards)[index],
