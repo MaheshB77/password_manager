@@ -52,4 +52,24 @@ class PasswordNotifierLocal extends StateNotifier<List<Password>> {
       print('Error while deleting the passwords :: $error');
     }
   }
+
+  Future<void> import(List<Password> pwdsToImport) async {
+    try {
+      print('Importing the passwords');
+      final newPwds = pwdsToImport
+          .where(
+            (pwd) => !state.contains(pwd),
+          )
+          .toList();
+      for (var pwd in newPwds) {
+        await save(pwd);
+      }
+
+      // Refreshing after import
+      // TODO: This can be improved
+      await getPasswords();
+    } catch (error) {
+      print('Error while importing the passwords :: $error');
+    }
+  }
 }

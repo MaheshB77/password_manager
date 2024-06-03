@@ -14,7 +14,7 @@ class PasswordService {
 
   Future<int> save(Password pwd) async {
     Database db = await DatabaseService.instance.db;
-    pwd.id = uuid.v4();
+    pwd.id = pwd.id ?? uuid.v4();
     pwd.createdAt = DateTime.now();
     pwd.updatedAt = DateTime.now();
     return await db.insert(

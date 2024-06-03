@@ -29,6 +29,15 @@ class Password {
     this.selected = false,
   });
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Password && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
   factory Password.fromMap(Map<String, dynamic> json) {
     return Password(
       id: json['id'],
