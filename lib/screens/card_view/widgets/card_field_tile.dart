@@ -14,7 +14,7 @@ class CardFieldTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
-      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+      visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
       minVerticalPadding: 4,
       title: Text(
         heading,

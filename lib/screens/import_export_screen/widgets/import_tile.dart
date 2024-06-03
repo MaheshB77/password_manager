@@ -31,7 +31,6 @@ class _ImportTileState extends ConsumerState<ImportTile> {
           )
           .toList();
       return cardsJson;
-      // return cardsJson.map((e) => CardItem.fromMap(e)).toList();
     } catch (error) {
       print('Error while parsing the cards from file : $error');
     }
