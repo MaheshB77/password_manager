@@ -10,7 +10,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
-  AppTheme? _theme = AppTheme.system;
+  ThemeMode _theme = ThemeMode.system;
 
   @override
   void initState() {
@@ -18,8 +18,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _theme = ref.read(themeProvider);
   }
 
-  void _setTheme(AppTheme? theme) {
-    ref.watch(themeProvider.notifier).setTheme(theme!);
+  void _setTheme(ThemeMode? theme) {
+    ref.read(themeProvider.notifier).setTheme(theme!);
     setState(() {
       _theme = theme;
     });
@@ -37,21 +37,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             title: const Text('Theme'),
             shape: const Border(),
             children: [
-              RadioListTile<AppTheme>(
+              RadioListTile<ThemeMode>(
                 title: const Text('Light'),
-                value: AppTheme.light,
+                value: ThemeMode.light,
                 groupValue: _theme,
                 onChanged: (value) => {_setTheme(value)},
               ),
-              RadioListTile<AppTheme>(
+              RadioListTile<ThemeMode>(
                 title: const Text('Dark'),
-                value: AppTheme.dark,
+                value: ThemeMode.dark,
                 groupValue: _theme,
                 onChanged: (value) => {_setTheme(value)},
               ),
-              RadioListTile<AppTheme>(
+              RadioListTile<ThemeMode>(
                 title: const Text('System'),
-                value: AppTheme.system,
+                value: ThemeMode.system,
                 groupValue: _theme,
                 onChanged: (value) => {_setTheme(value)},
               ),
@@ -62,5 +62,3 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 }
-
-enum AppTheme { dark, light, system }

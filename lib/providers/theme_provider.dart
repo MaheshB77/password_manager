@@ -1,14 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 
-class ThemeNotifier extends StateNotifier<AppTheme> {
-  ThemeNotifier() : super(AppTheme.system);
+class ThemeNotifier extends StateNotifier<ThemeMode> {
+  ThemeNotifier() : super(ThemeMode.system);
 
-  void setTheme(AppTheme theme) {
+  void setTheme(ThemeMode theme) {
     state = theme;
   }
 }
 
-final themeProvider = StateNotifierProvider<ThemeNotifier, AppTheme>((ref) {
+final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
   return ThemeNotifier();
 });
