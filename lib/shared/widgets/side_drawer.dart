@@ -53,7 +53,6 @@ class SideDrawer extends ConsumerWidget {
         .copyWith(color: colorScheme.onBackground, fontSize: 18);
 
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       child: SafeArea(
         child: ListView(
           children: [
