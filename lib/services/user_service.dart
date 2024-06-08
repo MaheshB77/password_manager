@@ -23,6 +23,13 @@ class UserService {
     return rows.isNotEmpty;
   }
 
+  Future<User> currentUser() async {
+    Database db = await DatabaseService.instance.db;
+    var rows = await db.query('user');
+    List<User> users = rows.map((e) => User.fromMap(e)).toList();
+    return users.single;
+  }
+
   Future<bool> validate(String masterPassword) async {
     Database db = await DatabaseService.instance.db;
     var rows = await db.query('user');

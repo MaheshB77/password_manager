@@ -23,7 +23,13 @@ class _SignUpFormState extends State<SignUpForm> {
       try {
         print('Creating the user with password : $_password !');
         // TODO: Spinner to be added
-        await us.create(User(masterPassword: _password));
+        await us.create(
+          User(
+            masterPassword: _password,
+            fingerprint: 0,
+            theme: 'system',
+          ),
+        );
         if (!mounted) return;
         Navigator.pushAndRemoveUntil(
           context,

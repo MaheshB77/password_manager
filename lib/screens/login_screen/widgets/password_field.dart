@@ -39,19 +39,11 @@ class _PasswordFieldState extends State<PasswordField> {
         decoration: InputDecoration(
           hintText: widget.hintText,
           errorText: widget.errorText,
-          hintStyle: TextStyle(
-            color:
-                Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.grey.shade400,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.purple.shade400),
-          ),
-          fillColor: Theme.of(context).colorScheme.background.withOpacity(0.5),
+          border: const OutlineInputBorder(),
+          // hintStyle: TextStyle(
+          //   color:
+          //       Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
+          // ),
           filled: true,
           suffixIcon: IconButton(
             icon: Icon(

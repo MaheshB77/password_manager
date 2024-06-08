@@ -24,7 +24,7 @@ class DatabaseService {
   Future<Database> _openDatabase(String path) async {
     return await openDatabase(
       path,
-      version: 9,
+      version: 10,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -58,6 +58,11 @@ class DatabaseService {
     if (oldVersion < 9) {
       print('Upgrading the database from version 8 to 9');
       await db.execute(updateCard1);
+    }
+    if (oldVersion < 10) {
+      print('Upgrading the database from version 9 to 10');
+      await db.execute(updateUserTable1);
+      await db.execute(updateUserTable2);
     }
   }
 

@@ -8,6 +8,7 @@
     -   `emulator -list-avds`
 -   Run the emulator
     -   `emulator -avd Pixel_5_API_30`
+    -   `emulator -avd Pixel_8_API_33`
 
 ## Testing related commands
 
