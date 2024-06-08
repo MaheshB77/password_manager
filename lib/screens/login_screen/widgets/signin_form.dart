@@ -25,14 +25,10 @@ class _SignInFormState extends ConsumerState<SignInForm> {
     final us = UserService();
     final valid = await us.validate(_pwdController.text);
     if (valid) {
-      setState(() {
-        _errorText = null;
-      });
+      setState(() => _errorText = null);
       _goToHomeScreen();
     } else {
-      setState(() {
-        _errorText = 'Please enter the valid password';
-      });
+      setState(() => _errorText = 'Please enter the valid password');
     }
   }
 
@@ -68,12 +64,8 @@ class _SignInFormState extends ConsumerState<SignInForm> {
         }
         return Container();
       },
-      error: (error, stackTrace) {
-        return Container();
-      },
-      loading: () {
-        return const Spinner();
-      },
+      error: (error, stackTrace) => Container(),
+      loading: () => const Spinner(),
     );
   }
 

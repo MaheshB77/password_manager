@@ -1,16 +1,16 @@
 class User {
   String? id;
   final String masterPassword;
-  final int fingerprint;
-  final String theme;
+  int fingerprint;
+  String theme;
   DateTime? createdAt;
   DateTime? updatedAt;
 
   User({
     this.id,
     required this.masterPassword,
-    required this.fingerprint,
-    required this.theme,
+    this.theme = 'system',
+    this.fingerprint = 0,
     this.createdAt,
     this.updatedAt,
   });
