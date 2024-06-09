@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/providers/user/user_provider.dart';
 import 'package:password_manager/screens/login_screen/widgets/signin_form.dart';
 import 'package:password_manager/screens/login_screen/widgets/signup_form.dart';
-import 'package:password_manager/services/user_service.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   late Future<bool> _isUserCreated;
   @override
   void initState() {
     super.initState();
-    _isUserCreated = UserService().isCreated();
   }
 
   @override
   Widget build(BuildContext context) {
     print('Loading Logging Screen!!');
+    _isUserCreated = ref.watch(userRepoProvider.notifier).isCreated();
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,

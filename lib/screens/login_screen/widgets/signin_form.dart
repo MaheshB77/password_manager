@@ -6,7 +6,6 @@ import 'package:password_manager/providers/user/user_provider.dart';
 import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
 import 'package:password_manager/screens/login_screen/widgets/button.dart';
 import 'package:password_manager/screens/login_screen/widgets/password_field.dart';
-import 'package:password_manager/services/user_service.dart';
 
 class SignInForm extends ConsumerStatefulWidget {
   const SignInForm({super.key});
@@ -21,8 +20,10 @@ class _SignInFormState extends ConsumerState<SignInForm> {
   final LocalAuthentication _auth = LocalAuthentication();
 
   void _login() async {
-    final us = UserService();
-    final valid = await us.validate(_pwdController.text);
+    final valid = await ref
+        .watch(userRepoProvider.notifier)
+        .validate(_pwdController.text);
+
     if (valid) {
       setState(() => _errorText = null);
       _goToHomeScreen();

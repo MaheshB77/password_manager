@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/user.dart';
 import 'package:password_manager/providers/user/user_provider.dart';
 import 'package:password_manager/shared/widgets/pm_password_field.dart';
+import 'package:password_manager/shared/utils/snackbar_util.dart';
 
 class PasswordChange extends ConsumerStatefulWidget {
   const PasswordChange({super.key});
@@ -43,6 +44,7 @@ class _PasswordChangeState extends ConsumerState<PasswordChange> {
       await ref.read(userRepoProvider.notifier).updateUser(user);
       if (!mounted) return;
       Navigator.pop(context);
+      SnackBarUtil.showInfo(context, 'Updated the password successfully!');
     }
   }
 

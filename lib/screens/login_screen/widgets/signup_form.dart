@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/user.dart';
+import 'package:password_manager/providers/user/user_provider.dart';
 import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
 import 'package:password_manager/screens/login_screen/widgets/button.dart';
 import 'package:password_manager/screens/login_screen/widgets/password_field.dart';
-import 'package:password_manager/services/user_service.dart';
 
-class SignUpForm extends StatefulWidget {
+class SignUpForm extends ConsumerStatefulWidget {
   const SignUpForm({super.key});
 
   @override
-  State<SignUpForm> createState() => _SignUpFormState();
+  ConsumerState<SignUpForm> createState() => _SignUpFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _SignUpFormState extends ConsumerState<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String _password = '';
 
   void _createUser() async {
-    final us = UserService();
     _formKey.currentState!.save();
     if (_formKey.currentState!.validate()) {
       try {
         print('Creating the user with password : $_password !');
+
         // TODO: Spinner to be added
-        await us.create(
-          User(
-            masterPassword: _password,
-            fingerprint: 0,
-            theme: 'system',
-          ),
+        final user = User(
+          masterPassword: _password,
+          fingerprint: 0,
+          theme: 'system',
         );
+        await ref.read(userRepoProvider.notifier).create(user);
+
         if (!mounted) return;
         Navigator.pushAndRemoveUntil(
           context,
