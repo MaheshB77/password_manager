@@ -52,36 +52,39 @@ class _PasswordChangeState extends ConsumerState<PasswordChange> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Change password'),
-          content: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  PMPasswordField(
-                    initialValue: '',
-                    labelText: 'Old Password',
-                    validator: (value) {
-                      return _validateOldPassword(user, value!);
-                    },
-                    onSaved: (value) {},
-                  ),
-                  const SizedBox(height: 8),
-                  PMPasswordField(
-                    initialValue: '',
-                    labelText: 'New Password',
-                    validator: _newPasswordValidator,
-                    onSaved: (value) {
-                      _newPassword = value!;
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                  PMPasswordField(
-                    initialValue: '',
-                    labelText: 'Confirm New Password',
-                    validator: _confirmValidator,
-                    onSaved: (value) {},
-                  ),
-                ],
+          content: SizedBox(
+            width: double.maxFinite,
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    PMPasswordField(
+                      initialValue: '',
+                      labelText: 'Old Password',
+                      validator: (value) {
+                        return _validateOldPassword(user, value!);
+                      },
+                      onSaved: (value) {},
+                    ),
+                    const SizedBox(height: 8),
+                    PMPasswordField(
+                      initialValue: '',
+                      labelText: 'New Password',
+                      validator: _newPasswordValidator,
+                      onSaved: (value) {
+                        _newPassword = value!;
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    PMPasswordField(
+                      initialValue: '',
+                      labelText: 'Confirm New Password',
+                      validator: _confirmValidator,
+                      onSaved: (value) {},
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
