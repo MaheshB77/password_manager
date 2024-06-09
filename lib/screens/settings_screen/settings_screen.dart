@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/user.dart';
 import 'package:password_manager/providers/user/user_provider.dart';
-import 'package:password_manager/screens/settings_screen/widgets/authentication_settings.dart';
+import 'package:password_manager/screens/settings_screen/widgets/security_settings.dart';
 import 'package:password_manager/screens/settings_screen/widgets/theme_settings.dart';
 import 'package:password_manager/shared/utils/theme_util.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
@@ -63,7 +63,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     _setTheme(user, theme);
                   },
                 ),
-                AuthenticationSettings(
+                SecuritySettings(
                   fingerprintLock: _fingerprintLock,
                   updateFingerprintChoice: (enabled) {
                     _updateFingerprintChoice(user, enabled);

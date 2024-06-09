@@ -40,10 +40,6 @@ class _PasswordFieldState extends State<PasswordField> {
           hintText: widget.hintText,
           errorText: widget.errorText,
           border: const OutlineInputBorder(),
-          // hintStyle: TextStyle(
-          //   color:
-          //       Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
-          // ),
           filled: true,
           suffixIcon: IconButton(
             icon: Icon(

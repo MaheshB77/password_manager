@@ -1,6 +1,6 @@
 class User {
   String? id;
-  final String masterPassword;
+  String masterPassword;
   int fingerprint;
   String theme;
   DateTime? createdAt;

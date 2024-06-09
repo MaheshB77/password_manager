@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:password_manager/screens/settings_screen/widgets/password_change.dart';
 
-class AuthenticationSettings extends StatelessWidget {
+class SecuritySettings extends StatelessWidget {
   final bool fingerprintLock;
   final void Function(bool) updateFingerprintChoice;
-  const AuthenticationSettings({
+
+  const SecuritySettings({
     super.key,
     required this.fingerprintLock,
     required this.updateFingerprintChoice,
@@ -14,8 +16,9 @@ class AuthenticationSettings extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: ExpansionTile(
-        title: const Text('Authentication'),
+        title: const Text('Security'),
         shape: const Border(),
+        initiallyExpanded: true,
         children: [
           SwitchListTile(
             title: const Text('Fingerprint lock'),
@@ -23,6 +26,7 @@ class AuthenticationSettings extends StatelessWidget {
             onChanged: updateFingerprintChoice,
             secondary: const Icon(Icons.fingerprint),
           ),
+          const PasswordChange(),
         ],
       ),
     );

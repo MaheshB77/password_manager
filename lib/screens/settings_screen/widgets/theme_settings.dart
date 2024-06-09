@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ThemeSettings extends StatelessWidget {
   final ThemeMode theme;
   final void Function(ThemeMode?) setTheme;
+
   const ThemeSettings({
     super.key,
     required this.theme,
@@ -16,6 +17,7 @@ class ThemeSettings extends StatelessWidget {
       child: ExpansionTile(
         title: const Text('Theme'),
         shape: const Border(),
+        initiallyExpanded: true,
         children: [
           RadioListTile<ThemeMode>(
             title: const Text('Light'),

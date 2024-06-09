@@ -3,14 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PMPasswordField extends ConsumerStatefulWidget {
   final String? initialValue;
+  final String? labelText;
+  final int? maxLength;
   final String? Function(String? value) validator;
   final void Function(String? value) onSaved;
-  
+
   const PMPasswordField({
     super.key,
     required this.initialValue,
     required this.validator,
     required this.onSaved,
+    this.labelText = 'Password',
+    this.maxLength = 50,
   });
 
   @override
@@ -27,11 +31,11 @@ class _PMPasswordFieldState extends ConsumerState<PMPasswordField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLength: 50,
+      maxLength: widget.maxLength,
       initialValue: widget.initialValue,
       obscureText: !_passwordVisible,
       decoration: InputDecoration(
-        labelText: 'Password',
+        labelText: widget.labelText,
         border: const OutlineInputBorder(),
         contentPadding: const EdgeInsets.all(12),
         suffixIcon: IconButton(
