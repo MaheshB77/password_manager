@@ -7,7 +7,6 @@ import 'package:password_manager/screens/passwords_screen/passwords_screen.dart'
 import 'package:password_manager/screens/login_screen/widgets/button.dart';
 import 'package:password_manager/screens/login_screen/widgets/password_field.dart';
 import 'package:password_manager/services/user_service.dart';
-import 'package:password_manager/shared/widgets/spinner.dart';
 
 class SignInForm extends ConsumerStatefulWidget {
   const SignInForm({super.key});
@@ -65,7 +64,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
         return Container();
       },
       error: (error, stackTrace) => Container(),
-      loading: () => const Spinner(),
+      loading: () => Container(),
     );
   }
 

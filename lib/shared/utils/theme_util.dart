@@ -5,3 +5,9 @@ class ThemeUtil {
     return Theme.of(context).brightness == Brightness.dark;
   }
 }
+
+extension ThemeExtension on ThemeMode {
+  String shortStr() {
+    return toString().split('.').last;
+  }
+}

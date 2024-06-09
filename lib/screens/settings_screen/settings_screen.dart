@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/user.dart';
-import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/providers/user/user_provider.dart';
+import 'package:password_manager/screens/settings_screen/widgets/authentication_settings.dart';
+import 'package:password_manager/screens/settings_screen/widgets/theme_settings.dart';
+import 'package:password_manager/shared/utils/theme_util.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -19,20 +21,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    _theme = ref.read(themeProvider);
   }
 
-  void _setTheme(ThemeMode? theme) {
-    ref.read(themeProvider.notifier).setTheme(theme!);
-    setState(() {
-      _theme = theme;
-    });
+  void _setTheme(User user, ThemeMode? theme) {
+    if (theme == null) return;
+    user.theme = theme.shortStr();
+    ref.read(userRepoProvider.notifier).updateUser(user);
   }
 
   void _updateFingerprintChoice(User user, bool enable) async {
     user.fingerprint = enable ? 1 : 0;
     await ref.read(userRepoProvider.notifier).updateUser(user);
     setState(() => _fingerprintLock = enable);
+  }
+
+  void _setInitials(User user) {
+    setState(() {
+      _fingerprintLock = user.fingerprint == 1;
+      _theme = ThemeMode.values.byName(user.theme);
+    });
   }
 
   @override
@@ -47,53 +54,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: userFuture.when(
           data: (user) {
-            setState(() => _fingerprintLock = user.fingerprint == 1);
+            _setInitials(user);
             return Column(
               children: [
-                Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: ExpansionTile(
-                    title: const Text('Theme'),
-                    shape: const Border(),
-                    children: [
-                      RadioListTile<ThemeMode>(
-                        title: const Text('Light'),
-                        value: ThemeMode.light,
-                        groupValue: _theme,
-                        onChanged: (value) => {_setTheme(value)},
-                      ),
-                      RadioListTile<ThemeMode>(
-                        title: const Text('Dark'),
-                        value: ThemeMode.dark,
-                        groupValue: _theme,
-                        onChanged: (value) => {_setTheme(value)},
-                      ),
-                      RadioListTile<ThemeMode>(
-                        title: const Text('System'),
-                        value: ThemeMode.system,
-                        groupValue: _theme,
-                        onChanged: (value) => {_setTheme(value)},
-                      ),
-                    ],
-                  ),
+                ThemeSettings(
+                  theme: _theme,
+                  setTheme: (theme) {
+                    _setTheme(user, theme);
+                  },
                 ),
-                Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: ExpansionTile(
-                    title: const Text('Authentication'),
-                    shape: const Border(),
-                    children: [
-                      SwitchListTile(
-                        title: const Text('Fingerprint lock'),
-                        value: _fingerprintLock,
-                        onChanged: (enable) {
-                          _updateFingerprintChoice(user, enable);
-                        },
-                        secondary: const Icon(Icons.fingerprint),
-                      ),
-                    ],
-                  ),
-                )
+                AuthenticationSettings(
+                  fingerprintLock: _fingerprintLock,
+                  updateFingerprintChoice: (enabled) {
+                    _updateFingerprintChoice(user, enabled);
+                  },
+                ),
               ],
             );
           },
