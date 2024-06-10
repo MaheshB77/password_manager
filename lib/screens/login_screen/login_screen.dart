@@ -24,7 +24,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _isUserCreated = ref.watch(userRepoProvider.notifier).isCreated();
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: SafeArea(
         child: FutureBuilder(
           future: _isUserCreated,
