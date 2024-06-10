@@ -16,6 +16,7 @@ class SignUpForm extends ConsumerStatefulWidget {
 class _SignUpFormState extends ConsumerState<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String _password = '';
+  String _passwordHint = '';
 
   void _createUser() async {
     _formKey.currentState!.save();
@@ -28,6 +29,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
           masterPassword: _password,
           fingerprint: 0,
           theme: 'system',
+          passwordHint: _passwordHint,
         );
         await ref.read(userRepoProvider.notifier).create(user);
 
@@ -45,12 +47,19 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
     }
   }
 
-  String? _validator(String? value) {
+  String? _passwordValidator(String? value) {
     if (value == null || value.isEmpty || value.length < 5) {
       return 'Password should have at-least 5 characters';
     }
     if (value.contains(' ')) {
       return 'Password can not have spaces';
+    }
+    return null;
+  }
+
+  String? _hintValidator(String? value) {
+    if (value == null || value.isEmpty || value.length < 2) {
+      return 'Should should have at-least 2 characters';
     }
     return null;
   }
@@ -88,7 +97,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               // Master Password field
               PasswordField(
                 hintText: 'Password',
-                validator: _validator,
+                validator: _passwordValidator,
                 onSaved: (value) {
                   _password = value!;
                 },
@@ -98,6 +107,20 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                 hintText: 'Confirm Password',
                 validator: _confirmValidator,
                 onSaved: (value) {},
+              ),
+              const SizedBox(height: 10),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: 'Password Hint',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                  ),
+                  validator: _hintValidator,
+                  onSaved: (value) => _passwordHint = value!,
+                ),
               ),
               const SizedBox(height: 20),
 

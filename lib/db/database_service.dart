@@ -25,7 +25,7 @@ class DatabaseService {
   Future<Database> _openDatabase(String path) async {
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -46,6 +46,11 @@ class DatabaseService {
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     print('Upgrading the database!');
+
+    if (oldVersion < 2) {
+      print('Updating the user table with password_hint column');
+      await db.execute(updateUserTable1);
+    }
   }
 
   Future<void> _insertDefaultCategories(Database db) async {

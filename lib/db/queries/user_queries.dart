@@ -8,3 +8,7 @@ const createUserTable = '''
           updatedAt TEXT
         );
     ''';
+
+const updateUserTable1 = '''
+        ALTER TABLE user ADD COLUMN password_hint TEXT;
+    ''';

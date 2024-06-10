@@ -3,12 +3,14 @@ class User {
   String masterPassword;
   int fingerprint;
   String theme;
+  String passwordHint;
   DateTime? createdAt;
   DateTime? updatedAt;
 
   User({
     this.id,
     required this.masterPassword,
+    required this.passwordHint,
     this.theme = 'system',
     this.fingerprint = 0,
     this.createdAt,
@@ -19,6 +21,7 @@ class User {
     return User(
       id: json['id'],
       masterPassword: json['master_password'],
+      passwordHint: json['password_hint'] ?? '',
       fingerprint: json['fingerprint'],
       theme: json['theme'],
       createdAt: DateTime.parse(json['createdAt']),
@@ -30,6 +33,7 @@ class User {
     return {
       'id': id,
       'master_password': masterPassword,
+      'password_hint': passwordHint,
       'fingerprint': fingerprint,
       'theme': theme,
       'createdAt': createdAt != null ? createdAt!.toIso8601String() : '',
