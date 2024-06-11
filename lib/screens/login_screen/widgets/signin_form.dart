@@ -16,6 +16,7 @@ class SignInForm extends ConsumerStatefulWidget {
 
 class _SignInFormState extends ConsumerState<SignInForm> {
   String? _errorText;
+  bool _showHint = false;
   final _pwdController = TextEditingController();
   final LocalAuthentication _auth = LocalAuthentication();
 
@@ -25,10 +26,16 @@ class _SignInFormState extends ConsumerState<SignInForm> {
         .validate(_pwdController.text);
 
     if (valid) {
-      setState(() => _errorText = null);
+      setState(() {
+        _errorText = null;
+        _showHint = false;
+      });
       _goToHomeScreen();
     } else {
-      setState(() => _errorText = 'Please enter the valid password');
+      setState(() {
+        _errorText = 'Please enter the valid password';
+        _showHint = true;
+      });
     }
   }
 
@@ -63,6 +70,16 @@ class _SignInFormState extends ConsumerState<SignInForm> {
           );
         }
         return Container();
+      },
+      error: (error, stackTrace) => Container(),
+      loading: () => Container(),
+    );
+  }
+
+  Widget _getHint(AsyncValue<User> userFuture) {
+    return userFuture.when(
+      data: (user) {
+        return Text('Hint : ${user.passwordHint}');
       },
       error: (error, stackTrace) => Container(),
       loading: () => Container(),
@@ -109,6 +126,8 @@ class _SignInFormState extends ConsumerState<SignInForm> {
             btnText: 'Login',
             onTap: _login,
           ),
+          const SizedBox(height: 20),
+          if (_showHint) _getHint(userFuture),
         ],
       ),
     );
