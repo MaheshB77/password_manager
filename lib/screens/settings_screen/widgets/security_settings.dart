@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:password_manager/screens/settings_screen/widgets/hint_change.dart';
 import 'package:password_manager/screens/settings_screen/widgets/password_change.dart';
 
 class SecuritySettings extends StatelessWidget {
@@ -27,6 +28,7 @@ class SecuritySettings extends StatelessWidget {
             secondary: const Icon(Icons.fingerprint),
           ),
           const PasswordChange(),
+          const HintChange(),
         ],
       ),
     );

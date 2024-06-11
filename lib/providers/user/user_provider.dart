@@ -45,6 +45,7 @@ class UserRepo extends _$UserRepo {
         'fingerprint': user.fingerprint,
         'theme': user.theme,
         'master_password': user.masterPassword,
+        'password_hint': user.passwordHint,
         'updatedAt': getDateString(user.updatedAt),
       },
     );

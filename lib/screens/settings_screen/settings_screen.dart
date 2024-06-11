@@ -55,21 +55,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         child: userFuture.when(
           data: (user) {
             _setInitials(user);
-            return Column(
-              children: [
-                ThemeSettings(
-                  theme: _theme,
-                  setTheme: (theme) {
-                    _setTheme(user, theme);
-                  },
-                ),
-                SecuritySettings(
-                  fingerprintLock: _fingerprintLock,
-                  updateFingerprintChoice: (enabled) {
-                    _updateFingerprintChoice(user, enabled);
-                  },
-                ),
-              ],
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  ThemeSettings(
+                    theme: _theme,
+                    setTheme: (theme) {
+                      _setTheme(user, theme);
+                    },
+                  ),
+                  SecuritySettings(
+                    fingerprintLock: _fingerprintLock,
+                    updateFingerprintChoice: (enabled) {
+                      _updateFingerprintChoice(user, enabled);
+                    },
+                  ),
+                ],
+              ),
             );
           },
           error: (error, stackTrace) {
