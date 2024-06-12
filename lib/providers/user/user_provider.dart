@@ -16,7 +16,6 @@ class UserRepo extends _$UserRepo {
     print('Getting user from DB');
     Database db = await DatabaseService.instance.db;
     var rows = await db.query('user');
-    print('rows : $rows');
     List<User> users = rows.map((e) => User.fromMap(e)).toList();
     return users.single;
   }

@@ -79,6 +79,7 @@ flutter:
     - .env
     - assets/images/default_avatar.png
     - assets/images/no_passwords.png
+    - assets/images/
     - assets/icons/
     - assets/ext_icons/
 

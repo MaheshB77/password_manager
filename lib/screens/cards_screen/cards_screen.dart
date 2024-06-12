@@ -11,6 +11,7 @@ import 'package:password_manager/screens/cards_screen/widgets/card_category_chip
 import 'package:password_manager/screens/cards_screen/widgets/card_search.dart';
 import 'package:password_manager/screens/cards_screen/widgets/card_tile.dart';
 import 'package:password_manager/screens/cards_screen/widgets/cards_filter.dart';
+import 'package:password_manager/screens/cards_screen/widgets/no_cards.dart';
 import 'package:password_manager/shared/utils/card_category_util.dart';
 import 'package:password_manager/shared/widgets/side_drawer.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
@@ -184,41 +185,46 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
       drawer: const SideDrawer(),
       body: cardsList.when(
         data: (cards) => Column(
-          children: [
-            CardSearch(
-              cards: cards,
-              searchController: _searchController,
-              search: _search,
-              showFilters: _showFilters,
-            ),
-            CardCategoryChips(
-              categories: _selectedCategories,
-              updateSelectedCategories: _updateSelectedCategories,
-            ),
-            _selectedCategories.isNotEmpty
-                ? const Divider(indent: 10, endIndent: 10)
-                : Container(),
-            Expanded(
-              child: ListView.builder(
-                // TODO : Remove getCards() and make this easy to read
-                itemCount: getCards(cards).length,
-                itemBuilder: (ctx, index) => CardTile(
-                  cardItem: getCards(cards)[index],
-                  cardCategory: CardCategoryUtil.getById(
-                    cardCategories.value == null ? [] : cardCategories.value!,
-                    getCards(cards)[index].cardCategoryId,
+          children: cards.isNotEmpty
+              ? [
+                  CardSearch(
+                    cards: cards,
+                    searchController: _searchController,
+                    search: _search,
+                    showFilters: _showFilters,
                   ),
-                  index: index,
-                  onTap: () {
-                    _onTap(getCards(cards)[index], getCards(cards));
-                  },
-                  onLongPress: () {
-                    _onLongPress(getCards(cards)[index].id!, getCards(cards));
-                  },
-                ),
-              ),
-            )
-          ],
+                  CardCategoryChips(
+                    categories: _selectedCategories,
+                    updateSelectedCategories: _updateSelectedCategories,
+                  ),
+                  _selectedCategories.isNotEmpty
+                      ? const Divider(indent: 10, endIndent: 10)
+                      : Container(),
+                  Expanded(
+                    child: ListView.builder(
+                      // TODO : Remove getCards() and make this easy to read
+                      itemCount: getCards(cards).length,
+                      itemBuilder: (ctx, index) => CardTile(
+                        cardItem: getCards(cards)[index],
+                        cardCategory: CardCategoryUtil.getById(
+                          cardCategories.value == null
+                              ? []
+                              : cardCategories.value!,
+                          getCards(cards)[index].cardCategoryId,
+                        ),
+                        index: index,
+                        onTap: () {
+                          _onTap(getCards(cards)[index], getCards(cards));
+                        },
+                        onLongPress: () {
+                          _onLongPress(
+                              getCards(cards)[index].id!, getCards(cards));
+                        },
+                      ),
+                    ),
+                  )
+                ]
+              : [const NoCards()],
         ),
         error: (error, stackTrace) => const SizedBox(
           height: double.infinity,
