@@ -50,13 +50,34 @@ class _SignInFormState extends ConsumerState<SignInForm> {
     }
   }
 
-  void _goToHomeScreen() {
+  void _goToHomeScreen() async {
     if (!mounted) return;
-    Navigator.pushAndRemoveUntil(
+    // await Navigator.pushAndRemoveUntil(
+    //   context,
+    //   MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+    //   (route) => false,
+    // );
+
+    final value = await Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (ctx) => const HomeScreen()),
-      (route) => false,
     );
+    print('VALUE ===> $value');
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+    //   );
+    // });
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+    //     (route) => false,
+    //   );
+    // });
   }
 
   Widget _getFingerprintButton(AsyncValue<User> userFuture) {

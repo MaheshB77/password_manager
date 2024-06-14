@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category/category_provider.dart';
@@ -120,39 +121,69 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
+  Future<bool> showExitConfirmation() async {
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Exit App?'),
+        content: Text('Are you sure you want to exit?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false), // Stay in the app
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true), // Exit the app
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Loading Home Screen!');
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Passwords'),
-        actions: anySelected ? [popupMenuButton] : [],
-        leading: anySelected
-            ? IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: _clearSelected,
-              )
-            : null,
-      ),
-      drawer: const SideDrawer(),
-      body: FutureBuilder(
-        future: _passwordFuture,
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Text('Error : ${snapshot.error}');
-          } else if (snapshot.data != null && snapshot.data!.isEmpty) {
-            return const NoPasswords();
-          } else {
-            return const PasswordList();
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _onAdd,
-        child: const Icon(Icons.add),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+        final bool shouldPop = await showExitConfirmation();
+        if (shouldPop) {
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Passwords'),
+          actions: anySelected ? [popupMenuButton] : [],
+          leading: anySelected
+              ? IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: _clearSelected,
+                )
+              : null,
+        ),
+        drawer: const SideDrawer(),
+        body: FutureBuilder(
+          future: _passwordFuture,
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Error : ${snapshot.error}');
+            } else if (snapshot.data != null && snapshot.data!.isEmpty) {
+              return const NoPasswords();
+            } else {
+              return const PasswordList();
+            }
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _onAdd,
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
