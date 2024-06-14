@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category/category_provider.dart';
@@ -7,6 +6,7 @@ import 'package:password_manager/providers/password_filter_provider.dart';
 import 'package:password_manager/providers/password/password_provider.dart';
 import 'package:password_manager/screens/passwords_screen/widgets/no_passwords.dart';
 import 'package:password_manager/screens/password_form/password_form_screen.dart';
+import 'package:password_manager/shared/widgets/pm_exit_confirmation.dart';
 import 'package:password_manager/shared/widgets/side_drawer.dart';
 import 'package:password_manager/screens/passwords_screen/widgets/password_list.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
@@ -121,39 +121,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Future<bool> showExitConfirmation() async {
-    return await showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text('Exit App?'),
-        content: Text('Are you sure you want to exit?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false), // Stay in the app
-            child: Text('No'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true), // Exit the app
-            child: Text('Yes'),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     print('Loading Home Screen!');
 
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) async {
-        if (didPop) return;
-        final bool shouldPop = await showExitConfirmation();
-        if (shouldPop) {
-          SystemNavigator.pop();
-        }
-      },
+    return PMExitConfirmation(
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Passwords'),
