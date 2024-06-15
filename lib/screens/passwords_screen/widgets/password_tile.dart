@@ -22,8 +22,6 @@ class PasswordTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formattedDate =
-        password.updatedAt!.toLocal().toString().substring(0, 19);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
@@ -39,12 +37,9 @@ class PasswordTile extends ConsumerWidget {
           'Category : ${category.name}',
           style: Theme.of(context).textTheme.labelSmall,
         ),
-        trailing: SizedBox(
-          width: 115,
-          child: Text(
-            'Last updated on $formattedDate',
-            textAlign: TextAlign.center,
-          ),
+        trailing: IconButton(
+          icon: const Icon(Icons.star_border),
+          onPressed: () => print('Add button tapped'),
         ),
         titleAlignment: ListTileTitleAlignment.center,
         onTap: () => onTap(password.id!, index),

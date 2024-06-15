@@ -21,6 +21,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late Future<List<Password>> _passwordFuture;
   bool _deleting = false;
+  bool _favorites = false;
 
   @override
   void initState() {
@@ -106,18 +107,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget get popupMenuButton {
-    return PopupMenuButton(
-      itemBuilder: (ctx) => [
-        PopupMenuItem(
-          onTap: _deleteConfirmation,
-          child: const ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('Delete'),
-            dense: true,
+  Widget get actionRow {
+    final MaterialStateProperty<Icon?> thumbIcon =
+        MaterialStateProperty.resolveWith<Icon?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected)) {
+          return const Icon(Icons.star);
+        }
+        return const Icon(Icons.star_border);
+      },
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: Row(
+        children: [
+          Switch(
+            value: _favorites,
+            thumbIcon: thumbIcon,
+            onChanged: (value) {
+              setState(() => _favorites = value);
+            },
           ),
-        ),
-      ],
+          if (anySelected)
+            IconButton(
+              onPressed: _deleteConfirmation,
+              icon: const Icon(Icons.delete),
+            ),
+        ],
+      ),
     );
   }
 
@@ -129,7 +147,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Passwords'),
-          actions: anySelected ? [popupMenuButton] : [],
+          actions: [actionRow],
           leading: anySelected
               ? IconButton(
                   icon: const Icon(Icons.clear),
