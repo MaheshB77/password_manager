@@ -106,16 +106,6 @@ class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
     }
   }
 
-  void _clearForm() {
-    setState(() {
-      _formKey.currentState!.reset();
-      _title = '';
-      _username = '';
-      _email = '';
-      _password = '';
-    });
-  }
-
   void _toggleSending() {
     setState(() => _sending = !_sending);
   }
@@ -211,22 +201,15 @@ class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
                   onSaved: (value) => _password = value!,
                 ),
                 const SizedBox(height: 14),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _sending ? null : _clearForm,
-                      child: const Text('Clear'),
-                    ),
-                    const SizedBox(width: 14),
-                    ElevatedButton(
-                      onPressed: _sending ? null : _onAdd,
-                      child: _sending
-                          ? const Spinner()
-                          : Text(_new ? 'Add' : 'Update'),
-                    ),
-                  ],
-                )
+                SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                    onPressed: _sending ? null : _onAdd,
+                    child: _sending
+                        ? const Spinner()
+                        : Text(_new ? 'Add' : 'Update'),
+                  ),
+                ),
               ],
             ),
           ),
