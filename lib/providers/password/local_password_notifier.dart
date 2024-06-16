@@ -28,6 +28,7 @@ class PasswordNotifierLocal extends StateNotifier<List<Password>> {
     try {
       print('Updating the password');
       await ps.update(password);
+      await getPasswords();
     } catch (error) {
       print('Error while updating the password :: $error');
     }

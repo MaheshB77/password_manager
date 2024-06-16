@@ -42,6 +42,14 @@ class PasswordFilterNotifier extends StateNotifier<List<Password>> {
     }
     state = [...state];
   }
+
+  void toggleFavorites(bool enableFavorites) {
+    if (enableFavorites) {
+      state = passwords.where((pwd) => pwd.isFavorite == 1).toList();
+    } else {
+      state = passwords;
+    }
+  }
 }
 
 final passwordFilterProvider =

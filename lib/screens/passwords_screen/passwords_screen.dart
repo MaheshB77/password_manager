@@ -122,18 +122,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       padding: const EdgeInsets.only(right: 8),
       child: Row(
         children: [
-          Switch(
-            value: _favorites,
-            thumbIcon: thumbIcon,
-            onChanged: (value) {
-              setState(() => _favorites = value);
-            },
-          ),
-          if (anySelected)
-            IconButton(
-              onPressed: _deleteConfirmation,
-              icon: const Icon(Icons.delete),
-            ),
+          anySelected
+              ? IconButton(
+                  onPressed: _deleteConfirmation,
+                  icon: const Icon(Icons.delete),
+                )
+              : Switch(
+                  value: _favorites,
+                  thumbIcon: thumbIcon,
+                  onChanged: (value) {
+                    ref
+                        .read(passwordFilterProvider.notifier)
+                        .toggleFavorites(value);
+                    setState(() => _favorites = value);
+                  },
+                )
         ],
       ),
     );

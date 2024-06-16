@@ -31,6 +31,7 @@ class PasswordService {
       {
         'title': pwd.title,
         'username': pwd.username,
+        'is_favorite': pwd.isFavorite,
         'password': pwd.password,
         'email': pwd.email,
         'categoryId': pwd.categoryId,

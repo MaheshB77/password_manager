@@ -12,3 +12,7 @@ const createPasswordTable = '''
           updatedAt TEXT
         );
       ''';
+
+const updatePasswordTable1 = '''
+        ALTER TABLE passwords ADD COLUMN is_favorite INTEGER DEFAULT 0;
+    ''';

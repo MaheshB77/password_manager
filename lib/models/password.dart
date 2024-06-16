@@ -3,6 +3,7 @@ class Password {
   final String username;
   final String password;
   final String categoryId;
+  int isFavorite;
   String? id;
   String? email;
   String? note;
@@ -19,6 +20,7 @@ class Password {
     required this.username,
     required this.password,
     required this.categoryId,
+    this.isFavorite = 1,
     this.id,
     this.email,
     this.note,
@@ -44,6 +46,7 @@ class Password {
       title: json['title'],
       username: json['username'],
       password: json['password'],
+      isFavorite: json['is_favorite'] ?? 0,
       categoryId: json['categoryId'],
       email: json['email'],
       note: json['note'],
@@ -60,6 +63,7 @@ class Password {
       'title': title,
       'username': username,
       'password': password,
+      'is_favorite': isFavorite,
       'categoryId': categoryId,
       'email': email,
       'note': note,
