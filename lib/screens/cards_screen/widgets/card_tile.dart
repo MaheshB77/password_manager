@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/card_category.dart';
 import 'package:password_manager/models/card_item.dart';
+import 'package:password_manager/providers/card/card_provider.dart';
 import 'package:password_manager/shared/utils/theme_util.dart';
 
-class CardTile extends StatelessWidget {
+class CardTile extends ConsumerWidget {
   final CardItem cardItem;
   final CardCategory cardCategory;
   final int index;
@@ -19,8 +21,13 @@ class CardTile extends StatelessWidget {
     required this.onLongPress,
   });
 
+  Future<void> _toggleFavorite(WidgetRef ref) async {
+    cardItem.isFavorite = cardItem.isFavorite == 1 ? 0 : 1;
+    await ref.read(cardListProvider.notifier).updateCard(cardItem);
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     String bankIcon =
         ThemeUtil.isDark(context) ? cardCategory.darkIcon : cardCategory.icon;
 
@@ -38,6 +45,14 @@ class CardTile extends StatelessWidget {
         subtitle: Text(
           cardItem.cardNumber,
           style: Theme.of(context).textTheme.bodySmall!,
+        ),
+        trailing: IconButton(
+          icon: cardItem.isFavorite == 0
+              ? const Icon(Icons.star_border)
+              : const Icon(Icons.star),
+          onPressed: () async {
+            await _toggleFavorite(ref);
+          },
         ),
         onTap: onTap,
         onLongPress: () => onLongPress(),

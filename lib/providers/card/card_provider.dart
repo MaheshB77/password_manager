@@ -43,6 +43,7 @@ class CardList extends _$CardList {
         'card_category_id': cardItem.cardCategoryId,
         'card_number': cardItem.cardNumber,
         'card_holder_name': cardItem.cardHolderName,
+        'is_favorite': cardItem.isFavorite,
         'pin': cardItem.pin,
         'cvv': cardItem.cvv,
         'issue_date': getDateString(cardItem.issueDate),

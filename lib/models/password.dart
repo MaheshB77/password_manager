@@ -20,7 +20,7 @@ class Password {
     required this.username,
     required this.password,
     required this.categoryId,
-    this.isFavorite = 1,
+    this.isFavorite = 0,
     this.id,
     this.email,
     this.note,

@@ -5,6 +5,7 @@ class CardItem {
   String cardCategoryId;
   String cardNumber;
   String cardHolderName;
+  int isFavorite;
   DateTime? issueDate;
   DateTime? expiryDate;
   String? id;
@@ -21,6 +22,7 @@ class CardItem {
     required this.cardCategoryId,
     required this.cardNumber,
     required this.cardHolderName,
+    this.isFavorite = 0,
     this.issueDate,
     this.expiryDate,
     this.id,
@@ -54,6 +56,7 @@ class CardItem {
       cardCategoryId: json['card_category_id'],
       cardNumber: json['card_number'],
       cardHolderName: json['card_holder_name'],
+      isFavorite: json['is_favorite'] ?? 0,
       id: json['id'],
       pin: json['pin'],
       cvv: json['cvv'],
@@ -70,6 +73,7 @@ class CardItem {
       'card_category_id': cardCategoryId,
       'card_number': cardNumber,
       'card_holder_name': cardHolderName,
+      'is_favorite': isFavorite,
       'id': id,
       'pin': pin,
       'cvv': cvv,

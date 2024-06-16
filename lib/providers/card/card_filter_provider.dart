@@ -12,16 +12,17 @@ class CardFilterList extends _$CardFilterList {
     return ref.watch(cardListProvider).value ?? [];
   }
 
-  void search(String searchStr, List<CardItem> cards) {
+  void search(String searchStr) {
+    var cards1 = ref.watch(cardListProvider).value ?? [];
     if (searchStr.isNotEmpty) {
-      state = cards
+      state = cards1
           .where(
             (card) =>
                 card.title.toLowerCase().contains(searchStr.toLowerCase()),
           )
           .toList();
     } else {
-      state = cards;
+      state = cards1;
     }
   }
 
@@ -54,5 +55,14 @@ class CardFilterList extends _$CardFilterList {
       }
     }
     state = [...cards];
+  }
+
+  void toggleFavorites(bool enableFavorites) {
+    var cards = ref.watch(cardListProvider).value ?? [];
+    if (enableFavorites) {
+      state = cards.where((pwd) => pwd.isFavorite == 1).toList();
+    } else {
+      state = cards;
+    }
   }
 }

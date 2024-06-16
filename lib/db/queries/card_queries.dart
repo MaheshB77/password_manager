@@ -15,3 +15,7 @@ const createCardTable = '''
           FOREIGN KEY(card_category_id) REFERENCES card_category(id)
         );
 ''';
+
+const updateCardTable1 = '''
+        ALTER TABLE card ADD COLUMN is_favorite INTEGER DEFAULT 0;
+    ''';

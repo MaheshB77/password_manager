@@ -28,6 +28,7 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
   final _searchController = TextEditingController();
   final List<CardCategory> _selectedCategories = [];
   bool _deleting = false;
+  bool _favorites = false;
 
   @override
   void dispose() {
@@ -35,8 +36,8 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
     _searchController.dispose();
   }
 
-  void _search(String value, List<CardItem> cards) {
-    ref.read(cardFilterListProvider.notifier).search(value, cards);
+  void _search(String value) {
+    ref.read(cardFilterListProvider.notifier).search(value);
   }
 
   void _onAdd() async {
@@ -165,6 +166,41 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
     );
   }
 
+  Widget get actionRow {
+    final MaterialStateProperty<Icon?> thumbIcon =
+        MaterialStateProperty.resolveWith<Icon?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected)) {
+          return const Icon(Icons.star);
+        }
+        return const Icon(Icons.star_border);
+      },
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: Row(
+        children: [
+          anySelected
+              ? IconButton(
+                  onPressed: _deleteConfirmation,
+                  icon: const Icon(Icons.delete),
+                )
+              : Switch(
+                  value: _favorites,
+                  thumbIcon: thumbIcon,
+                  onChanged: (value) {
+                    ref
+                        .read(cardFilterListProvider.notifier)
+                        .toggleFavorites(value);
+                    setState(() => _favorites = value);
+                  },
+                )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cardsList = ref.watch(cardListProvider);
@@ -175,14 +211,7 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Cards'),
-          actions: anySelected
-              ? [
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: _deleteConfirmation,
-                  ),
-                ]
-              : [],
+          actions: [actionRow],
         ),
         drawer: const SideDrawer(),
         body: cardsList.when(

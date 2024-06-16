@@ -4,7 +4,7 @@ import 'package:password_manager/models/card_item.dart';
 class CardSearch extends StatelessWidget {
   final TextEditingController searchController;
   final List<CardItem> cards;
-  final void Function(String, List<CardItem>) search;
+  final void Function(String) search;
   final void Function() showFilters;
   
   const CardSearch({
@@ -33,7 +33,7 @@ class CardSearch extends StatelessWidget {
             border: const OutlineInputBorder(gapPadding: 5),
             contentPadding: const EdgeInsets.all(8),
           ),
-          onChanged: (value) => search(value, cards),
+          onChanged: (value) => search(value),
         ),
       ),
     );

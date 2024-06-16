@@ -25,7 +25,7 @@ class DatabaseService {
   Future<Database> _openDatabase(String path) async {
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -55,6 +55,11 @@ class DatabaseService {
     if (oldVersion < 3) {
       print('Updating the passwords table with is_favorite column');
       await db.execute(updatePasswordTable1);
+    }
+
+    if (oldVersion < 4) {
+      print('Updating the card table with is_favorite column');
+      await db.execute(updateCardTable1);
     }
   }
 
