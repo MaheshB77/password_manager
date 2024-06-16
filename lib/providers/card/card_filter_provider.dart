@@ -13,16 +13,16 @@ class CardFilterList extends _$CardFilterList {
   }
 
   void search(String searchStr) {
-    var cards1 = ref.watch(cardListProvider).value ?? [];
+    var cards = ref.watch(cardListProvider).value ?? [];
     if (searchStr.isNotEmpty) {
-      state = cards1
+      state = cards
           .where(
             (card) =>
                 card.title.toLowerCase().contains(searchStr.toLowerCase()),
           )
           .toList();
     } else {
-      state = cards1;
+      state = cards;
     }
   }
 
