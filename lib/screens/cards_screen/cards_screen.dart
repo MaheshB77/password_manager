@@ -95,11 +95,12 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
     return filteredCards.any((card) => card.selected);
   }
 
+  // TODO: This can be improved
   List<CardItem> getCards(List<CardItem> cards) {
     final filteredCards = ref.read(cardFilterListProvider);
     return (filteredCards.isEmpty &&
             _searchController.text.isEmpty &&
-            _selectedCategories.isEmpty)
+            _selectedCategories.isEmpty && !_favorites)
         ? cards
         : filteredCards;
   }
