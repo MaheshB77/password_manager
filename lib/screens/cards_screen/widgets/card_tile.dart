@@ -34,6 +34,7 @@ class CardTile extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
+        contentPadding: const EdgeInsets.only(left: 16.0, right: 0.0),
         leading: Image.asset(bankIcon),
         title: Text(
           cardItem.title,
