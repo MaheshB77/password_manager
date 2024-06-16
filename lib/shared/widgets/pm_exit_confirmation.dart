@@ -5,7 +5,7 @@ class PMExitConfirmation extends StatelessWidget {
   final Widget child;
   const PMExitConfirmation({super.key, required this.child});
 
-  Future<bool> showExitConfirmation(BuildContext context) async {
+  Future<bool?> showExitConfirmation(BuildContext context) async {
     return await showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -31,8 +31,8 @@ class PMExitConfirmation extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (didPop) return;
-        final bool shouldPop = await showExitConfirmation(context);
-        if (shouldPop) {
+        final bool? shouldPop = await showExitConfirmation(context);
+        if (shouldPop != null && shouldPop) {
           SystemNavigator.pop();
         }
       },
