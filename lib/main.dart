@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:password_manager/config/env_config.dart';
 import 'package:password_manager/models/user.dart';
 import 'package:password_manager/providers/user/user_provider.dart';
 import 'package:password_manager/screens/login_screen/login_screen.dart';
@@ -11,7 +10,6 @@ import 'package:password_manager/shared/utils/snackbar_util.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await envInit();
   runApp(
     const ProviderScope(
       child: MyApp(),
