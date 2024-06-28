@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/models/card_category.dart';
 import 'package:password_manager/models/card_item.dart';
-import 'package:password_manager/providers/card/card_category_provider.dart';
 import 'package:password_manager/providers/card/card_provider.dart';
+import 'package:password_manager/screens/card_form/widgets/card_category_dropdown.dart';
 import 'package:password_manager/screens/cards_screen/cards_screen.dart';
-import 'package:password_manager/shared/utils/card_category_util.dart';
 import 'package:password_manager/shared/utils/snackbar_util.dart';
-import 'package:password_manager/shared/widgets/pm_dropdown_menu.dart';
 import 'package:password_manager/shared/widgets/pm_text_field.dart';
-import 'package:password_manager/shared/widgets/spinner.dart';
 
 class CardFormScreen extends ConsumerStatefulWidget {
   final CardItem? cardItem;
@@ -30,25 +27,15 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
   String _cvv = '';
   DateTime? _issueDate;
   DateTime? _expiryDate;
-  late CardCategory _selectedCategory;
+  CardCategory? _selectedCategory;
 
   @override
   void initState() {
     super.initState();
-    final categories =
-        ref.read(cardCategoryListProvider).value; // TODO: Can be improved
-    _selectedCategory = CardCategoryUtil.getByName(
-      categories,
-      'Credit',
-    ); // Default category
 
     _newCard = widget.cardItem == null;
 
     if (!_newCard) {
-      _selectedCategory = CardCategoryUtil.getById(
-        categories!,
-        widget.cardItem!.cardCategoryId,
-      );
       _title = widget.cardItem!.title;
       _cardHolderName = widget.cardItem!.cardHolderName;
       _cardNumber = widget.cardItem!.cardNumber;
@@ -75,7 +62,7 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
       _formKey.currentState!.save();
       final cardItem = CardItem(
         title: _title,
-        cardCategoryId: _selectedCategory.id!,
+        cardCategoryId: _selectedCategory!.id!,
         cardNumber: _cardNumber,
         cardHolderName: _cardHolderName,
         issueDate: _issueDate,
@@ -128,8 +115,6 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = ref.watch(cardCategoryListProvider);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Card'),
@@ -149,26 +134,13 @@ class _CardFormScreenState extends ConsumerState<CardFormScreen> {
                   onSaved: (value) => {_title = value!},
                 ),
                 const SizedBox(height: 12),
-                categories.when(
-                  data: (cardCategories) {
-                    return PMDropdownMenu<CardCategory>(
-                      entries: cardCategories,
-                      initialSelection: _selectedCategory,
-                      label: 'Card Category',
-                      onEntrySelection: (cat) {
-                        if (cat != null) {
-                          _selectedCategory = cat;
-                        }
-                      },
-                    );
+                CardCategoryDropdown(
+                  cardItem: widget.cardItem,
+                  onEntrySelection: (cat) {
+                    if (cat != null) {
+                      _selectedCategory = cat;
+                    }
                   },
-                  error: (error, stackTrace) => const SizedBox(
-                    height: double.infinity,
-                    child: Center(
-                      child: Text('Something went wrong'),
-                    ),
-                  ),
-                  loading: () => const Spinner(),
                 ),
                 const SizedBox(height: 22),
                 PMTextField(

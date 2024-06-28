@@ -1,4 +1,3 @@
-import 'package:mockito/mockito.dart';
 
 import 'package:password_manager/db/database_service.dart';
 import 'package:password_manager/models/card_item.dart';
@@ -95,5 +94,3 @@ class CardList extends _$CardList {
     );
   }
 }
-
-class CardListMock extends _$CardList with Mock implements CardList {}
