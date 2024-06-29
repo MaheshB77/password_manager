@@ -144,7 +144,7 @@ class _PasswordsScreenState extends ConsumerState<PasswordsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Loading Home Screen!');
+    print('Loading Passwords Screen!');
 
     return PMExitConfirmation(
       child: Scaffold(

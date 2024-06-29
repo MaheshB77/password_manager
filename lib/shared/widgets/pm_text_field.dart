@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PMTextField extends ConsumerWidget {
   final String? initialValue;
+  final Key? fieldKey;
   final String labelText;
   final TextInputType? keyboardType;
   final String? Function(String? value)? validator;
@@ -15,11 +16,13 @@ class PMTextField extends ConsumerWidget {
     required this.onSaved,
     this.validator,
     this.keyboardType,
+    this.fieldKey,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextFormField(
+      key: fieldKey,
       maxLength: 50,
       initialValue: initialValue,
       keyboardType: keyboardType,

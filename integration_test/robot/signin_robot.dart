@@ -8,10 +8,10 @@ import 'package:password_manager/main.dart' as app;
 
 import '../utils/test_utils.dart';
 
-class SignUpRobot {
+class SignInRobot {
   final WidgetTester tester;
 
-  SignUpRobot(this.tester);
+  SignInRobot(this.tester);
 
   Future<void> signIn() async {
     await tester.pumpWidget(

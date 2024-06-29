@@ -3,6 +3,7 @@ import 'package:password_manager/models/card_category.dart';
 import 'package:password_manager/models/category.dart';
 
 class PMDropdownMenu<T> extends StatelessWidget {
+  final Key? fieldKey;
   final List<T> entries;
   final T initialSelection;
   final String label;
@@ -14,6 +15,7 @@ class PMDropdownMenu<T> extends StatelessWidget {
     required this.initialSelection,
     required this.label,
     required this.onEntrySelection,
+    this.fieldKey,
   });
 
   @override
@@ -22,6 +24,7 @@ class PMDropdownMenu<T> extends StatelessWidget {
       height: 50,
       child: DropdownMenu<T>(
         label: Text(label),
+        key: fieldKey,
         initialSelection: initialSelection,
         expandedInsets: const EdgeInsets.all(0),
         inputDecorationTheme: const InputDecorationTheme(

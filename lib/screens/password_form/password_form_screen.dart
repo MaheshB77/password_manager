@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:password_manager/constants/icons.dart';
+import 'package:password_manager/constants/keys.dart';
 import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/models/pm_icon.dart';
@@ -166,6 +167,7 @@ class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
                     : Container(),
                 const SizedBox(height: 18),
                 PMDropdownMenu(
+                  fieldKey: AppKeys.categoryDropdownKey,
                   label: 'Category',
                   entries: _categories,
                   initialSelection: _category,
@@ -173,6 +175,7 @@ class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
                 ),
                 const SizedBox(height: 18),
                 PMTextField(
+                  fieldKey: AppKeys.titleKey,
                   initialValue: _title,
                   labelText: 'Title',
                   validator: (value) => _fieldValidator(value, 1, 50, 'Title'),
@@ -180,6 +183,7 @@ class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
                 ),
                 const SizedBox(height: 14),
                 PMTextField(
+                  fieldKey: AppKeys.usernameKey,
                   initialValue: _username,
                   labelText: 'Username',
                   validator: (value) =>
@@ -188,6 +192,7 @@ class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
                 ),
                 const SizedBox(height: 14),
                 PMTextField(
+                  fieldKey: AppKeys.emailKey,
                   initialValue: _email,
                   labelText: 'Email (optional)',
                   validator: (value) => _emailValidator(value),
@@ -195,6 +200,7 @@ class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
                 ),
                 const SizedBox(height: 14),
                 PMPasswordField(
+                  fieldKey: AppKeys.passwordKey,
                   initialValue: _password,
                   validator: (value) =>
                       _fieldValidator(value, 5, 50, 'Password'),
@@ -204,6 +210,7 @@ class _PasswordFormScreenState extends ConsumerState<PasswordFormScreen> {
                 SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
+                    key: AppKeys.addButton,
                     onPressed: _sending ? null : _onAdd,
                     child: _sending
                         ? const Spinner()
