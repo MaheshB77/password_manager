@@ -42,6 +42,21 @@ class DatabaseService {
     await db.execute(createCardCategoryTable);
     await db.execute(createCardTable);
     await _insertDefaultCardCategories(db);
+
+    if (version >= 2) {
+      print('Updating the user table with password_hint column');
+      await db.execute(updateUserTable1);
+    }
+
+    if (version >= 3) {
+      print('Updating the passwords table with is_favorite column');
+      await db.execute(updatePasswordTable1);
+    }
+
+    if (version >= 4) {
+      print('Updating the card table with is_favorite column');
+      await db.execute(updateCardTable1);
+    }
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -102,5 +117,13 @@ class DatabaseService {
 
     print('Opening the imported database');
     database = await _initDatabase();
+  }
+
+  reset() async {
+    final db = await instance.db;
+    print('Resetting the database, deleting user, cards and passwords');
+    await db.delete('user');
+    await db.delete('card');
+    await db.delete('passwords');
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/constants/keys.dart';
 import 'package:password_manager/models/user.dart';
 import 'package:password_manager/providers/user/user_provider.dart';
 import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
@@ -37,7 +38,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (ctx) => const HomeScreen(),
+            builder: (ctx) => const PasswordsScreen(),
           ),
           (route) => false,
         );
@@ -59,7 +60,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
 
   String? _hintValidator(String? value) {
     if (value == null || value.isEmpty || value.length < 2) {
-      return 'Should should have at-least 2 characters';
+      return 'Hint should have at-least 2 characters';
     }
     return null;
   }
@@ -96,6 +97,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
 
               // Master Password field
               PasswordField(
+                fieldKey: AppKeys.signUpPassword,
                 hintText: 'Password',
                 validator: _passwordValidator,
                 onSaved: (value) {
@@ -104,6 +106,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               ),
               const SizedBox(height: 10),
               PasswordField(
+                fieldKey: AppKeys.signUpConfirmPassword,
                 hintText: 'Confirm Password',
                 validator: _confirmValidator,
                 onSaved: (value) {},
@@ -113,6 +116,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: TextFormField(
+                  key: AppKeys.signUpPasswordHint,
                   decoration: const InputDecoration(
                     hintText: 'Password Hint',
                     border: OutlineInputBorder(),

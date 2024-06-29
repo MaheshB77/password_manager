@@ -4,6 +4,7 @@ class PasswordField extends StatefulWidget {
   final String hintText;
   final String? errorText;
   final TextEditingController? controller;
+  final Key? fieldKey;
   final void Function(String? value) onSaved;
   final String? Function(String? value)? validator;
 
@@ -14,6 +15,7 @@ class PasswordField extends StatefulWidget {
     this.validator,
     this.controller,
     this.errorText,
+    this.fieldKey,
   });
 
   @override
@@ -34,6 +36,7 @@ class _PasswordFieldState extends State<PasswordField> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextFormField(
+        key: widget.fieldKey,
         controller: widget.controller,
         obscureText: !_passwordVisible,
         decoration: InputDecoration(

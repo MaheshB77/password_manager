@@ -18,7 +18,7 @@ class _PasswordActionState extends ConsumerState<PasswordAction> {
     if (!mounted) return;
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+      MaterialPageRoute(builder: (ctx) => const PasswordsScreen()),
       (route) => false,
     );
   }

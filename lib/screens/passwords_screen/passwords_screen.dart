@@ -11,14 +11,14 @@ import 'package:password_manager/shared/widgets/side_drawer.dart';
 import 'package:password_manager/screens/passwords_screen/widgets/password_list.dart';
 import 'package:password_manager/shared/widgets/spinner.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+class PasswordsScreen extends ConsumerStatefulWidget {
+  const PasswordsScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _PasswordsScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _PasswordsScreenState extends ConsumerState<PasswordsScreen> {
   late Future<List<Password>> _passwordFuture;
   bool _deleting = false;
   bool _favorites = false;

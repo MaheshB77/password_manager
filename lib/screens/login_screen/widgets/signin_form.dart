@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:password_manager/constants/keys.dart';
 import 'package:password_manager/models/user.dart';
 import 'package:password_manager/providers/user/user_provider.dart';
 import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
@@ -30,7 +31,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
         _errorText = null;
         _showHint = false;
       });
-      _goToHomeScreen();
+      _goToPasswordsScreen();
     } else {
       setState(() {
         _errorText = 'Please enter the valid password';
@@ -44,18 +45,18 @@ class _SignInFormState extends ConsumerState<SignInForm> {
       final bool didAuthenticate = await _auth.authenticate(
         localizedReason: 'Please authenticate to see the passwords',
       );
-      if (didAuthenticate) _goToHomeScreen();
+      if (didAuthenticate) _goToPasswordsScreen();
     } catch (error) {
       print('Something went wrong while logging in with fingerprint');
     }
   }
 
-  void _goToHomeScreen() async {
+  void _goToPasswordsScreen() async {
     if (!mounted) return;
 
     await Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+      MaterialPageRoute(builder: (ctx) => const PasswordsScreen()),
     );
   }
 
@@ -116,6 +117,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
           _getFingerprintButton(userFuture),
           const SizedBox(height: 10),
           PasswordField(
+            fieldKey: AppKeys.signInPassword,
             controller: _pwdController,
             errorText: _errorText,
             hintText: 'Master Password',

@@ -8,10 +8,10 @@ import 'package:password_manager/screens/settings_screen/settings_screen.dart';
 class SideDrawer extends ConsumerWidget {
   const SideDrawer({super.key});
 
-  void _openHomeScreen(BuildContext context) {
+  void _openPasswordsScreen(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+      MaterialPageRoute(builder: (ctx) => const PasswordsScreen()),
       (route) => false,
     );
   }
@@ -66,7 +66,7 @@ class SideDrawer extends ConsumerWidget {
                 'Passwords',
                 style: itemTextStyle,
               ),
-              onTap: () => _openHomeScreen(context),
+              onTap: () => _openPasswordsScreen(context),
             ),
             ListTile(
               leading: const ImageIcon(
