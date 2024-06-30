@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/constants/keys.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/password/password_provider.dart';
 import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
@@ -49,6 +50,7 @@ class _PasswordActionState extends ConsumerState<PasswordAction> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
+      key: AppKeys.passwordOptionButton,
       itemBuilder: (ctx) => [
         PopupMenuItem(
           height: 16,

@@ -16,4 +16,5 @@ class AppKeys {
   static const Key emailKey = ValueKey('emailKey');
   static const Key passwordKey = ValueKey('passwordKey');
   static const Key addButton = ValueKey('addButton');
+  static const Key passwordOptionButton = ValueKey('passwordOptionButton');
 }
