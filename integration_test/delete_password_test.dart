@@ -47,35 +47,7 @@ void main() {
       final passwordRobot = PasswordRobot(tester);
       await signUpRobot.signUp();
 
-      await passwordRobot.goToPasswordForm();
-      await passwordRobot.createPassword(
-        'google',
-        'Work',
-        'Google',
-        'MaheshB76',
-        'mbansode@gmail.com',
-        'testpassword',
-      );
-
-      await passwordRobot.goToPasswordForm();
-      await passwordRobot.createPassword(
-        'bing',
-        'Work',
-        'Bing',
-        'MaheshBNG76',
-        'mbansode@bing.com',
-        'testpwdbing',
-      );
-
-      await passwordRobot.goToPasswordForm();
-      await passwordRobot.createPassword(
-        'bitcoin',
-        'Finance',
-        'Bitcoin',
-        'MaheshBTC76',
-        'mbansode@btc.com',
-        'testpwdbtc',
-      );
+      await passwordRobot.createDummyPasswords();
 
       await tester.longPress(find.text('Google'));
       await tester.pumpAndSettle();

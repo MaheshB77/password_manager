@@ -12,6 +12,38 @@ class PasswordRobot {
 
   PasswordRobot(this.tester);
 
+  Future<void> createDummyPasswords() async {
+    await goToPasswordForm();
+    await createPassword(
+      'google',
+      'Work',
+      'Google',
+      'MaheshB76',
+      'mbansode@gmail.com',
+      'testpassword',
+    );
+
+    await goToPasswordForm();
+    await createPassword(
+      'bing',
+      'Work',
+      'Bing',
+      'MaheshBNG76',
+      'mbansode@bing.com',
+      'testpwdbing',
+    );
+
+    await goToPasswordForm();
+    await createPassword(
+      'bitcoin',
+      'Finance',
+      'Bitcoin',
+      'MaheshBTC76',
+      'mbansode@btc.com',
+      'testpwdbtc',
+    );
+  }
+
   Future<void> checkFallback() async {
     expect(find.byType(NoPasswords), findsOneWidget);
     expect(find.text('No passwords added yet!'), findsOneWidget);
