@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:password_manager/constants/keys.dart';
 import 'package:password_manager/models/category.dart';
 import 'package:password_manager/models/password.dart';
 import 'package:password_manager/providers/category/category_provider.dart';
@@ -113,16 +114,19 @@ class _PasswordListState extends ConsumerState<PasswordList> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // Search
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: SizedBox(
             height: 40,
             child: TextField(
+              key: AppKeys.passwordSearchKey,
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Search',
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: IconButton(
+                  key: AppKeys.passwordFilterKey,
                   onPressed: _showFilters,
                   icon: const Icon(Icons.filter_alt_outlined),
                 ),
@@ -133,6 +137,8 @@ class _PasswordListState extends ConsumerState<PasswordList> {
             ),
           ),
         ),
+
+        // Filter chips
         CategoryChips(
           categories: _selectedCategories,
           updateSelectedCategories: _updateSelectedCategories,
@@ -140,6 +146,8 @@ class _PasswordListState extends ConsumerState<PasswordList> {
         _selectedCategories.isNotEmpty
             ? const Divider(indent: 10, endIndent: 10)
             : Container(),
+
+        // Password list
         Expanded(
           child: RefreshIndicator(
             onRefresh: _getPasswords,

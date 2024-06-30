@@ -17,4 +17,8 @@ class AppKeys {
   static const Key passwordKey = ValueKey('passwordKey');
   static const Key addButton = ValueKey('addButton');
   static const Key passwordOptionButton = ValueKey('passwordOptionButton');
+
+  // Password list screen
+  static const Key passwordSearchKey = ValueKey('passwordSearchKey');
+  static const Key passwordFilterKey = ValueKey('passwordFilterKey');
 }
