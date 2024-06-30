@@ -146,6 +146,7 @@ class _PasswordListState extends ConsumerState<PasswordList> {
             child: ListView.builder(
               itemCount: pwds.length,
               itemBuilder: (ctx, index) => PasswordTile(
+                key: ValueKey('password_tile_$index'),
                 password: pwds[index],
                 category: CategoryUtil.getById(
                   categories,

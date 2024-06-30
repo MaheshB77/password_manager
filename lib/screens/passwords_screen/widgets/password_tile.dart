@@ -45,6 +45,7 @@ class PasswordTile extends ConsumerWidget {
           style: Theme.of(context).textTheme.labelSmall,
         ),
         trailing: IconButton(
+          key: ValueKey('password_favorite_$index'),
           icon: password.isFavorite == 0
               ? const Icon(Icons.star_border)
               : const Icon(Icons.star),

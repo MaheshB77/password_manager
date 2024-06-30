@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:password_manager/constants/keys.dart';
 import 'package:password_manager/screens/password_form/password_form_screen.dart';
@@ -12,7 +11,7 @@ class PasswordRobot {
 
   PasswordRobot(this.tester);
 
-  Future<void> createDummyPasswords() async {
+  Future<int> createDummyPasswords() async {
     await goToPasswordForm();
     await createPassword(
       'google',
@@ -42,6 +41,8 @@ class PasswordRobot {
       'mbansode@btc.com',
       'testpwdbtc',
     );
+
+    return 3;
   }
 
   Future<void> checkFallback() async {
