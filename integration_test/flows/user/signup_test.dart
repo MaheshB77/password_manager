@@ -9,7 +9,7 @@ import 'package:password_manager/screens/login_screen/widgets/button.dart';
 import 'package:password_manager/screens/login_screen/widgets/signup_form.dart';
 import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
 
-import 'utils/test_utils.dart';
+import '../../utils/test_utils.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

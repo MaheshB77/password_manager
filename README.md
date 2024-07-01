@@ -16,6 +16,8 @@
     -   `flutter test`
 -   Build mocks
     -   `dart run build_runner build`
+-   Run e2e tests locally
+    -   `flutter test integration_test/flows/*/*`
 
 ## Database
 
@@ -37,5 +39,5 @@
 
 ## Riverpod
 
-- Generate the utility files using below command
-    - `dart run build_runner watch`
+-   Generate the utility files using below command
+    -   `dart run build_runner watch`

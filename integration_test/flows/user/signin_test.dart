@@ -7,8 +7,8 @@ import 'package:password_manager/main.dart' as app;
 import 'package:password_manager/screens/login_screen/widgets/signin_form.dart';
 import 'package:password_manager/screens/passwords_screen/passwords_screen.dart';
 
-import 'robot/signup_robot.dart';
-import 'utils/test_utils.dart';
+import '../../robot/signup_robot.dart';
+import '../../utils/test_utils.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

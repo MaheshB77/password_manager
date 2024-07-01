@@ -4,8 +4,8 @@ import 'package:password_manager/constants/keys.dart';
 import 'package:password_manager/screens/passwords_screen/widgets/password_filter.dart';
 import 'package:password_manager/screens/passwords_screen/widgets/password_tile.dart';
 
-import 'robot/password_robot.dart';
-import 'robot/signup_robot.dart';
+import '../../robot/password_robot.dart';
+import '../../robot/signup_robot.dart';
 
 void main() {
   group('Should test the password filters', () {
@@ -62,8 +62,6 @@ void main() {
       await tester.tap(find.text('Ok'));
       await tester.pumpAndSettle();
       expect(find.byType(PasswordTile), findsNothing);
-
-      await tester.pump(const Duration(seconds: 5));
     });
   });
 }
